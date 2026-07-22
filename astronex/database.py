@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 '''Database services'''
+import os
 import sqlite3
 from copy import copy
 from .extensions.path import path
@@ -37,6 +38,10 @@ CREATE TABLE custom.%s ( CC Text(2), AC Text(2), Ciudad Text(50), Latitud Real, 
 def connect(app):
     global local_conn, chart_conn, customloc_conn
     dbfile = path.joinpath(app.appath,"astronex/db/local.db")
+    # A fresh Git checkout does not contain the user-writable ``db`` folder
+    # (nor should it contain a user's local database).  SQLite can create the
+    # file but not its missing parent directory.
+    os.makedirs(os.path.dirname(str(dbfile)), exist_ok=True)
     local_conn = sqlite3.connect(str(dbfile))
     local_conn.create_collation('westcoll', westerncollate)
     dbfile = path.joinpath(app.home_dir,"charts.db")
@@ -49,6 +54,7 @@ def connect(app):
 def easy_connect():
     global local_conn, chart_conn, customloc_conn
     dbfile = "./db/local.db"
+    os.makedirs(os.path.dirname(dbfile), exist_ok=True)
     local_conn = sqlite3.connect(str(dbfile))
     local_conn.create_collation('westcoll', westerncollate)
     dbfile = path.joinpath(path.expanduser(path('~')),".astronex/charts.db")
