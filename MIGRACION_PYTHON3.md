@@ -90,6 +90,31 @@ son distintos por plataforma y se generan localmente.
 Esta guía reemplaza el procedimiento del PDF de Python 2. No instales
 `python2`, `pip2` ni `python-gtk2`: esta edición usa Python 3 y GTK3.
 
+### Instalación sencilla (recomendada para Ubuntu/Debian)
+
+Después de descargar el repositorio, abre una Terminal en su carpeta y ejecuta
+un único comando:
+
+```bash
+./scripts/install_linux.sh
+```
+
+El script pide la contraseña de `sudo` una sola vez para instalar los paquetes
+de Ubuntu/Debian. Después crea el entorno Python, instala las dependencias,
+compila el motor astronómico, instala la tipografía y crea un lanzador llamado
+**Astro-Nex** en el menú de aplicaciones.
+
+Para instalar y ejecutar las pruebas al final:
+
+```bash
+./scripts/install_linux.sh --test
+```
+
+Opciones útiles: `--no-system-deps`, `--no-font` y `--no-launcher`. Consulta
+`./scripts/install_linux.sh --help` para el detalle.
+
+### Instalación manual
+
 ### 1. Preparar el sistema
 
 En Ubuntu/Debian se necesitan Python 3.9 o posterior, GTK3, PyGObject,
