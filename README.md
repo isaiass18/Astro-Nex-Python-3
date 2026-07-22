@@ -28,7 +28,7 @@ Para que el instalador ejecute también las pruebas:
 ./scripts/install_linux.sh --test
 ```
 
-### Windows (64 bits)
+### Windows 8 y Windows 10 (64 bits)
 
 1. Descarga el repositorio como ZIP desde **Code → Download ZIP** y
    descomprímelo.
