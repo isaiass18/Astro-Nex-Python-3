@@ -92,8 +92,11 @@ Esta guía reemplaza el procedimiento del PDF de Python 2. No instales
 
 ### Instalación sencilla (recomendada para Ubuntu/Debian)
 
-Después de descargar el repositorio, abre una Terminal en su carpeta y ejecuta
-un único comando:
+Hay dos instaladores, según dónde se encuentre el código.
+
+#### Opción A: ya tienes una copia local o descargaste el ZIP
+
+Abre una Terminal dentro de la carpeta `Astro-Nex-Python-3` y ejecuta:
 
 ```bash
 ./scripts/install_linux.sh
@@ -112,6 +115,27 @@ Para instalar y ejecutar las pruebas al final:
 
 Opciones útiles: `--no-system-deps`, `--no-font` y `--no-launcher`. Consulta
 `./scripts/install_linux.sh --help` para el detalle.
+
+#### Opción B: descargar o actualizar directamente desde GitHub
+
+Descarga el instalador y ejecútalo con:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/isaiass18/Astro-Nex-Python-3/main/scripts/install_from_github.sh | bash
+```
+
+El instalador descarga el repositorio en
+`~/Aplicaciones/Astro-Nex-Python-3` (o actualiza esa copia si ya existe) y
+ejecuta la instalación completa. Para que además ejecute las pruebas:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/isaiass18/Astro-Nex-Python-3/main/scripts/install_from_github.sh | bash -s -- --test
+```
+
+También puede descargarse el archivo
+[`scripts/install_from_github.sh`](scripts/install_from_github.sh), revisarlo y
+ejecutarlo localmente. Usa `--directory /otra/ruta` para cambiar la carpeta de
+instalación.
 
 ### Instalación manual
 

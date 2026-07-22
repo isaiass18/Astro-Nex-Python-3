@@ -8,6 +8,26 @@ _pysw.so ni pysw.py de las distribuciones de Python 2.
 Linux (Ubuntu/Debian)
 ---------------------
 
+Instalación automática
+----------------------
+
+Si ya tiene una copia local de las fuentes, desde su carpeta ejecute:
+
+  ./scripts/install_linux.sh
+
+Para descargar o actualizar directamente desde GitHub y continuar con la
+instalación:
+
+  curl -fsSL https://raw.githubusercontent.com/isaiass18/Astro-Nex-Python-3/main/scripts/install_from_github.sh | bash
+
+Ambos instaladores preparan el entorno Python, compilan `_pysw`, instalan la
+tipografía y crean un lanzador de escritorio. Añada `--test` para ejecutar la
+suite automática al final. Use `--help` en cualquiera de los scripts para ver
+las opciones.
+
+Instalación manual
+------------------
+
 Instale las dependencias de sistema y las herramientas de compilación:
 
   sudo apt update
