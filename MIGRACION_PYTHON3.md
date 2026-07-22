@@ -178,9 +178,3 @@ Los detalles completos y la solución de problemas habituales están en
   llamadas internas.
 - Verificar visualmente todas las operaciones y tipos de carta frente a la
   versión Python 2 de referencia.
-
-## Seguridad del repositorio
-
-El repositorio no debe incluir llaves privadas, archivos `.pem`, tokens,
-variables de entorno, IPs de servidores ni bases de datos locales de usuarios.
-La configuración de exclusión está en [`.gitignore`](.gitignore).
