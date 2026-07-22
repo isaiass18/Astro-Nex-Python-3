@@ -10,8 +10,7 @@ dist/
 *.egg-info/
 .venv/
 
-# Local application state and generated output
-astronex/db/local.db
+# Generated output
 *.log
 
 # Credentials and machine-specific deployment notes
