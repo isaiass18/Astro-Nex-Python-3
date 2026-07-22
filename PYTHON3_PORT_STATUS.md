@@ -1,51 +1,40 @@
 # Estado de la migración a Python 3
 
+## Estado actual
+
+Astro-Nex se ha portado a Python 3 y GTK3/PyGObject. El árbol de código se
+compila, la extensión Swiss Ephemeris se construye desde su fuente y la
+aplicación se ha ejecutado y probado en Ubuntu 24.04. La misma fuente es la
+referencia para la compilación de Windows.
+
 ## Verificado
 
-Todo el árbol Python compila con Python 3.9:
+- Compilación de los módulos Python 3.
+- Construcción de `_pysw` para la plataforma de destino.
+- Rutas de datos y SQLite.
+- Pruebas de coordenadas, fechas UTC, carta actual, retorno solar, mezclador,
+  importación/exportación AAF y extensión astronómica.
+- Apertura automática de los diálogos GTK3 principales, incluidos preferencias
+  y localidades.
+- Instalación desde una rueda generada localmente en Ubuntu 24.04.
+
+Los comandos de referencia son:
 
 ```sh
-python3 -m compileall -q astronex nex.py setup.py setup_win.py
+python -m compileall -q astronex tests
+python -m unittest discover -s tests -q
+ASTRONEX_GUI_SMOKE=1 python -m unittest tests.test_gui_smoke -q
 ```
 
-También se han comprobado las utilidades matemáticas y de rutas usadas por el
-programa. El lanzador responde a `python3 nex.py --help`.
+## Validación pendiente
 
-## Bloqueadores de ejecución
+La validación funcional continúa: deben contrastarse todas las operaciones,
+impresión, exportación y flujos de edición con la versión Python 2, usando
+cartas reales variadas (zonas horarias históricas, latitudes altas y texto no
+ASCII). El detalle de alcance y cambios está en
+[`MIGRACION_PYTHON3.md`](MIGRACION_PYTHON3.md).
 
-La interfaz fue escrita para **PyGTK 2**, una biblioteca exclusiva de Python 2:
+## Plataformas
 
-```text
-ModuleNotFoundError: No module named 'gtk'
-```
-
-Para ejecutar Astro-Nex en Python 3 es necesario migrar los módulos de la GUI
-a PyGObject/GTK 3 (o reevaluarlos para GTK 4). GTK 3 es la ruta recomendada,
-porque conserva más de las APIs de PyGTK que utiliza la aplicación. Esta parte
-incluye las importaciones `gtk`, `gobject`, `pango` y `pangocairo`, además de
-las constantes, señales, diálogos e impresión de la GUI.
-
-El fichero `_pysw.so` incluido tampoco se puede reutilizar: es un binario
-compilado para otra plataforma y ABI de Python. Debe generarse una extensión
-`pysw` para cada combinación de sistema operativo, arquitectura y versión de
-Python. El código fuente de Swiss Ephemeris está en `ext/ext32/src`, pero se
-necesita conservar o reconstruir el código de enlace Python/C que expone las
-funciones `planets`, `houses`, `calc_ut_with_speed` y `setpath`.
-
-## Orden recomendado
-
-1. Preparar un entorno reproducible de Linux con Python 3.9+ y las
-   dependencias de desarrollo de GTK 3, PyGObject, Pycairo, Pango, pytz,
-   ConfigObj y Pillow.
-2. Migrar primero una ventana mínima y el arranque de configuración a GTK 3;
-   comprobar que abre sin cargar todos los diálogos.
-3. Compilar y probar `pysw` para Python 3 con valores de referencia conocidos
-   de Swiss Ephemeris.
-4. Migrar por grupos los diálogos, superficies Cairo/Pango, impresión y
-   exportaciones, añadiendo pruebas de cálculo y capturas de referencia.
-5. Crear el paquete Windows después de estabilizar el núcleo en Linux, con una
-   compilación separada de `pysw` para Windows.
-
-No se debe distribuir todavía como una versión funcional de Python 3: la
-compatibilidad sintáctica está resuelta, pero las dos dependencias críticas de
-ejecución siguen pendientes.
+Linux es la plataforma de referencia actual. Windows debe compilar su propia
+extensión nativa y no reutilizar binarios de Linux o macOS.
