@@ -87,9 +87,14 @@ son distintos por plataforma y se generan localmente.
 
 ## Instalación en Linux
 
+Esta guía reemplaza el procedimiento del PDF de Python 2. No instales
+`python2`, `pip2` ni `python-gtk2`: esta edición usa Python 3 y GTK3.
+
+### 1. Preparar el sistema
+
 En Ubuntu/Debian se necesitan Python 3.9 o posterior, GTK3, PyGObject,
 Pycairo, `pkg-config`, compilador C y las cabeceras de desarrollo de Python y
-GTK. Instálalos con:
+GTK. Abre una Terminal e instala los requisitos:
 
 ```bash
 sudo apt update
@@ -97,25 +102,92 @@ sudo apt install build-essential python3-venv python3-dev pkg-config \
   libgtk-3-dev gir1.2-gtk-3.0 python3-gi python3-gi-cairo python3-cairo
 ```
 
-Desde la raíz del repositorio:
+### 2. Descargar el programa
+
+Elige una carpeta de trabajo, por ejemplo `~/Aplicaciones`, y descarga el
+repositorio público:
+
+```bash
+mkdir -p ~/Aplicaciones
+cd ~/Aplicaciones
+git clone https://github.com/isaiass18/Astro-Nex-Python-3.git
+cd Astro-Nex-Python-3
+```
+
+Si se ha descargado un archivo ZIP desde GitHub, descomprímelo y entra en la
+carpeta `Astro-Nex-Python-3` antes de continuar.
+
+### 3. Crear el entorno Python e instalar dependencias
+
+Desde la carpeta del proyecto ejecuta:
 
 ```bash
 python3 -m venv --system-site-packages .venv
 . .venv/bin/activate
 python -m pip install --upgrade pip setuptools wheel
-python -m pip install .
-astronex
+python -m pip install pytz configobj Pillow ipython
 ```
 
-Para desarrollar directamente sobre las fuentes:
+El parámetro `--system-site-packages` es importante: permite que el entorno
+virtual utilice PyGObject y Pycairo instalados por Ubuntu.
+
+### 4. Compilar la extensión astronómica
+
+La primera vez, compila `_pysw`, la extensión nativa de Swiss Ephemeris:
 
 ```bash
 python setup.py build_ext --inplace
+```
+
+### 5. Instalar la tipografía astrológica
+
+Abre el archivo `astronex/resources/Astro-Nex.ttf` con el visor de fuentes del
+sistema y selecciona **Instalar**. Este paso es recomendable para que los
+símbolos astrológicos se muestren correctamente.
+
+### 6. Ejecutar Astro-Nex
+
+En la misma Terminal, con el entorno activado, inicia el programa:
+
+```bash
 python nex.py
 ```
 
-Si faltan los símbolos astrológicos, instala la fuente
-`astronex/resources/Astro-Nex.ttf` en el sistema y reinicia la aplicación.
+En ejecuciones posteriores:
+
+```bash
+cd ~/Aplicaciones/Astro-Nex-Python-3
+. .venv/bin/activate
+python nex.py
+```
+
+### 7. Comprobación opcional
+
+Antes de usarlo con datos personales, puedes ejecutar la suite automática:
+
+```bash
+python -m unittest discover -s tests -q
+```
+
+### 8. Crear un lanzador opcional
+
+En la mayoría de escritorios Linux puedes crear un archivo
+`~/.local/share/applications/astronex.desktop` con este contenido, ajustando
+la ruta si instalaste el proyecto en otra carpeta:
+
+```ini
+[Desktop Entry]
+Type=Application
+Name=Astro-Nex
+Exec=/home/TU_USUARIO/Aplicaciones/Astro-Nex-Python-3/.venv/bin/python /home/TU_USUARIO/Aplicaciones/Astro-Nex-Python-3/nex.py
+Icon=/home/TU_USUARIO/Aplicaciones/Astro-Nex-Python-3/astronex/resources/iconex-48.png
+Terminal=false
+Categories=Education;Science;
+```
+
+Sustituye `TU_USUARIO` por tu nombre de usuario de Linux. Tras guardar, busca
+**Astro-Nex** en el menú de aplicaciones. Si el escritorio no muestra el icono
+inmediatamente, cierra sesión y vuelve a entrar.
 
 ## Instalación en Windows
 
