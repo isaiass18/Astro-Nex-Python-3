@@ -1,0 +1,18 @@
+Astro-Nex is a program to calculate and draw astrological charts in API method
+style, under the GPL License.
+
+It's written in python and gtk, using cairo as the drawing enngine.  
+To calculate it uses data publicated by the Geospacial Agency, the timezone
+database (pytz) and the swiss ephemeris.
+
+All graphics reflects astrological concepts in the API method, so it's useful 
+mainly to students and profesionals in this field.
+
+It can export graphics to png and pdf, though it's strengths are in its
+interactivity and easy of navigation in screen mode.
+
+
+Jose Antonio Rodríguez
+jar@eideia.net
+http://astro-nex.com
+

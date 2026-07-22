@@ -1,0 +1,26 @@
+# Python build and test artifacts
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.o
+*.a
+build/
+dist/
+*.egg-info/
+.venv/
+
+# Local application state and generated output
+astronex/db/local.db
+*.log
+
+# Credentials and machine-specific deployment notes
+*.pem
+*.key
+.env
+.env.*
+ip.rtf
+
+# OS/editor metadata
+.DS_Store
+Thumbs.db

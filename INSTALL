@@ -1,0 +1,127 @@
+Astro-Nex 1.2.3 — instalación para Python 3 / GTK 3
+====================================================
+
+Esta edición se ejecuta con Python 3 y GTK 3. El módulo de efemérides
+(_pysw) se compila durante la instalación; no copie los antiguos archivos
+_pysw.so ni pysw.py de las distribuciones de Python 2.
+
+Linux (Ubuntu/Debian)
+---------------------
+
+Instale las dependencias de sistema y las herramientas de compilación:
+
+  sudo apt update
+  sudo apt install build-essential python3-venv python3-dev pkg-config \
+      libgtk-3-dev gir1.2-gtk-3.0 python3-gi python3-gi-cairo python3-cairo
+
+Desde el directorio descomprimido del proyecto cree un entorno que pueda usar
+los enlaces GTK instalados por la distribución:
+
+  python3 -m venv --system-site-packages .venv
+  . .venv/bin/activate
+  python -m pip install --upgrade pip setuptools wheel
+  python -m pip install .
+
+Inicie el programa con:
+
+  astronex
+
+Para ejecutarlo directamente desde el árbol de fuentes (útil durante el
+desarrollo), tras activar el entorno use:
+
+  python nex.py
+
+Comprobación básica
+-------------------
+
+Antes de usarlo, puede verificar el motor astronómico y las rutas de la base
+de datos con:
+
+  python -m unittest discover -s tests -q
+
+La fuente Astro-Nex.ttf está incluida en astronex/resources. Instálela en el
+sistema si los símbolos astrológicos no aparecen correctamente.
+
+Otros Linux
+-----------
+
+Instale el equivalente de los paquetes GTK 3, GObject Introspection, Cairo,
+cabeceras de Python, compilador C y pkg-config. Cree el entorno virtual con
+--system-site-packages para que PyGObject y Pycairo del sistema queden
+disponibles, y siga después los pasos de Python indicados arriba.
+
+Windows
+-------
+
+Use una instalación x86_64 coherente de Python, GTK y PyGObject. La ruta
+probada es el entorno **UCRT64** de MSYS2: proporciona Python 3 de 64 bits,
+GTK 3, PyGObject, Pycairo y GCC con el mismo ABI. No abra la consola MSYS ni
+la de MINGW64; abra **MSYS2 UCRT64**.
+
+Instale MSYS2 x86_64 desde https://www.msys2.org/ y, en la consola UCRT64,
+actualice sus paquetes (si se le pide cerrar la consola, hágalo, vuelva a
+abrir UCRT64 y repita el comando):
+
+  pacman -Syu
+
+Instale el runtime, Python y las herramientas de compilación:
+
+  pacman -S --needed \
+      mingw-w64-ucrt-x86_64-python \
+      mingw-w64-ucrt-x86_64-python-pip \
+      mingw-w64-ucrt-x86_64-python-setuptools \
+      mingw-w64-ucrt-x86_64-python-wheel \
+      mingw-w64-ucrt-x86_64-python-gobject \
+      mingw-w64-ucrt-x86_64-python-cairo \
+      mingw-w64-ucrt-x86_64-python-pillow \
+      mingw-w64-ucrt-x86_64-python-pytz \
+      mingw-w64-ucrt-x86_64-python-ipython \
+      mingw-w64-ucrt-x86_64-gtk3 \
+      mingw-w64-ucrt-x86_64-gcc
+
+Desde una copia nueva de las fuentes, cree un entorno virtual que conserve los
+paquetes GTK de UCRT64. Instale primero la única dependencia pura de Python
+que no distribuye UCRT64 y después el proyecto. `pip install .` compila
+`_pysw` a partir de `ext/ext64/pysw_wrap.c` y `ext/ext32/src`; no usa ningún
+binario incluido en un árbol antiguo:
+
+  cd /h/Astro-Nex-1.2.3
+  python -m venv --system-site-packages .venv
+  source .venv/bin/activate
+  python -m pip install configobj
+  python -m pip install .
+
+Verifique la instalación desde un directorio distinto (así se comprueba el
+entry point instalado y no `nex.py` de las fuentes):
+
+  cd /tmp
+  astronex --help
+  python -m unittest discover -s /h/Astro-Nex-1.2.3/tests -q
+
+Para generar una rueda Windows reproducible, desde la misma consola UCRT64:
+
+  cd /h/Astro-Nex-1.2.3
+  python -m pip wheel --no-deps --wheel-dir dist .
+
+La rueda resultante lleva una etiqueta UCRT64, por ejemplo
+`cp314-cp314-mingw_x86_64_ucrt_gnu`, y se instala con
+`python -m pip install dist/astro_nex-1.2.3-*.whl`. Debe instalarse en un
+entorno UCRT64 que ya tenga los paquetes GTK anteriores; una rueda de este
+proyecto no redistribuye las DLL de GTK.
+
+También puede compilar `_pysw` con CPython oficial 3.10+ x64 y MSVC Build
+Tools, pero PyGObject/GTK3 debe proceder de un runtime binariamente compatible.
+No mezcle ese CPython con los paquetes UCRT64. Para ejecutar toda la interfaz,
+la ruta UCRT64 anterior es la soportada y reproducible.
+
+No reutilice PyGTK, pywin32, winshell ni los binarios `_pysw`/`pysw.py` de
+Python 2: no son compatibles con esta versión.
+
+Problemas habituales
+--------------------
+
+* "No module named gi": faltan las dependencias GTK/GObject de la
+  distribución, o el entorno virtual no se creó con --system-site-packages.
+* Error al construir _pysw: instale build-essential, python3-dev y las
+  cabeceras de GTK antes de repetir la instalación.
+* Símbolos ausentes: instale Astro-Nex.ttf y reinicie la aplicación.
