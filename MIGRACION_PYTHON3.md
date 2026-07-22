@@ -74,23 +74,100 @@ ASTRONEX_GUI_SMOKE=1 python -m unittest tests.test_gui_smoke -q
 También se validó la compilación de la extensión nativa y la instalación desde
 una rueda generada localmente.
 
+### Plataformas comprobadas
+
+| Plataforma | Estado de comprobación |
+| --- | --- |
+| Ubuntu 24.04 x86_64 | Compilación de `_pysw`, 17 pruebas automáticas, prueba GTK3 de diálogos, instalación desde rueda y ejecución de la interfaz. |
+| Windows x86_64 (MSYS2 UCRT64) | Esta misma fuente fue compilada y probada funcionalmente en Windows. La aplicación y su interfaz funcionan correctamente en ese entorno. |
+
+Linux y Windows deben trabajar siempre sobre la misma revisión de los archivos
+fuente. Sólo los artefactos compilados (`_pysw`, ruedas, `build/` y `dist/`)
+son distintos por plataforma y se generan localmente.
+
 ## Instalación en Linux
 
-Consulta [`INSTALL`](INSTALL). Como referencia, en Ubuntu se necesitan Python
-3, GTK3/PyGObject, Cairo, compilador C y los paquetes de desarrollo de GTK.
-Después se crea un entorno virtual, se instalan las dependencias y se ejecuta:
+En Ubuntu/Debian se necesitan Python 3.9 o posterior, GTK3, PyGObject,
+Pycairo, `pkg-config`, compilador C y las cabeceras de desarrollo de Python y
+GTK. Instálalos con:
+
+```bash
+sudo apt update
+sudo apt install build-essential python3-venv python3-dev pkg-config \
+  libgtk-3-dev gir1.2-gtk-3.0 python3-gi python3-gi-cairo python3-cairo
+```
+
+Desde la raíz del repositorio:
+
+```bash
+python3 -m venv --system-site-packages .venv
+. .venv/bin/activate
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install .
+astronex
+```
+
+Para desarrollar directamente sobre las fuentes:
 
 ```bash
 python setup.py build_ext --inplace
 python nex.py
 ```
 
-## Windows
+Si faltan los símbolos astrológicos, instala la fuente
+`astronex/resources/Astro-Nex.ttf` en el sistema y reinicia la aplicación.
 
-La fuente debe mantenerse idéntica a Linux. La extensión `_pysw` se compila
-para Windows en el propio Windows; no se deben copiar ficheros `.so`, `.pyd`,
-`build/` ni `dist/` de otra plataforma. La validación funcional en Windows
-debe cubrir los mismos diálogos, cartas, impresión y exportaciones.
+## Instalación en Windows
+
+La ruta reproducible usada para Windows es **MSYS2 UCRT64 x86_64**. Instala
+[MSYS2](https://www.msys2.org/), abre la consola **MSYS2 UCRT64** (no MSYS ni
+MINGW64) y ejecuta:
+
+```bash
+pacman -Syu
+pacman -S --needed \
+  mingw-w64-ucrt-x86_64-python \
+  mingw-w64-ucrt-x86_64-python-pip \
+  mingw-w64-ucrt-x86_64-python-setuptools \
+  mingw-w64-ucrt-x86_64-python-wheel \
+  mingw-w64-ucrt-x86_64-python-gobject \
+  mingw-w64-ucrt-x86_64-python-cairo \
+  mingw-w64-ucrt-x86_64-python-pillow \
+  mingw-w64-ucrt-x86_64-python-pytz \
+  mingw-w64-ucrt-x86_64-python-ipython \
+  mingw-w64-ucrt-x86_64-gtk3 \
+  mingw-w64-ucrt-x86_64-gcc
+```
+
+En una copia nueva del repositorio, desde la misma consola UCRT64:
+
+```bash
+cd /h/Astro-Nex-Python-3
+python -m venv --system-site-packages .venv
+source .venv/bin/activate
+python -m pip install configobj
+python -m pip install .
+astronex
+```
+
+Para ejecutar desde las fuentes tras compilar la extensión:
+
+```bash
+python setup.py build_ext --inplace
+python nex.py
+```
+
+Para crear una rueda de Windows reproducible:
+
+```bash
+python -m pip wheel --no-deps --wheel-dir dist .
+```
+
+No mezcles el Python/GTK de UCRT64 con CPython oficial, ni copies binarios
+`.so`, `.pyd`, `build/` o `dist/` desde otra plataforma.
+
+Los detalles completos y la solución de problemas habituales están en
+[`INSTALL`](INSTALL).
 
 ## Pendiente de validación funcional exhaustiva
 
