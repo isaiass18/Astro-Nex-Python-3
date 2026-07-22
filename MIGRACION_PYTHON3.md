@@ -240,6 +240,22 @@ inmediatamente, cierra sesión y vuelve a entrar.
 
 ## Instalación en Windows
 
+### Ejecutar el paquete portable (recomendado)
+
+El repositorio incluye una distribución Windows ya preparada en
+[`windows Instalador/Astro-Nex`](windows%20Instalador/Astro-Nex). Para usarla:
+
+1. Descarga el repositorio completo como ZIP y descomprímelo.
+2. Abre la carpeta `windows Instalador/Astro-Nex`.
+3. Ejecuta `Astro-Nex.exe`.
+
+No instales Python ni GTK de forma separada para este paquete: ya incluye sus
+dependencias. Conserva `Astro-Nex.exe` junto con la carpeta `_internal`, ya
+que el ejecutable no funcionará si se mueve por separado. Esta distribución es
+para Windows de 64 bits.
+
+### Compilar desde el código fuente
+
 La ruta reproducible usada para Windows es **MSYS2 UCRT64 x86_64**. Instala
 [MSYS2](https://www.msys2.org/), abre la consola **MSYS2 UCRT64** (no MSYS ni
 MINGW64) y ejecuta:
