@@ -104,6 +104,8 @@ Instalación completada.
 
 Para iniciar Astro-Nex desde una Terminal:
   $venv_dir/bin/python $project_dir/nex.py
-
-También debería aparecer como "Astro-Nex" en el menú de aplicaciones.
 EOF
+
+if "$create_launcher"; then
+    echo 'También debería aparecer como "Astro-Nex" en el menú de aplicaciones.'
+fi
