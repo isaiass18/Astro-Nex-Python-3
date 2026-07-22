@@ -1,6 +1,7 @@
 # Astro-Nex para Windows
 
-Esta carpeta contiene la distribución portable para Windows de 64 bits.
+Esta carpeta contiene la distribución portable para Windows de 64 bits. Está
+preparada para ejecutarse en **Windows 8 y Windows 10**.
 
 ## Inicio rápido
 
@@ -15,7 +16,7 @@ efemérides y los demás componentes requeridos por el ejecutable.
 ## Importante
 
 - No copies ni muevas `Astro-Nex.exe` sin la carpeta `_internal`.
-- Esta distribución se ha preparado para Windows x86_64.
+- Esta distribución se ha preparado para Windows 8/10 x86_64.
 - Es posible que Windows muestre una advertencia de reputación porque el
   ejecutable no está firmado. Comprueba que lo descargaste de este repositorio
   antes de ejecutarlo.
