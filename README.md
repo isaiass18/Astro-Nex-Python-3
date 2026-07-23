@@ -47,6 +47,11 @@ No hay que instalar Python, GTK ni dependencias adicionales. Como alternativa
 portable, se puede abrir `Windows Instalador\Astro-Nex\Astro-Nex.exe`, pero
 no se debe mover ese EXE sin su carpeta `_internal`.
 
+Al usar la variante portable, instala también la fuente
+`Astro-Nex.ttf` que está dentro de su carpeta: haz doble clic sobre el archivo
+y selecciona **Instalar** en Windows. Así se mostrarán correctamente los
+símbolos astrológicos.
+
 Windows puede mostrar una advertencia porque el ejecutable todavía no está
 firmado. Ejecuta únicamente una copia descargada de este repositorio oficial.
 
