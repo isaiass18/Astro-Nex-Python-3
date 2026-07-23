@@ -1,0 +1,8 @@
+Astro-Nex para Windows (64 bits)
+===============================
+
+Ejecute Astro-Nex\Astro-Nex.exe.
+
+No mueva el archivo .exe fuera de su carpeta: el directorio _internal
+contiene GTK3, PyGObject, Pycairo, la extensión nativa _pysw y los recursos
+necesarios para ejecutarlo.

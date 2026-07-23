@@ -1,5 +1,13 @@
 # Migración de Astro-Nex de Python 2 a Python 3
 
+## Demostración online
+
+La versión Linux puede probarse desde un navegador, sin instalar nada:
+
+**[Abrir Astro-Nex online](http://3.19.232.60:6080/vnc.html?autoconnect=1&resize=scale)**
+
+Es un servicio público de demostración.
+
 Este repositorio conserva Astro-Nex 1.2.3 y documenta su port a Python 3 con
 GTK 3. El objetivo del trabajo es mantener el comportamiento funcional del
 programa original, con prioridad para Linux y una base de código compartida
@@ -243,16 +251,16 @@ inmediatamente, cierra sesión y vuelve a entrar.
 ### Ejecutar el paquete portable (recomendado)
 
 El repositorio incluye una distribución Windows ya preparada en
-[`windows Instalador/Astro-Nex`](windows%20Instalador/Astro-Nex). Para usarla:
+[`Windows Instalador`](Windows%20Instalador). Para instalarla:
 
 1. Descarga el repositorio completo como ZIP y descomprímelo.
-2. Abre la carpeta `windows Instalador/Astro-Nex`.
-3. Ejecuta `Astro-Nex.exe`.
+2. Ejecuta `Windows Instalador/Astro-Nex-Setup.exe`.
+3. Sigue el asistente y abre Astro-Nex desde el acceso que crea.
 
 No instales Python ni GTK de forma separada para este paquete: ya incluye sus
-dependencias. Conserva `Astro-Nex.exe` junto con la carpeta `_internal`, ya
-que el ejecutable no funcionará si se mueve por separado. Esta distribución es
-para Windows de 64 bits.
+dependencias. También incluye una variante portable en
+`Windows Instalador/Astro-Nex/Astro-Nex.exe`; conserva ese EXE junto con la
+carpeta `_internal`. Esta distribución es para Windows de 64 bits.
 
 ### Compilar desde el código fuente
 
