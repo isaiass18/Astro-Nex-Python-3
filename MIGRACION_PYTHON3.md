@@ -260,7 +260,9 @@ El repositorio incluye una distribución Windows ya preparada en
 No instales Python ni GTK de forma separada para este paquete: ya incluye sus
 dependencias. También incluye una variante portable en
 `Windows Instalador/Astro-Nex/Astro-Nex.exe`; conserva ese EXE junto con la
-carpeta `_internal`. Esta distribución es para Windows de 64 bits.
+carpeta `_internal`. En la variante portable instala `Astro-Nex.ttf` desde esa
+carpeta antes de abrir el programa, para visualizar los símbolos astrológicos.
+Esta distribución es para Windows de 64 bits.
 
 ### Compilar desde el código fuente
 
