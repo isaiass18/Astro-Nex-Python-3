@@ -19,6 +19,7 @@ class AuxWindow(gtk.Window):
         accel_group.connect_group(gtk.keysyms.Up,gtk.gdk.CONTROL_MASK,gtk.ACCEL_LOCKED,self.fake_scroll_up)
         accel_group.connect_group(gtk.keysyms.Down,gtk.gdk.CONTROL_MASK,gtk.ACCEL_LOCKED,self.fake_scroll_down)
         self.add_accel_group(accel_group) 
+        self.accel_group = accel_group
 
         self.sda = DrawAux(self.boss,chart)
         self.add(self.sda)
@@ -55,4 +56,3 @@ class AuxWindow(gtk.Window):
         event = gtk.gdk.Event(gtk.gdk.SCROLL)
         event.direction = gtk.gdk.SCROLL_DOWN
         self.sda.on_scroll(self.sda,event)
-

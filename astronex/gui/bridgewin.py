@@ -33,6 +33,7 @@ class BridgePEWindow(gtk.Window):
         accel_group = gtk.AccelGroup()
         accel_group.connect_group(gtk.keysyms.Escape,0,gtk.ACCEL_LOCKED,self.escape)
         self.add_accel_group(accel_group) 
+        self.accel_group = accel_group
         
         # drawer
         bridge = BridgeArea(parent.boss)

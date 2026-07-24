@@ -69,6 +69,11 @@ pero PyGObject/GTK3 los expone a través de `PangoCairo`.
 `pangocairo.CairoContext` antes de crear el diseño de texto. Así recupera las
 operaciones `create_layout` y `show_layout` requeridas para pintar la ayuda.
 
+Además, F1 se consume tras abrir la ayuda y los grupos de aceleradores se
+mantienen como atributos de sus ventanas. El cierre observado ocurría dentro
+de `gtk_accel_groups_activate` después de procesar F1; conservar esas
+referencias evita que GTK3 despache aceleradores hacia callbacks liberados.
+
 ### Verificación
 
 Se añadió `test_f1_help_window_renders_under_gtk3` a las pruebas gráficas. La

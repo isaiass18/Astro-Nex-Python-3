@@ -78,6 +78,10 @@ class WinNex(gtk.Window):
             accel_group.connect_group(ksym,0,gtk.ACCEL_LOCKED,self.scroll_pool )
         accel_group.connect_group(gtk.keysyms.Menu,0,gtk.ACCEL_LOCKED,self.popup_menu)
         self.add_accel_group(accel_group)
+        # Keep the Python wrapper alive.  GTK owns the C-side group after it
+        # is added to the window, but PyGObject callbacks also need a live
+        # Python reference while keyboard accelerators are dispatched.
+        self.accel_group = accel_group
 
         hbox = gtk.HBox(False,3)
         self.add(hbox)
@@ -220,8 +224,13 @@ class WinNex(gtk.Window):
     def on_key_press_event(self,window,event): 
         if event.keyval == gtk.keysyms.F11 or (event.keyval == gtk.keysyms.Escape and self.da.__class__.fullscreen): 
             self.tb.get_nth_item(1).emit('clicked')
+            return True
         elif event.keyval == gtk.keysyms.F1:
             self.show_help()
+            # F1 is handled here; letting it continue into GTK's accelerator
+            # dispatcher after creating a transient window caused crashes in
+            # the GTK3/Xvfb session.
+            return True
         return False
     
     def activate_entry(self):
