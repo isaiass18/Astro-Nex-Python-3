@@ -444,7 +444,12 @@ class DrawMixin(CoreMixin,ProgMixin,ProfileMixin,BioMixin,DiagramMixin,SheetMixi
         self.make_plines(cr,radius,chartob,'INN',plot='plot2')
         if showEA:
             target = cr.get_target()
-            over = target.create_similar(cairo.CONTENT_COLOR_ALPHA,width,height)
+            # pycairo requires integer surface dimensions.  The drawing area
+            # normally supplies integers, but scale calculations can turn
+            # them into floats before this transit overlay is created.
+            over = target.create_similar(
+                cairo.CONTENT_COLOR_ALPHA, int(width), int(height)
+            )
             over_cr = cairo.Context(over)
             over_cr.translate(cx,cy)
             self.aspmanager.manage_aspects(over_cr,radius*R_ASP,plan1)
