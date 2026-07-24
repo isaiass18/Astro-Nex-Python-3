@@ -214,9 +214,11 @@ coordenadas ya no aparecen.
 La tarjeta de datos personales vuelve a usar el ancho de 320 píxeles y la
 casilla de almacenamiento de 125 píxeles de la presentación histórica. GTK3
 ampliaba la tarjeta para seguir el tamaño natural de la barra de herramientas,
-alterando las proporciones de las dos filas de datos. La corrección conserva
-los iconos de NexP3 alineados a la izquierda, que se mantienen de forma
-deliberada como diferenciador visual frente a NexP2.
+alterando las proporciones de las dos filas de datos. Inicialmente se
+conservaron los iconos de NexP3 alineados a la izquierda como diferenciador
+visual. Tras establecer una portada y número de versión propios para
+Astro-Nex 2.0 beta, la tarjeta vuelve a centrarse como en NexP2; las etiquetas
+de sus datos permanecen alineadas a la izquierda.
 
 ## 24 de julio de 2026 — mnemónicos del mezclador
 

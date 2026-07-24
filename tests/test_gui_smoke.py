@@ -118,6 +118,11 @@ class GtkSmokeTest(unittest.TestCase):
             self.assertEqual(slot.namelbl.get_property("xalign"), 0.0)
             self.assertEqual(slot.datelbl.get_property("xalign"), 0.0)
 
+        # The card is centred within the GTK3 toolbar frame, as it was in the
+        # GTK2 presentation. The textual data remains left aligned.
+        alignment = self.window.boss.mpanel.pool['master'].get_parent()
+        self.assertEqual(alignment.get_property("xalign"), 0.5)
+
     def test_legacy_context_menus_open_under_gtk3(self):
         """PyGTK's five-argument Menu.popup form remains usable."""
         import gtk

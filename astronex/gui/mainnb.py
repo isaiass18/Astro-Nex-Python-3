@@ -17,8 +17,8 @@ class Slot(gtk.VBox):
     overwrite = False
     storage = None
     # The GTK2 layout used a 320 px data card with a 125 px storage button.
-    # Keep those proportions in GTK3; the eye remains left-aligned as the
-    # intentional visual marker of the Python 3 edition.
+    # Keep those proportions in GTK3. Version and splash artwork distinguish
+    # the Python 3 edition, so the card itself follows the centred GTK2 view.
     DATA_CARD_WIDTH = 320
     STORAGE_BUTTON_COLUMN_WIDTH = 125
     def __init__(self,id):
@@ -572,10 +572,11 @@ class MainPanel(gtk.VBox):
 
         GTK3's wider toolbar buttons otherwise stretch the card frames to the
         full panel width.  An alignment wrapper fixes the card width while
-        preserving the existing left-hand placement and all icon behaviour.
+        centring the card in its frame like the GTK2 presentation while
+        preserving all icon behaviour.
         """
         frame = gtk.Frame()
-        alignment = gtk.Alignment(0.0, 0.0, 0.0, 0.0)
+        alignment = gtk.Alignment(0.5, 0.0, 0.0, 0.0)
         widget = Slot(name)
         MainPanel.pool[name] = widget
         alignment.add(widget)
