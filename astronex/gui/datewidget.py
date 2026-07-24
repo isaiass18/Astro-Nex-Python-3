@@ -180,8 +180,10 @@ class _DateEntryPopup(gtk.Window):
         if treeview.get_mapped():
             return
         toplevel = combo.get_toplevel()
-        if isinstance(toplevel, gtk.Window) and toplevel.group:
-            toplevel.group.add_window(self)
+        if isinstance(toplevel, gtk.Window):
+            group = toplevel.get_group()
+            if group is not None:
+                group.add_window(self)
 
         x, y, width, height = self._get_position()
         self.set_size_request(width, height)
@@ -207,7 +209,7 @@ class _DateEntryPopup(gtk.Window):
             return
 
         self.grab_remove()
-        self.hide_all()
+        self.hide()
 
     def get_date(self):
         y, m, d = self.calendar.get_date()
