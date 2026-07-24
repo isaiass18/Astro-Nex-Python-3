@@ -140,7 +140,9 @@ class _DateEntryPopup(gtk.Window):
 
         # We need to fetch the coordinates of the entry window
         # since comboentry itself does not have a window
-        x, y = sample.dateentry.window.get_origin()
+        # GTK3 returns ``(success, x, y)`` whereas PyGTK returned only the
+        # coordinates.
+        _success, x, y = sample.dateentry.window.get_origin()
         width, height = calendar.size_request()
         height = self.height
 
