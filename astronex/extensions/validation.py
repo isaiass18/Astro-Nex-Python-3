@@ -68,9 +68,11 @@ class MaskEntry(gtk.Entry):
         """
         if self._mask:
             self.handler_block(self._insert_handler)
+            self.handler_block(self._delete_handler)
             try:
                 gtk.Entry.set_text(self, text)
             finally:
+                self.handler_unblock(self._delete_handler)
                 self.handler_unblock(self._insert_handler)
             return
         gtk.Entry.set_text(self, text)
@@ -222,4 +224,3 @@ class MaskEntry(gtk.Entry):
         self._really_delete_text(start, end)
         self._insert_mask(start, end)
         self.stop_emission('delete-text')
-
