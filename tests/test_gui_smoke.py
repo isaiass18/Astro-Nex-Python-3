@@ -123,6 +123,10 @@ class GtkSmokeTest(unittest.TestCase):
         alignment = self.window.boss.mpanel.pool['master'].get_parent()
         self.assertEqual(alignment.get_property("xalign"), 0.5)
 
+        table = self.window.boss.mpanel.pool['master'].eb.get_child()
+        action_box = table.get_child_at(1, 0)
+        self.assertGreaterEqual(action_box.get_allocated_width(), 170)
+
     def test_legacy_context_menus_open_under_gtk3(self):
         """PyGTK's five-argument Menu.popup form remains usable."""
         import gtk
