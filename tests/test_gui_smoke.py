@@ -227,6 +227,20 @@ class GtkSmokeTest(unittest.TestCase):
             host.destroy()
             self._flush_events()
 
+    def test_masked_entries_accept_programmatic_dates_and_coordinates(self):
+        """Loading saved values must not replay them as GTK3 keystrokes."""
+        from astronex.extensions.validation import MaskEntry
+
+        date_entry = MaskEntry()
+        date_entry.set_mask("00/00/0000")
+        date_entry.set_text("24/07/2026")
+        self.assertEqual(date_entry.get_text(), "24/07/2026")
+
+        coordinate = MaskEntry()
+        coordinate.set_mask("000.00.00")
+        coordinate.set_text("074.03.15")
+        self.assertEqual(coordinate.get_text(), "074.03.15")
+
     def test_png_and_pdf_exports(self):
         """Exercise native Cairo export without PyGTK/winshell helpers."""
         from astronex.surfaces.pdfsurface import DrawPdf

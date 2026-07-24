@@ -237,7 +237,11 @@ class WinNex(gtk.Window):
         self.tentry.emit('clicked')
     
     def cb_exit(self,e):
-        gtk.main_quit()
+        # ``destroy`` can be emitted by automated dialog teardown too.  In
+        # that case no GTK main loop is running; a normal application close
+        # still leaves the active loop and exits as before.
+        if gtk.main_level() > 0:
+            gtk.main_quit()
 
     def on_pdf_clicked(self,but):
         DrawPdf.clicked(self.boss)
