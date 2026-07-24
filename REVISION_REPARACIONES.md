@@ -174,6 +174,8 @@ hasta poder migrarlas sin alterar la funcionalidad.
   `get_group()` y `hide_all()` por `hide()`, ambos eliminados en GTK3.
 - El cálculo de posición del selector interpreta ahora el valor de éxito que
   GTK3 añade a `Gdk.Window.get_origin()`.
+- El tamaño solicitado del calendario se obtiene mediante los campos del
+  objeto `Requisition` que GTK3 devuelve.
 
 ### Verificación
 
