@@ -48,6 +48,33 @@ ASTRONEX_GUI_SMOKE=1 xvfb-run -a python -m unittest tests.test_gui_smoke
 La prueba crea un menú y utiliza exactamente la llamada histórica de cinco
 argumentos. El resultado esperado es que el menú se abra sin el `TypeError`.
 
+## 24 de julio de 2026 — ayuda mediante F1
+
+### Incidencia observada
+
+Al pulsar F1 se abría una ventana vacía y la sesión gráfica terminaba cerrando
+Astro-Nex. El registro mostró este error reproducible:
+
+```text
+AttributeError: 'cairo.Context' object has no attribute 'create_layout'
+```
+
+La ventana de ayuda debe mostrar una referencia visual de atajos de teclado y
+acciones de ratón. El código conservaba los métodos que PyGTK añadía a Cairo,
+pero PyGObject/GTK3 los expone a través de `PangoCairo`.
+
+### Corrección
+
+`astronex/gui/quickhelp.py` adapta el contexto de dibujo con
+`pangocairo.CairoContext` antes de crear el diseño de texto. Así recupera las
+operaciones `create_layout` y `show_layout` requeridas para pintar la ayuda.
+
+### Verificación
+
+Se añadió `test_f1_help_window_renders_under_gtk3` a las pruebas gráficas. La
+prueba crea la ventana de ayuda y ejecuta su dibujo sobre una superficie Cairo;
+debe finalizar sin excepción y con la imagen de fondo disponible.
+
 ## Pendiente de validación funcional detallada
 
 Los siguientes puntos necesitan pasos reproducibles, resultado esperado y
@@ -58,7 +85,7 @@ corregidos sólo por abrir los diálogos.
 |---|---|---|
 | Clic izquierdo sobre la carta | Pendiente | Carta utilizada, punto pulsado y efecto esperado. |
 | Icono de ojo | Corregido para la apertura del menú; selección de cada opción pendiente de validación. | Captura o pasos si alguna persona reciente no se carga. |
-| F1 / ayuda | Pendiente de aclaración | Qué opción falta, es errónea o no está documentada. |
+| F1 / ayuda | Corregido el dibujo de la ventana. | Validar visualmente el contenido de los atajos en Windows y Linux. |
 | Calendario, ventana auxiliar, aspectos, ciclos, diagramas y puente | Pendiente | Icono concreto, pasos, resultado esperado y resultado actual. |
 | Planetograma | Menú contextual cubierto por esta corrección; apertura, dibujo e interacción pendientes de validar. | Carta y pasos que producen el fallo. |
 | noVNC | Entorno de demostración | El 24 de julio la aplicación se cerró por un fallo de segmentación en GTK3 del host. No se atribuyó a una acción concreta sin una traza reproducible. |
