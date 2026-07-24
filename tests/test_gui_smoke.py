@@ -110,6 +110,14 @@ class GtkSmokeTest(unittest.TestCase):
         # several screens to the right of the visible area.
         self.assertLessEqual(self.window.get_allocated_width(), 2500)
 
+    def test_data_cards_keep_legacy_dimensions_and_left_text(self):
+        """GTK3 toolbar sizing must not stretch the two data-entry cards."""
+        for slot in self.window.boss.mpanel.pool.values():
+            self.assertEqual(slot.get_allocated_width(), 320)
+            self.assertGreaterEqual(slot.storage_but.get_allocated_width(), 120)
+            self.assertEqual(slot.namelbl.get_property("xalign"), 0.0)
+            self.assertEqual(slot.datelbl.get_property("xalign"), 0.0)
+
     def test_legacy_context_menus_open_under_gtk3(self):
         """PyGTK's five-argument Menu.popup form remains usable."""
         import gtk

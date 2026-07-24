@@ -16,6 +16,11 @@ boss = None
 class Slot(gtk.VBox):
     overwrite = False
     storage = None
+    # The GTK2 layout used a 320 px data card with a 125 px storage button.
+    # Keep those proportions in GTK3; the eye remains left-aligned as the
+    # intentional visual marker of the Python 3 edition.
+    DATA_CARD_WIDTH = 320
+    STORAGE_BUTTON_COLUMN_WIDTH = 125
     def __init__(self,id):
         gtk.VBox.__init__(self)
         appath = boss.app.appath
@@ -46,6 +51,7 @@ class Slot(gtk.VBox):
         hbutbox.pack_start(but,True,True)
         self.storage_img = img
         self.storage_but = but 
+        hbutbox.set_size_request(self.STORAGE_BUTTON_COLUMN_WIDTH, -1)
         table.attach(hbutbox,0,1,0,1)
 
         hbutbox = gtk.HBox()
@@ -109,7 +115,7 @@ class Slot(gtk.VBox):
             menu_items.show()
         self.connect("button_press_event", self.on_slot_clicked)
         self.connect('scroll-event', self.on_scroll_event)
-        self.set_size_request(320,-1)
+        self.set_size_request(self.DATA_CARD_WIDTH,-1)
 
     def on_entry_clicked(self,but):
         #MainPanel.stop_timeout()
@@ -538,17 +544,8 @@ class MainPanel(gtk.VBox):
         appath = boss.app.appath
         curr = boss.get_state()
         
-        frame = gtk.Frame()
-        widget = Slot("master") 
-        MainPanel.pool['master'] = widget
-        frame.add(widget) 
-        self.pack_start(frame,False)
-        
-        frame = gtk.Frame()
-        widget = Slot("click") 
-        MainPanel.pool['click'] = widget
-        frame.add(widget) 
-        self.pack_start(frame,False)
+        self._add_slot('master')
+        self._add_slot('click')
         
         frame = gtk.Frame()
         browser = ChartBrowser(appath,boss.opts.font)
@@ -569,6 +566,21 @@ class MainPanel(gtk.VBox):
         
         self.chooser = OpPanel(boss)
         self.pack_end(self.chooser,True,True)
+
+    def _add_slot(self, name):
+        """Keep the GTK3 data cards at the historical GTK2 width.
+
+        GTK3's wider toolbar buttons otherwise stretch the card frames to the
+        full panel width.  An alignment wrapper fixes the card width while
+        preserving the existing left-hand placement and all icon behaviour.
+        """
+        frame = gtk.Frame()
+        alignment = gtk.Alignment(0.0, 0.0, 0.0, 0.0)
+        widget = Slot(name)
+        MainPanel.pool[name] = widget
+        alignment.add(widget)
+        frame.add(alignment)
+        self.pack_start(frame, False)
 
     def make_toolbar(self,appath,boss):
         appath = path.joinpath(appath,'astronex')

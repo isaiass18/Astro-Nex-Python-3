@@ -208,3 +208,12 @@ Se añadieron pruebas para cargar una fecha y una coordenada en campos
 enmascarados. La batería gráfica se ejecutó en Ubuntu 24 bajo Xvfb y completó
 correctamente sus pruebas. Las advertencias de conversión de texto de fecha y
 coordenadas ya no aparecen.
+
+## 24 de julio de 2026 — proporciones de las casillas de datos
+
+La tarjeta de datos personales vuelve a usar el ancho de 320 píxeles y la
+casilla de almacenamiento de 125 píxeles de la presentación histórica. GTK3
+ampliaba la tarjeta para seguir el tamaño natural de la barra de herramientas,
+alterando las proporciones de las dos filas de datos. La corrección conserva
+los iconos de NexP3 alineados a la izquierda, que se mantienen de forma
+deliberada como diferenciador visual frente a NexP2.
