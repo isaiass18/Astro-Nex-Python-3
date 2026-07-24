@@ -184,3 +184,26 @@ selector de fecha sobre una ventana GTK3 realizada. Las capturas de
 puntero/teclado heredadas siguen en observación: continúan siendo compatibles
 en GTK3, pero requieren una revisión funcional específica antes de migrarlas
 a la API moderna de asientos de entrada.
+
+## 24 de julio de 2026 — carga de campos enmascarados y cierre de ventanas
+
+### Corrección
+
+- Las fechas y coordenadas cargadas desde datos guardados ya no se reinyectan
+  como pulsaciones de teclado GTK3. El control enmascarado bloquea sólo su
+  controlador interactivo durante una asignación programática completa, con
+  lo que se eliminan las advertencias internas de conversión de texto.
+- El explorador comprueba que el modelo y sus páginas siguen existiendo al
+  recibir señales de selección o de pérdida de foco durante el cierre.
+- El cierre de la ventana principal sólo solicita salir de GTK si hay un bucle
+  gráfico activo; esto permite cerrar ventanas durante las pruebas sin el
+  aviso espurio de `gtk_main_quit`.
+- El diálogo Acerca de cierra correctamente su archivo de licencia después de
+  leerlo.
+
+### Verificación
+
+Se añadieron pruebas para cargar una fecha y una coordenada en campos
+enmascarados. La batería gráfica se ejecutó en Ubuntu 24 bajo Xvfb y completó
+correctamente sus pruebas. Las advertencias de conversión de texto de fecha y
+coordenadas ya no aparecen.

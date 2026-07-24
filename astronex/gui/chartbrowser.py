@@ -222,9 +222,18 @@ class  BrowserPanel(gtk.HBox):
     
     def on_sel_changed(self,sel):
         model, iter = sel.get_selected()
+        # GTK clears a TreeView selection while destroying the browser.  The
+        # signal can arrive after the model has already been detached.
+        if model is None:
+            return
         if not iter:
-            sel.select_path(0,)
+            root = model.get_iter_first()
+            if root is None:
+                return
+            sel.select_iter(root)
             model, iter = sel.get_selected()
+            if not iter:
+                return
         id = model.get_value(iter,1)
         table = self.tables.get_active_text()
         curr.datab.load_chart(table,id,chart)
