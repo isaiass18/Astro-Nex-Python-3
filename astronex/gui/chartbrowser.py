@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import gtk
 import cairo, pango
+from ..pangocairo_compat import CairoContext
 from copy import copy
 from .. drawing.coredraw import CoreMixin
 from .. drawing.dispatcher import DrawMixin, AspectManager
@@ -245,6 +246,7 @@ class ChartSnapshot(gtk.DrawingArea):
         self.drawer = SnapMixin(boss.opts,self) 
 
     def dispatch(self,da,cr):
+        cr = CairoContext(cr)
         w = self.allocation.width
         h = self.allocation.height
         cr.rectangle(0,0,w,h)

@@ -141,3 +141,23 @@ en la rama principal de GitHub. La instalación Linux y la instancia noVNC usan
 directamente ese código. La distribución Windows requiere reconstruir
 `Astro-Nex-Setup.exe` y la carpeta portable desde el último commit para incluir
 cualquier reparación posterior a la última compilación.
+
+## 24 de julio de 2026 — auditoría preventiva GTK2/GTK3
+
+Además de los casos descubiertos durante pruebas manuales, se realizó una
+revisión estática de las APIs heredadas de PyGTK. Se corrigieron los siguientes
+riesgos antes de que fueran reportados por un usuario:
+
+- Tres manejadores de arrastre comparaban una constante de movimiento en vez
+  de comparar `event.type`; afectaban a la carta principal, biografías y
+  planetograma.
+- La búsqueda rápida de listas (`Ctrl+F`) usaba `parent.parent`; ahora obtiene
+  la ventana superior mediante la API GTK3.
+- La activación de la opción Copiar/Cortar del explorador usa el padre GTK3
+  del elemento de menú.
+- El cuadro emergente de posiciones planetarias y la miniatura del explorador
+  adaptan ahora su contexto de dibujo con PangoCairo.
+
+La auditoría distingue estos errores verificables de APIs simplemente
+obsoletas que siguen siendo compatibles en GTK3; estas últimas se conservan
+hasta poder migrarlas sin alterar la funcionalidad.

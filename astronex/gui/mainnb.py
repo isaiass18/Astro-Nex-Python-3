@@ -429,7 +429,7 @@ class ChartBrowser(gtk.VBox):
             chart = curr.newchart()
             curr.datab.load_chart(table,id,chart)
             self.clip = chart
-            menuitem.parent.get_children()[2].set_sensitive(True)
+            menuitem.get_parent().get_children()[2].set_sensitive(True)
             if item == _('Cortar'):
                 if not curr.safe_delete_chart(table,id):
                     msg = _('No puedo eliminar una carta con pareja!' )

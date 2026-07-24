@@ -239,7 +239,7 @@ class DrawMaster(gtk.Layout):
                     self.redraw()
                     boss.redraw(both=False)
                     self.redraw_auxwins()
-        elif gtk.gdk.MOTION_NOTIFY:
+        elif event.type == gtk.gdk.MOTION_NOTIFY:
             if curr.curr_op in bios or curr.opmode != 'simple':
                 return False
             _, x, y, state = event.window.get_pointer()
@@ -841,7 +841,7 @@ class ChangeDatePanel(gtk.VBox):
             boss.da.hsel.child.set_house_from_date(date) 
         if self.needsredrawing:
             parent.redraw()
-            self.parent.redraw_auxwins()
+            boss.da.redraw_auxwins()
         else:
             self.needsredrawing = True
         self.internal_signal = True
