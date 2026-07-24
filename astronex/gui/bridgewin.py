@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import gtk
 import cairo, pango
+from ..pangocairo_compat import CairoContext
 from copy import copy
 from math import pi as PI
 from .. drawing.coredraw import CoreMixin
@@ -80,6 +81,7 @@ class BridgeArea(gtk.DrawingArea):
         self.ops = ['draw','bio']
 
     def dispatch(self,da,cr):
+        cr = CairoContext(cr)
         self.drawer.pe_zones = self.boss.da.drawer.pe_zones
         w = self.allocation.width
         h = self.allocation.height

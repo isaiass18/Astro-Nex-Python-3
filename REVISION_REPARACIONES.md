@@ -94,3 +94,25 @@ corregidos sólo por abrir los diálogos.
 | Calendario, ventana auxiliar, aspectos, ciclos, diagramas y puente | Pendiente | Icono concreto, pasos, resultado esperado y resultado actual. |
 | Planetograma | Menú contextual cubierto por esta corrección; apertura, dibujo e interacción pendientes de validar. | Carta y pasos que producen el fallo. |
 | noVNC | Entorno de demostración | El 24 de julio la aplicación se cerró por un fallo de segmentación en GTK3 del host. No se atribuyó a una acción concreta sin una traza reproducible. |
+
+## 24 de julio de 2026 — calendario, PE puente y Dharma
+
+### Incidencias observadas
+
+La sesión de prueba registró tres errores reproducibles al usar estas áreas:
+
+- el calendario intentaba acceder a `HouseSelector.parent.parent`, una ruta
+  de widgets propia de GTK2;
+- PE puente trataba de crear texto Pango directamente sobre un contexto Cairo
+  nativo;
+- la operación Dharma pasaba tamaños decimales a `create_similar`, que
+  pycairo sólo acepta como enteros.
+
+### Corrección
+
+- El selector de casas usa ahora el gestor ya disponible (`boss.da`) para
+  actualizar la biografía y volver a la carta actual.
+- PE puente adapta su contexto mediante `PangoCairo`, igual que las demás
+  superficies de dibujo migradas.
+- Dharma convierte las dimensiones de la superficie temporal a enteros antes
+  de crearla.
