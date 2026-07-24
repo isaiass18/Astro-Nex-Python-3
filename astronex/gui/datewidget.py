@@ -143,7 +143,8 @@ class _DateEntryPopup(gtk.Window):
         # GTK3 returns ``(success, x, y)`` whereas PyGTK returned only the
         # coordinates.
         _success, x, y = sample.dateentry.window.get_origin()
-        width, height = calendar.size_request()
+        requisition = calendar.size_request()
+        width, height = requisition.width, requisition.height
         height = self.height
 
         screen = sample.get_screen()
