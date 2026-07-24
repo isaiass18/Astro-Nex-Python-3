@@ -87,16 +87,29 @@ class ChartBrowserWindow(gtk.Window):
         self.destroy() 
 
     def on_state(self,e,event):
-        if self.child.get_nth_page(1).changes:
+        notebook = self.get_child()
+        if notebook is None:
+            return False
+        mixer = notebook.get_nth_page(1)
+        if mixer is not None and mixer.changes:
             boss.mpanel.browser.tables.emit('changed')
             boss.mpanel.browser.relist('')
+        return False
 
     def cb_exit(self,e,parent):
         parent.browser = None
-        if self.child.get_nth_page(1).changes:
+        # A focus-out event may arrive while GTK is dismantling the notebook.
+        # Do not dereference destroyed TreeView pages during window teardown.
+        notebook = self.get_child()
+        if notebook is None:
+            return False
+        mixer = notebook.get_nth_page(1)
+        if mixer is not None and mixer.changes:
             boss.mpanel.browser.tables.emit('changed')
             boss.mpanel.browser.relist('')
-        self.child.get_nth_page(3).save_couples()
+        couples = notebook.get_nth_page(3)
+        if couples is not None:
+            couples.save_couples()
         return False
 
 

@@ -46,8 +46,8 @@ class MaskEntry(gtk.Entry):
 
         gtk.Entry.__init__(self)
 
-        self.connect('insert-text', self._on_insert_text)
-        self.connect('delete-text', self._on_delete_text)
+        self._insert_handler = self.connect('insert-text', self._on_insert_text)
+        self._delete_handler = self.connect('delete-text', self._on_delete_text)
 
         #  validators:  str -> static  int -> dynamic
         self._mask_validators = []
@@ -55,6 +55,25 @@ class MaskEntry(gtk.Entry):
         self._block_insert = False
         self._block_delete = False
         self.set_property('xalign', 1.0)
+
+    def set_text(self, text):
+        """Set a complete, already-formatted value without replaying keystrokes.
+
+        GTK emits ``insert-text`` for :meth:`Gtk.Entry.set_text`.  Letting the
+        interactive mask handler process that synthetic insertion makes GTK 3
+        marshal its mutable cursor-position argument through the old PyGTK
+        path, producing ``g_value_get_int`` warnings.  Programmatic values
+        (dates loaded from the database and locality coordinates) are complete
+        values, not user keystrokes, so they must bypass the edit handler.
+        """
+        if self._mask:
+            self.handler_block(self._insert_handler)
+            try:
+                gtk.Entry.set_text(self, text)
+            finally:
+                self.handler_unblock(self._insert_handler)
+            return
+        gtk.Entry.set_text(self, text)
 
     # Public API 
     def set_mask(self, mask):
@@ -143,14 +162,18 @@ class MaskEntry(gtk.Entry):
 
     # Private 
     def _really_delete_text(self, start, end):
-        self._block_delete = True
-        self.delete_text(start, end)
-        self._block_delete = False
+        self.handler_block(self._delete_handler)
+        try:
+            self.delete_text(start, end)
+        finally:
+            self.handler_unblock(self._delete_handler)
 
     def _really_insert_text(self, text, position):
-        self._block_insert = True
-        self.insert_text(text, position)
-        self._block_insert = False
+        self.handler_block(self._insert_handler)
+        try:
+            self.insert_text(text, position)
+        finally:
+            self.handler_unblock(self._insert_handler)
 
     def _insert_mask(self, start, end):
         text = self.get_empty_mask(start, end)
@@ -199,5 +222,4 @@ class MaskEntry(gtk.Entry):
         self._really_delete_text(start, end)
         self._insert_mask(start, end)
         self.stop_emission('delete-text')
-
 

@@ -288,7 +288,8 @@ class WinNex(gtk.Window):
         about.set_version(self.boss.app.version)
         about.set_comments(_("Programa de calculo y dibujo de cartas astrologicas segun el metodo API"))
         file = path.joinpath(appath,"resources/COPYING")
-        about.set_license(open(file).read())
+        with open(file, encoding='utf-8') as license_file:
+            about.set_license(license_file.read())
         about.set_copyright("Copyright © 2006")
         about.set_website("http://astro-nex.com")
         about.set_authors(["Jose Antonio Rodríguez <jar@eideia.net>"])
