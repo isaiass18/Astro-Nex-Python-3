@@ -78,7 +78,9 @@ referencias evita que GTK3 despache aceleradores hacia callbacks liberados.
 
 Se añadió `test_f1_help_window_renders_under_gtk3` a las pruebas gráficas. La
 prueba crea la ventana de ayuda y ejecuta su dibujo sobre una superficie Cairo;
-debe finalizar sin excepción y con la imagen de fondo disponible.
+debe finalizar sin excepción y con la imagen de fondo disponible. También
+fuerza un recorrido por `gtk_accel_groups_activate` después de una recolección
+de memoria, que es el punto donde se produjo el cierre nativo de GTK3.
 
 ## Pendiente de validación funcional detallada
 
@@ -91,9 +93,12 @@ corregidos sólo por abrir los diálogos.
 | Clic izquierdo sobre la carta | Pendiente | Carta utilizada, punto pulsado y efecto esperado. |
 | Icono de ojo | Corregido para la apertura del menú; selección de cada opción pendiente de validación. | Captura o pasos si alguna persona reciente no se carga. |
 | F1 / ayuda | Corregido el dibujo de la ventana. | Validar visualmente el contenido de los atajos en Windows y Linux. |
-| Calendario, ventana auxiliar, aspectos, ciclos, diagramas y puente | Pendiente | Icono concreto, pasos, resultado esperado y resultado actual. |
+| Calendario / selector de casas | Corregido el acceso GTK2 a `parent.parent`. | Validar navegación completa por fechas y casas en Windows y Linux. |
+| PE puente | Corregido el dibujo de sus etiquetas. | Validar su apertura, cambio de modo y cierre. |
+| Dharma | Corregido el tamaño de la superficie de dibujo. | Validar el dibujo con cartas variadas. |
+| Ventana auxiliar, aspectos, ciclos y diagramas | Pendiente | Icono concreto, pasos, resultado esperado y resultado actual. |
 | Planetograma | Menú contextual cubierto por esta corrección; apertura, dibujo e interacción pendientes de validar. | Carta y pasos que producen el fallo. |
-| noVNC | Entorno de demostración | El 24 de julio la aplicación se cerró por un fallo de segmentación en GTK3 del host. No se atribuyó a una acción concreta sin una traza reproducible. |
+| noVNC | Entorno de demostración | Las correcciones de F1 y aceleradores se desplegaron en la instancia. Si Astro-Nex se cierra por otra operación, noVNC permanecerá disponible pero mostrará una pantalla vacía hasta relanzar la aplicación. |
 
 ## 24 de julio de 2026 — calendario, PE puente y Dharma
 
@@ -116,3 +121,23 @@ La sesión de prueba registró tres errores reproducibles al usar estas áreas:
   superficies de dibujo migradas.
 - Dharma convierte las dimensiones de la superficie temporal a enteros antes
   de crearla.
+
+### Verificación
+
+Se añadieron pruebas gráficas para:
+
+- ejecutar el selector de casas desde una fecha sin depender de la jerarquía
+  de widgets de GTK2;
+- dibujar las etiquetas de PE puente en una superficie Cairo mediante el
+  adaptador PangoCairo.
+
+La batería gráfica GTK3 se ejecutó en Ubuntu 24 bajo Xvfb con ocho pruebas
+correctas. La misma revisión se desplegó en la instancia noVNC.
+
+## Distribución de las reparaciones
+
+Las correcciones se realizan primero en el código fuente común y se publican
+en la rama principal de GitHub. La instalación Linux y la instancia noVNC usan
+directamente ese código. La distribución Windows requiere reconstruir
+`Astro-Nex-Setup.exe` y la carpeta portable desde el último commit para incluir
+cualquier reparación posterior a la última compilación.
