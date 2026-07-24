@@ -220,11 +220,6 @@ visual. Tras establecer una portada y número de versión propios para
 Astro-Nex 2.0 beta, la tarjeta vuelve a centrarse como en NexP2; las etiquetas
 de sus datos permanecen alineadas a la izquierda.
 
-Además, la segunda columna de botones vuelve a expandirse a lo ancho de la
-tarjeta. En GTK3 se contraía a su tamaño mínimo y agrupaba ojo, reloj y lápiz
-en la izquierda; ahora el ojo queda separado y reloj/lápiz se sitúan a la
-derecha, igual que en NexP2.
-
 ## 24 de julio de 2026 — mnemónicos del mezclador
 
 Los botones del mezclador conservaban los guiones bajos del código GTK2 como

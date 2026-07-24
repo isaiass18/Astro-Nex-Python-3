@@ -83,11 +83,6 @@ class Slot(gtk.VBox):
         ev.set_events(gtk.gdk.BUTTON_PRESS_MASK)
         ev.connect("button_press_event",self.on_eye_clicked)
         self.eye = ev
-        # Gtk.Table distributed the second column across the row in GTK2.
-        # Gtk.Grid otherwise keeps this HBox at its natural width, grouping
-        # the eye, clock and pencil at the left instead of placing the latter
-        # two at the right edge of the data card.
-        hbutbox.set_hexpand(True)
         table.attach(hbutbox,1,2,0,1)
 
         self.namelbl = gtk.Label(_("Nombre"))
