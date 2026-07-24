@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import gtk
 import pango
+from ..pangocairo_compat import CairoContext
 from .. drawing.paarwabe import ascent_texts, wunder_texts, polar_texts
 from .. boss import boss
 curr = boss.get_state()
@@ -43,6 +44,7 @@ class PetitArea(gtk.DrawingArea):
         self.connect("draw", self.dispatch)
 
     def dispatch(self,da,cr):
+        cr = CairoContext(cr)
         w = self.allocation.width
         h = self.allocation.height
         cr.rectangle(0,0,w,h)

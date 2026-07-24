@@ -175,7 +175,7 @@ class DrawPlagram(gtk.DrawingArea):
             if info['button'] == event.button:
                 info['button'] = -1;
                 self.panning = False
-        elif gtk.gdk.MOTION_NOTIFY:
+        elif event.type == gtk.gdk.MOTION_NOTIFY:
             if info['button'] < 0:
                 return False
             _, x, y, state = da.window.get_pointer() # ensure more events

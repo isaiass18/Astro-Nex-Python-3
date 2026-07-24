@@ -61,10 +61,13 @@ class SearchView(gtk.TreeView):
         self.grab_focus()
 
     def set_searchwin_pos(self,search_entry):
-        parent = self.parent
-        while not isinstance(parent,gtk.Window):
-            parent = parent.parent
-        win_pos = parent.pos_x, parent.pos_y
+        # PyGTK exposed ``widget.parent`` as an attribute.  Ask GTK3 for the
+        # toplevel instead; this also copes with intermediate scrolled-window
+        # containers added by the GTK3 layout.
+        parent = self.get_toplevel()
+        if not isinstance(parent, gtk.Window):
+            return
+        win_pos = parent.get_position()
         x = win_pos[0] + self.allocation.width - search_entry.allocation.width 
         y = win_pos[1] + self.allocation.height + self.allocation.y 
         self.search_win.move(x,y)

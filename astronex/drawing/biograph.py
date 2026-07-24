@@ -93,7 +93,7 @@ class BioMixin(object):
                 info['button'] = -1;
                 ruler[0] = event.x / width
                 release = True
-        elif gtk.gdk.MOTION_NOTIFY:
+        elif event.type == gtk.gdk.MOTION_NOTIFY:
             if info['button'] < 0 or info['button'] == 100:
                 info['button'] = -1
                 return False

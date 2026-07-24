@@ -193,6 +193,21 @@ class GtkSmokeTest(unittest.TestCase):
             bridge.destroy()
             self._flush_events()
 
+    def test_planet_popup_renders_under_gtk3(self):
+        """The planet-position popup must adapt Cairo to PangoCairo."""
+        import cairo
+        from astronex.gui.popup import PlanPopup
+
+        popup = PlanPopup(self.window.boss)
+        area = popup.get_child()
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 115, 195)
+        context = cairo.Context(surface)
+        try:
+            area.dispatch(area, context)
+        finally:
+            popup.destroy()
+            self._flush_events()
+
     def test_png_and_pdf_exports(self):
         """Exercise native Cairo export without PyGTK/winshell helpers."""
         from astronex.surfaces.pdfsurface import DrawPdf
