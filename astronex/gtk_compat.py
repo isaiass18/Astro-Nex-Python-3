@@ -377,6 +377,7 @@ globals().update(_CONSTANTS)
 pygtk_version = (3, 24, 0)
 main = Gtk.main
 main_quit = Gtk.main_quit
+main_level = Gtk.main_level
 main_iteration = Gtk.main_iteration
 events_pending = Gtk.events_pending
 drag_finish = Gtk.drag_finish
