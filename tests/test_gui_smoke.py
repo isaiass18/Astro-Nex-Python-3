@@ -7,6 +7,7 @@ Run on a graphical desktop or with Xvfb:
 import os
 import tempfile
 import unittest
+from datetime import datetime
 from pathlib import Path
 from unittest import mock
 
@@ -158,6 +159,38 @@ class GtkSmokeTest(unittest.TestCase):
             self.assertTrue(help_window.da.surface.get_height() > 0)
         finally:
             help_window.destroy()
+            self._flush_events()
+
+    def test_calendar_house_selector_uses_manager(self):
+        """Calendar navigation must not rely on GTK2's widget.parent."""
+        from astronex.surfaces import sdasurface
+
+        selector = sdasurface.HouseSelector(self.window.boss)
+        with mock.patch.object(
+            sdasurface.curr.curr_chart,
+            "which_house_today",
+            return_value=(3, 0.25),
+        ), mock.patch.object(
+            self.window.boss.da.drawer, "set_bio_from_date"
+        ) as set_bio:
+            selector.set_house_from_date(datetime(2026, 7, 24, 12, 0))
+        set_bio.assert_called_once_with(3, 0.25)
+
+    def test_pe_bridge_labels_render_under_gtk3(self):
+        """PE bridge labels use the PangoCairo adapter, not raw Cairo."""
+        import cairo
+        from astronex.gui.bridgewin import BridgePEWindow
+        from astronex.pangocairo_compat import CairoContext
+
+        bridge = BridgePEWindow(self.window)
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 450, 450)
+        context = CairoContext(cairo.Context(surface))
+        bridge.sda.dt = datetime(2026, 7, 24, 12, 0)
+        try:
+            bridge.sda.draw_pelabel(context, 450, 450)
+            bridge.sda.draw_label(context, 450, 450)
+        finally:
+            bridge.destroy()
             self._flush_events()
 
     def test_png_and_pdf_exports(self):

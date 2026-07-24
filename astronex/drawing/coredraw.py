@@ -654,7 +654,9 @@ class CoreMixin(object):
         cusp = radius  * 0.89
         
         target = cr.get_target()
-        over = target.create_similar(cairo.CONTENT_COLOR_ALPHA,w,h)
+        # pycairo requires integer surface dimensions; GTK3 drawing paths can
+        # supply floats after scale calculations.
+        over = target.create_similar(cairo.CONTENT_COLOR_ALPHA, int(w), int(h))
         over_cr = cairo.Context(over)
         over_cr.translate(w/2,h/2)
         over_cr.set_operator (cairo.OPERATOR_ADD)

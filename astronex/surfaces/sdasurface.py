@@ -95,7 +95,10 @@ class HouseSelector(gtk.DrawingArea):
         _bio, frac = curr.curr_chart.which_house_today(dt)
         _h = _bio
         self.queue_draw()
-        self.parent.parent.drawer.set_bio_from_date(_bio,frac)
+        # GTK2 exposed a ``parent`` attribute on widgets.  GTK3 keeps the
+        # hierarchy behind getters, but this selector already owns the
+        # manager that exposes the drawing surface directly.
+        self.boss.da.drawer.set_bio_from_date(_bio,frac)
 
     def on_hs_clicked(self,hs,event):
         global _h
@@ -103,7 +106,7 @@ class HouseSelector(gtk.DrawingArea):
             return True
         x, y = event.x,event.y
         if event.type == gtk.gdk._2BUTTON_PRESS and event.button == 1:
-            self.parent.parent.panel.nowbut.emit('clicked')
+            self.boss.da.panel.nowbut.emit('clicked')
             _h = -1
             self.queue_draw()
         elif event.type == gtk.gdk.BUTTON_PRESS and event.button == 1:
@@ -111,7 +114,7 @@ class HouseSelector(gtk.DrawingArea):
             deg = math.degrees(math.atan2(y-h,x-w))
             _h = int(math.ceil(5 - (deg/30)))
             self.queue_draw()
-            self.parent.parent.drawer.set_bio(_h,None)
+            self.boss.da.drawer.set_bio(_h,None)
         return True
 
     def dispatch(self, da, cr):
@@ -179,14 +182,14 @@ class HouseSelector(gtk.DrawingArea):
         else:
             _h = (_h + 1)%12
         self.queue_draw()
-        self.parent.parent.drawer.set_bio(_h,None)
+        self.boss.da.drawer.set_bio(_h,None)
         return True
 
     def house_updown(self,amount):
         global _h
         _h = (_h + amount)%12
         self.queue_draw()
-        self.parent.parent.drawer.set_bio(_h,None)
+        self.boss.da.drawer.set_bio(_h,None)
 
     def redraw(self): 
         w = self.allocation.width
