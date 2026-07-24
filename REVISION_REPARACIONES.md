@@ -161,3 +161,20 @@ riesgos antes de que fueran reportados por un usuario:
 La auditoría distingue estos errores verificables de APIs simplemente
 obsoletas que siguen siendo compatibles en GTK3; estas últimas se conservan
 hasta poder migrarlas sin alterar la funcionalidad.
+
+## 24 de julio de 2026 — tránsitos y selector de fecha
+
+### Corrección
+
+- La capa temporal usada al dibujar tránsitos convierte sus dimensiones a
+  enteros antes de llamar a Cairo, igual que las demás superficies auxiliares.
+- El selector emergente de fecha reemplaza las comprobaciones GTK2 `flags()`
+  por `get_realized`, `get_mapped` y `has_focus` de GTK3.
+
+### Verificación
+
+Se añadió una prueba gráfica que realiza el ciclo de apertura y cierre del
+selector de fecha sobre una ventana GTK3 realizada. Las capturas de
+puntero/teclado heredadas siguen en observación: continúan siendo compatibles
+en GTK3, pero requieren una revisión funcional específica antes de migrarlas
+a la API moderna de asientos de entrada.

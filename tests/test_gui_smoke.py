@@ -7,7 +7,7 @@ Run on a graphical desktop or with Xvfb:
 import os
 import tempfile
 import unittest
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from unittest import mock
 
@@ -206,6 +206,25 @@ class GtkSmokeTest(unittest.TestCase):
             area.dispatch(area, context)
         finally:
             popup.destroy()
+            self._flush_events()
+
+    def test_date_popup_uses_gtk3_widget_state(self):
+        """The date selector opens without GTK2 Widget.flags checks."""
+        import gtk
+        from astronex.gui.datewidget import DateEntry
+
+        host = gtk.Window()
+        entry = DateEntry(self.window.boss)
+        host.add(entry)
+        host.show_all()
+        self._flush_events()
+        try:
+            entry._popup.popup(date(2026, 7, 24))
+            self._flush_events()
+            self.assertTrue(entry._popup.get_visible())
+        finally:
+            entry._popup.popdown()
+            host.destroy()
             self._flush_events()
 
     def test_png_and_pdf_exports(self):
