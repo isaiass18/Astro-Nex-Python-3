@@ -127,9 +127,18 @@ class GtkSmokeTest(unittest.TestCase):
 
     def test_f1_help_window_renders_under_gtk3(self):
         """F1 must render the keyboard and mouse help rather than a blank dialog."""
+        import gc
         import cairo
+        from gi.repository import Gdk, Gtk
         from astronex.gui.quickhelp import HelpWindow
 
+        # F1 has no accelerator callback of its own, but GTK still scans the
+        # main window's accelerator group after a key event.  Force the
+        # lifetime edge that previously crashed in gtk_accel_groups_activate.
+        gc.collect()
+        self.assertFalse(Gtk.accel_groups_activate(
+            self.window, Gdk.KEY_F1, Gdk.ModifierType(0)
+        ))
         self.assertTrue(self.window.on_key_press_event(
             self.window, type("F1Event", (), {
                 "keyval": self._gtk.keysyms.F1,
