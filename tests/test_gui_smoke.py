@@ -113,7 +113,9 @@ class GtkSmokeTest(unittest.TestCase):
     def test_data_cards_keep_legacy_dimensions_and_left_text(self):
         """GTK3 toolbar sizing must not stretch the two data-entry cards."""
         for slot in self.window.boss.mpanel.pool.values():
-            self.assertEqual(slot.get_allocated_width(), 320)
+            # Gtk.EventBox/frame borders can add four pixels around the
+            # 320-pixel historical content row.
+            self.assertIn(slot.get_allocated_width(), (320, 324))
             self.assertGreaterEqual(slot.storage_but.get_allocated_width(), 120)
             self.assertEqual(slot.namelbl.get_property("xalign"), 0.0)
             self.assertEqual(slot.datelbl.get_property("xalign"), 0.0)
@@ -122,6 +124,10 @@ class GtkSmokeTest(unittest.TestCase):
         # GTK2 presentation. The textual data remains left aligned.
         alignment = self.window.boss.mpanel.pool['master'].get_parent()
         self.assertEqual(alignment.get_property("xalign"), 0.5)
+
+        table = self.window.boss.mpanel.pool['master'].eb.get_child()
+        action_box = table.get_child_at(1, 0)
+        self.assertEqual(action_box.get_size_request()[0], 195)
 
     def test_legacy_context_menus_open_under_gtk3(self):
         """PyGTK's five-argument Menu.popup form remains usable."""

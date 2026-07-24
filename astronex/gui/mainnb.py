@@ -21,6 +21,7 @@ class Slot(gtk.VBox):
     # the Python 3 edition, so the card itself follows the centred GTK2 view.
     DATA_CARD_WIDTH = 320
     STORAGE_BUTTON_COLUMN_WIDTH = 125
+    ACTION_BUTTON_COLUMN_WIDTH = DATA_CARD_WIDTH - STORAGE_BUTTON_COLUMN_WIDTH
     def __init__(self,id):
         gtk.VBox.__init__(self)
         appath = boss.app.appath
@@ -83,6 +84,10 @@ class Slot(gtk.VBox):
         ev.set_events(gtk.gdk.BUTTON_PRESS_MASK)
         ev.connect("button_press_event",self.on_eye_clicked)
         self.eye = ev
+        # Keep the action group at the remaining historical card width.  A
+        # fixed request preserves the GTK2 spacing without asking Gtk.Grid to
+        # expand the complete data panel.
+        hbutbox.set_size_request(self.ACTION_BUTTON_COLUMN_WIDTH, -1)
         table.attach(hbutbox,1,2,0,1)
 
         self.namelbl = gtk.Label(_("Nombre"))

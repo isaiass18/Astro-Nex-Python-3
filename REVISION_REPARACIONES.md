@@ -220,6 +220,13 @@ visual. Tras establecer una portada y número de versión propios para
 Astro-Nex 2.0 beta, la tarjeta vuelve a centrarse como en NexP2; las etiquetas
 de sus datos permanecen alineadas a la izquierda.
 
+La fila de carpeta, ojo, reloj y lápiz utiliza ahora dos anchos fijos que
+suman la medida histórica de la tarjeta: 125 píxeles para la carpeta y 195
+píxeles para el grupo de acciones. Esto conserva la separación de NexP2 sin
+permitir que GTK3 expanda o desplace el panel completo.
+Los bordes de GTK3 pueden hacer que el contenedor exterior mida 324 píxeles;
+la fila útil conserva los 320 píxeles históricos.
+
 ## 24 de julio de 2026 — mnemónicos del mezclador
 
 Los botones del mezclador conservaban los guiones bajos del código GTK2 como
