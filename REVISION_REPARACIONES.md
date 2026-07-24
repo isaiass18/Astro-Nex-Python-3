@@ -194,7 +194,8 @@ a la API moderna de asientos de entrada.
   controlador interactivo durante una asignación programática completa, con
   lo que se eliminan las advertencias internas de conversión de texto.
 - El explorador comprueba que el modelo y sus páginas siguen existiendo al
-  recibir señales de selección o de pérdida de foco durante el cierre.
+  recibir señales de selección o de pérdida de foco durante el cierre, y
+  desconecta su controlador de selección antes de que GTK destruya el árbol.
 - El cierre de la ventana principal sólo solicita salir de GTK si hay un bucle
   gráfico activo; esto permite cerrar ventanas durante las pruebas sin el
   aviso espurio de `gtk_main_quit`.
