@@ -170,6 +170,8 @@ hasta poder migrarlas sin alterar la funcionalidad.
   enteros antes de llamar a Cairo, igual que las demás superficies auxiliares.
 - El selector emergente de fecha reemplaza las comprobaciones GTK2 `flags()`
   por `get_realized`, `get_mapped` y `has_focus` de GTK3.
+- El mismo recorrido de prueba detectó y sustituyó `Window.group` por
+  `get_group()` y `hide_all()` por `hide()`, ambos eliminados en GTK3.
 
 ### Verificación
 
