@@ -62,16 +62,3 @@ corregidos sólo por abrir los diálogos.
 | Calendario, ventana auxiliar, aspectos, ciclos, diagramas y puente | Pendiente | Icono concreto, pasos, resultado esperado y resultado actual. |
 | Planetograma | Menú contextual cubierto por esta corrección; apertura, dibujo e interacción pendientes de validar. | Carta y pasos que producen el fallo. |
 | noVNC | Entorno de demostración | El 24 de julio la aplicación se cerró por un fallo de segmentación en GTK3 del host. No se atribuyó a una acción concreta sin una traza reproducible. |
-
-## Cómo informar una incidencia
-
-Para cada caso, anotar:
-
-1. Plataforma y versión (Windows o Linux).
-2. Carta o datos utilizados, sin incluir información privada si no es
-   necesaria.
-3. Pasos exactos.
-4. Resultado esperado en Astro-Nex 1.2/Python 2.
-5. Resultado observado en Python 3.
-6. Captura de pantalla o vídeo corto, si es posible.
-
