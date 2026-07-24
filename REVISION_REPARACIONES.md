@@ -172,6 +172,8 @@ hasta poder migrarlas sin alterar la funcionalidad.
   por `get_realized`, `get_mapped` y `has_focus` de GTK3.
 - El mismo recorrido de prueba detectó y sustituyó `Window.group` por
   `get_group()` y `hide_all()` por `hide()`, ambos eliminados en GTK3.
+- El cálculo de posición del selector interpreta ahora el valor de éxito que
+  GTK3 añade a `Gdk.Window.get_origin()`.
 
 ### Verificación
 
