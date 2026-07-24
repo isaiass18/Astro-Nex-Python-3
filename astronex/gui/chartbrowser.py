@@ -107,6 +107,9 @@ class ChartBrowserWindow(gtk.Window):
         if mixer is not None and mixer.changes:
             boss.mpanel.browser.tables.emit('changed')
             boss.mpanel.browser.relist('')
+        browser_page = notebook.get_nth_page(0)
+        if browser_page is not None:
+            browser_page.disconnect_selection()
         couples = notebook.get_nth_page(3)
         if couples is not None:
             couples.save_couples()
@@ -175,7 +178,8 @@ class  BrowserPanel(gtk.HBox):
         self.chartview.connect('row_activated',self.on_chart_activated)
         sel = self.chartview.get_selection()
         sel.set_mode(gtk.SELECTION_SINGLE)
-        sel.connect('changed',self.on_sel_changed)
+        self._selection = sel
+        self._selection_handler = sel.connect('changed',self.on_sel_changed)
         sel.select_path(0,)
         self.chartview.grab_focus()
         
@@ -194,6 +198,12 @@ class  BrowserPanel(gtk.HBox):
         frame.set_border_width(6)
         frame.add(hbox)
         self.add(frame)
+
+    def disconnect_selection(self):
+        """Detach callbacks before GTK destroys the TreeView selection."""
+        if self._selection_handler is not None:
+            self._selection.disconnect(self._selection_handler)
+            self._selection_handler = None
 
     def on_refresh_clicked(self,but,combo):
         combo.emit('changed')
