@@ -15,7 +15,7 @@ lang_de = gettext.translation('astronex', str(LOCALE_DIR), languages=['de'])
 langs = { 'en': lang_en, 'es': lang_es, 'ca': lang_ca, 'de': lang_de }
 
 from .extensions.path import path
-version = "1.2"
+version = "2.0-beta"
 
 def die(message):
     """Die in a command line way."""
