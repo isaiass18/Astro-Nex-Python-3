@@ -109,6 +109,22 @@ class GtkSmokeTest(unittest.TestCase):
         # several screens to the right of the visible area.
         self.assertLessEqual(self.window.get_allocated_width(), 2500)
 
+    def test_legacy_context_menus_open_under_gtk3(self):
+        """PyGTK's five-argument Menu.popup form remains usable."""
+        import gtk
+
+        menu = gtk.Menu()
+        menu.append(gtk.MenuItem("Prueba"))
+        menu.show_all()
+        try:
+            # This is the form used by chart, eye, list and planetogram menus.
+            menu.popup(None, None, None, 1, 0)
+            self._flush_events()
+        finally:
+            menu.popdown()
+            menu.destroy()
+            self._flush_events()
+
     def test_png_and_pdf_exports(self):
         """Exercise native Cairo export without PyGTK/winshell helpers."""
         from astronex.surfaces.pdfsurface import DrawPdf
