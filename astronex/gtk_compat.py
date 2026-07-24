@@ -66,6 +66,34 @@ def _legacy_calendar_set_display_options(calendar, options):
 Gtk.Calendar.set_display_options = _legacy_calendar_set_display_options
 
 
+# Gtk.Menu.popup gained a ``data`` argument in GTK 3.  Astro-Nex's PyGTK
+# sources consistently use the GTK 2 form::
+#
+#     menu.popup(parent_shell, parent_item, position_func, button, time)
+#
+# Keep that public call form at the compatibility boundary instead of leaving
+# a collection of latent right-click failures throughout canvases, lists and
+# auxiliary dialogs.  None of the legacy callers uses a position callback, so
+# ``None`` is the correct GTK 3 callback-data value.
+_gtk_menu_popup = Gtk.Menu.popup
+
+
+def _legacy_menu_popup(menu, parent_menu_shell, parent_menu_item,
+                       position_func, button, activate_time):
+    return _gtk_menu_popup(
+        menu,
+        parent_menu_shell,
+        parent_menu_item,
+        position_func,
+        None,
+        button,
+        activate_time,
+    )
+
+
+Gtk.Menu.popup = _legacy_menu_popup
+
+
 def _enum(enum, name):
     return getattr(enum, name)
 
