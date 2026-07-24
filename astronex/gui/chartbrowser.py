@@ -38,6 +38,7 @@ class ChartBrowserWindow(gtk.Window):
         accel_group = gtk.AccelGroup()
         accel_group.connect_group(gtk.keysyms.Escape,0,gtk.ACCEL_LOCKED,self.escape)
         self.add_accel_group(accel_group) 
+        self.accel_group = accel_group
         
         notebook = gtk.Notebook()
         notebook.set_tab_pos(gtk.POS_LEFT)

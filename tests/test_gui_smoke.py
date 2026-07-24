@@ -130,7 +130,17 @@ class GtkSmokeTest(unittest.TestCase):
         import cairo
         from astronex.gui.quickhelp import HelpWindow
 
-        help_window = HelpWindow(self.window)
+        self.assertTrue(self.window.on_key_press_event(
+            self.window, type("F1Event", (), {
+                "keyval": self._gtk.keysyms.F1,
+            })()
+        ))
+        help_window = next(
+            window for window in self._gtk.Window.list_toplevels()
+            if isinstance(window, HelpWindow)
+        )
+        self.assertIsNotNone(self.window.accel_group)
+        self.assertIsNotNone(help_window.accel_group)
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 710, 500)
         context = cairo.Context(surface)
         try:

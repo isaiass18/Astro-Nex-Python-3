@@ -30,6 +30,7 @@ class PlagramWindow(gtk.Window):
         accel_group.connect_group(gtk.keysyms.Escape,0,gtk.ACCEL_LOCKED,self.escape)
         accel_group.connect_group(gtk.keysyms.Menu,0,gtk.ACCEL_LOCKED,self.popup_menu)
         self.add_accel_group(accel_group) 
+        self.accel_group = accel_group
        
         self.sda = DrawPlagram(self.boss,chart)
         self.add(self.sda)
