@@ -217,3 +217,10 @@ ampliaba la tarjeta para seguir el tamaño natural de la barra de herramientas,
 alterando las proporciones de las dos filas de datos. La corrección conserva
 los iconos de NexP3 alineados a la izquierda, que se mantienen de forma
 deliberada como diferenciador visual frente a NexP2.
+
+## 24 de julio de 2026 — mnemónicos del mezclador
+
+Los botones del mezclador conservaban los guiones bajos del código GTK2 como
+texto visible (`_Crear tabla`, por ejemplo). En GTK3 se declara explícitamente
+que el texto usa mnemónicos para que el guion bajo no se muestre y el atajo de
+teclado continúe disponible.
