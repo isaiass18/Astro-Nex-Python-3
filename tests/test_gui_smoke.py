@@ -125,6 +125,22 @@ class GtkSmokeTest(unittest.TestCase):
             menu.destroy()
             self._flush_events()
 
+    def test_f1_help_window_renders_under_gtk3(self):
+        """F1 must render the keyboard and mouse help rather than a blank dialog."""
+        import cairo
+        from astronex.gui.quickhelp import HelpWindow
+
+        help_window = HelpWindow(self.window)
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, 710, 500)
+        context = cairo.Context(surface)
+        try:
+            help_window.da.dispatch(help_window.da, context)
+            self.assertTrue(help_window.da.surface.get_width() > 0)
+            self.assertTrue(help_window.da.surface.get_height() > 0)
+        finally:
+            help_window.destroy()
+            self._flush_events()
+
     def test_png_and_pdf_exports(self):
         """Exercise native Cairo export without PyGTK/winshell helpers."""
         from astronex.surfaces.pdfsurface import DrawPdf

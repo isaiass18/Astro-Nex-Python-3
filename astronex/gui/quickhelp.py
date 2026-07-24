@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import gtk, gobject
-import cairo, pango
+import cairo, pango, pangocairo
 from .. extensions.path import path
 
 boss = None
@@ -54,6 +54,10 @@ class DrawHelp(gtk.DrawingArea):
         return cairo.ImageSurface.create_from_png(imgfile)
 
     def dispatch(self,da,cr):
+        # PyGTK exposed Pango helpers directly on cairo.Context.  PyGObject
+        # keeps them in PangoCairo, exposed here through the compatibility
+        # wrapper used by the rest of Astro-Nex's drawing surfaces.
+        cr = pangocairo.CairoContext(cr)
         cr.set_source_surface(self.surface, 0,0)
         cr.paint()
 
