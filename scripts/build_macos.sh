@@ -3,13 +3,14 @@
 set -euo pipefail
 
 project_dir=$(cd "$(dirname "$0")/.." && pwd)
-# The distributable and the artifact used for every local test are the same
-# file. Build intermediates still live in a temporary directory below, but no
-# second test DMG is created outside this installer folder.
 output_dir="$project_dir/Mac Instalador"
 version=2.0-beta
 architecture=arm64
-dmg_path="$output_dir/Astro-Nex-$version-macos-$architecture.dmg"
+# Every build has a distinct filename, so a browser or Finder cannot silently
+# reopen an older DMG with the same name. BUILD_ID permits a release label;
+# otherwise the local build timestamp is used.
+build_id=${BUILD_ID:-$(date +%Y%m%d-%H%M%S)}
+dmg_path="$output_dir/Astro-Nex-$version-$build_id-macos-$architecture.dmg"
 
 if [[ $(uname -s) != Darwin || $(uname -m) != arm64 ]]; then
     echo "This script builds the Apple Silicon (arm64) macOS installer."
@@ -18,6 +19,16 @@ fi
 
 command -v brew >/dev/null || { echo "Homebrew is required."; exit 1; }
 command -v hdiutil >/dev/null || { echo "macOS hdiutil is required."; exit 1; }
+
+if pgrep -f '/Astro-Nex.app/Contents/MacOS/Astro-Nex' >/dev/null; then
+    echo "Close Astro-Nex before building a new DMG."
+    exit 1
+fi
+
+if hdiutil info | grep -Fq "$output_dir/Astro-Nex-"; then
+    echo "Eject the mounted Astro-Nex DMG before building a new one."
+    exit 1
+fi
 
 harfbuzz_prefix=$(brew --prefix harfbuzz)
 python_bin=${PYTHON_BIN:-python3}

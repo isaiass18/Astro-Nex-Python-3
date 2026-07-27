@@ -3,10 +3,10 @@
 Esta guía genera un DMG autocontenido para **macOS Apple Silicon** (M1, M2,
 M3 o M4). El usuario final no necesita instalar Python, GTK ni Homebrew.
 
-El resultado es:
+Cada ejecución produce un DMG nuevo, por ejemplo:
 
 ```text
-Mac Instalador/Astro-Nex-2.0-beta-macos-arm64.dmg
+Mac Instalador/Astro-Nex-2.0-beta-20260727-013000-macos-arm64.dmg
 ```
 
 ## Alcance
@@ -57,15 +57,23 @@ chmod +x scripts/build_macos.sh
 ./scripts/build_macos.sh
 ```
 
-El comando siempre crea o actualiza el único DMG de pruebas y distribución:
+El comando crea un DMG con un identificador de fecha/hora que no sobrescribe
+el anterior:
 
 ```text
-Mac Instalador/Astro-Nex-2.0-beta-macos-arm64.dmg
+Mac Instalador/Astro-Nex-2.0-beta-AAAAMMDD-HHMMSS-macos-arm64.dmg
 ```
 
+Para usar un identificador de publicación legible, se puede indicar
+explícitamente:
+
+```bash
+BUILD_ID=beta.1 ./scripts/build_macos.sh
+```
+
+El archivo resultante será `Astro-Nex-2.0-beta-beta.1-macos-arm64.dmg`.
 Los directorios temporales de compilación no son instaladores ni se usan para
-las pruebas manuales: el DMG de `Mac Instalador` es el único que se monta,
-prueba y comparte.
+las pruebas manuales.
 
 El script trata explícitamente una incompatibilidad entre HarfBuzz incluido
 por Pillow y GTK de Homebrew. Este paso es necesario para que el `.app` abra
@@ -73,13 +81,21 @@ sin depender del Homebrew instalado en el Mac del usuario final.
 
 ## Verificación antes de distribuir
 
-1. Abrir el DMG generado.
-2. Copiar `Astro-Nex.app` a `Aplicaciones`.
-3. Abrir la aplicación y comprobar que aparece la ventana principal y la
+1. Cerrar completamente cualquier Astro-Nex ya abierto (`Astro-Nex > Salir` o
+   `Cmd+Q`). No basta con cerrar una ventana.
+2. Expulsar en Finder cualquier imagen de disco de Astro-Nex que siga montada.
+   El script también se detiene si detecta la aplicación abierta o un DMG de
+   Astro-Nex montado.
+3. Abrir **el DMG recién creado** por su nombre completo; no reutilizar un
+   archivo previo de Descargas ni una pestaña del navegador con caché.
+4. Antes de copiar, mover a la Papelera o reemplazar explícitamente la copia
+   anterior de `Astro-Nex.app` en `Aplicaciones`.
+5. Copiar `Astro-Nex.app` a `Aplicaciones` y expulsar el DMG.
+6. Abrir la aplicación desde `Aplicaciones` y comprobar que aparece la ventana principal y la
    portada 2.0 beta.
-4. Probar F1, la entrada de datos, clic derecho en la carta, exportación y el
-   calendario.
-5. Comprobar la firma local:
+7. Probar F1, la entrada de datos, clic derecho en la carta, exportación,
+   calendario y rueda/trackpad en el planetograma.
+8. Comprobar la firma local:
 
    ```bash
    codesign --verify --deep --strict \
@@ -110,7 +126,7 @@ git add \
   CONSTRUIR_INSTALADOR_MACOS.md \
   scripts/build_macos.sh \
   macos_entry.py \
-  "Mac Instalador/Astro-Nex-2.0-beta-macos-arm64.dmg"
+  "Mac Instalador/Astro-Nex-2.0-beta-AAAAMMDD-HHMMSS-macos-arm64.dmg"
 git commit -m "Add macOS Apple Silicon installer"
 git push origin main
 ```
