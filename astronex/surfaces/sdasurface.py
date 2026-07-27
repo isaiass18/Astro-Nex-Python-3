@@ -49,10 +49,13 @@ class DrawDiagram(gtk.DrawingArea):
         return True
 
     def on_scroll(self,da,event):
-        if event.direction == gtk.gdk.SCROLL_UP:
+        delta = gtk.gdk.scroll_delta(event)
+        if delta > 0:
             self.opdia.rotate(1)
-        else:
+        elif delta < 0:
             self.opdia.rotate(-1)
+        else:
+            return False
         self.redraw()
         return True
 
@@ -177,10 +180,13 @@ class HouseSelector(gtk.DrawingArea):
         global _h
         if curr.curr_chart == curr.now:
             return True
-        if event.direction == gtk.gdk.SCROLL_UP:
+        delta = gtk.gdk.scroll_delta(event)
+        if delta > 0:
             _h = (_h - 1)%12
-        else:
+        elif delta < 0:
             _h = (_h + 1)%12
+        else:
+            return False
         self.queue_draw()
         self.boss.da.drawer.set_bio(_h,None)
         return True
@@ -280,10 +286,13 @@ class DrawAux(gtk.DrawingArea):
         return False
         
     def on_scroll(self,da,event):
-        if event.direction == gtk.gdk.SCROLL_UP:
+        delta = gtk.gdk.scroll_delta(event)
+        if delta > 0:
             self.opaux.rotate(1)
-        else:
+        elif delta < 0:
             self.opaux.rotate(-1)
+        else:
+            return False
         self.redraw()
         return True
 

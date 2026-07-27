@@ -32,6 +32,7 @@ class Slot(gtk.VBox):
         self.wname = id 
         self.chart_id = None
         self.timeout_sid = None
+        self._scroll_remainder = 0.0
         names = ['master','click']
         names.remove(self.wname)
         self.other = names.pop()
@@ -305,14 +306,13 @@ class Slot(gtk.VBox):
             dialog.destroy()
 
     def on_scroll_event(self,entry,event):
-        if event.direction == gtk.gdk.SCROLL_UP: 
-            delta = 1
-        elif event.direction == gtk.gdk.SCROLL_DOWN:
-            delta = -1
-        else:
-            return
-        if curr.load_from_pool(delta,self.wname):
-            MainPanel.actualize_pool(self.wname,curr.charts[self.wname]) 
+        self._scroll_remainder += gtk.gdk.scroll_delta(event)
+        while abs(self._scroll_remainder) >= 1.0:
+            delta = 1 if self._scroll_remainder > 0 else -1
+            self._scroll_remainder -= delta
+            if curr.load_from_pool(delta,self.wname):
+                MainPanel.actualize_pool(self.wname,curr.charts[self.wname])
+        return True
 
 class ChartBrowser(gtk.VBox):
     def __init__(self,ap_path,font):

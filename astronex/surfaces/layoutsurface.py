@@ -293,10 +293,13 @@ class DrawMaster(gtk.Layout):
         w, h = da.allocation.width, da.allocation.height
         side = None
         
-        if event.direction == gtk.gdk.SCROLL_UP:
+        scroll_delta = gtk.gdk.scroll_delta(event)
+        if scroll_delta > 0:
             delta = -1
-        else:
+        elif scroll_delta < 0:
             delta = 1
+        else:
+            return False
 
         if self.textspopup:
             self.textspopup.destroy()

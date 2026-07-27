@@ -279,6 +279,7 @@ class _GdkBridge:
         "SCROLL_MASK": (Gdk.EventMask.SCROLL_MASK |
                         Gdk.EventMask.SMOOTH_SCROLL_MASK),
         "SCROLL_DOWN": Gdk.ScrollDirection.DOWN,
+        "SCROLL_SMOOTH": Gdk.ScrollDirection.SMOOTH,
         "SCROLL_UP": Gdk.ScrollDirection.UP,
         "SHIFT_MASK": Gdk.ModifierType.SHIFT_MASK,
         "WINDOW_TYPE_HINT_DIALOG": Gdk.WindowTypeHint.DIALOG,
@@ -307,6 +308,25 @@ class _GdkBridge:
     @staticmethod
     def pixbuf_new_from_file(filename):
         return GdkPixbuf.Pixbuf.new_from_file(filename)
+
+    @staticmethod
+    def scroll_delta(event):
+        """Return a positive value for up and a negative value for down.
+
+        GTK 2 delivered a discrete direction for every wheel notch.  GTK 3
+        retains that for mice, but macOS trackpads emit ``SMOOTH`` events with
+        fractional deltas instead.  Keeping this conversion here lets legacy
+        handlers support both input devices without platform-specific paths.
+        """
+        if event.direction == Gdk.ScrollDirection.UP:
+            return 1.0
+        if event.direction == Gdk.ScrollDirection.DOWN:
+            return -1.0
+        if event.direction == Gdk.ScrollDirection.SMOOTH:
+            success, _delta_x, delta_y = event.get_scroll_deltas()
+            if success:
+                return -delta_y
+        return 0.0
 
     def __getattr__(self, name):
         if name in self._names:

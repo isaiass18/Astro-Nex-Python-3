@@ -675,3 +675,27 @@ self.set_focus_on_map(False) # impide que el WM le dé foco al mostrarse
 - Se confirmó en macOS local que la búsqueda y las flechas funcionaban correctamente antes de aplicar el fix de VNC, descartando error en el código de la aplicación.
 - Se desplegó el `restarter.py` corregido en la instancia VNC y se verificó que el proceso antiguo con el timer quedó eliminado.
 - La instancia VNC reinició limpiamente y las listas de personas, cartas y ciudades volvieron a responder a teclas y flechas normalmente.
+
+## 27 de julio de 2026 — trackpad de macOS en controles personalizados
+
+### Incidencia observada
+
+Las correcciones de rueda funcionaban en noVNC y con ratones convencionales,
+pero algunas superficies propias no respondían al trackpad de macOS. GTK3
+emite `SMOOTH` con deltas fraccionarios para el trackpad, mientras que el
+código heredado sólo trataba las direcciones discretas `SCROLL_UP` y
+`SCROLL_DOWN`.
+
+### Corrección
+
+La capa GTK3 normaliza ambos formatos en `gtk.gdk.scroll_delta`. Los
+controladores del planetograma, casillas de recientes, carta principal,
+auxiliares, diagramas, selector de casas, PE puente y selectores de fecha
+usan ahora ese valor. Las casillas acumulan los deltas suaves hasta completar
+un cambio de carta; el zoom del planetograma conserva la intensidad gradual
+del gesto.
+
+### Verificación
+
+Se añadió una prueba que compara un evento de rueda y un evento suave de
+trackpad. Ambas rutas se convierten a la misma dirección de desplazamiento.

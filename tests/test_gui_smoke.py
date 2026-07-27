@@ -127,6 +127,18 @@ class GtkSmokeTest(unittest.TestCase):
         # several screens to the right of the visible area.
         self.assertLessEqual(self.window.get_allocated_width(), 2500)
 
+    def test_scroll_delta_supports_mouse_wheels_and_macos_trackpads(self):
+        """The GTK3 bridge normalizes discrete and smooth scrolling."""
+        import gtk
+
+        wheel = type("Scroll", (), {"direction": gtk.gdk.SCROLL_UP})()
+        smooth = type("Scroll", (), {
+            "direction": gtk.gdk.SCROLL_SMOOTH,
+            "get_scroll_deltas": lambda self: (True, 0.0, -0.25),
+        })()
+        self.assertEqual(gtk.gdk.scroll_delta(wheel), 1.0)
+        self.assertEqual(gtk.gdk.scroll_delta(smooth), 0.25)
+
     def test_chart_header_uses_the_visible_canvas_right_edge(self):
         """Date/regent labels use the full window right edge in normal mode."""
         self._flush_events()

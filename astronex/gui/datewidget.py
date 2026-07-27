@@ -395,9 +395,10 @@ class DateEntry(gtk.HBox):
             raise ValidationError('value error: %s' % text)
 
     def on_entry_scroll_event(self,entry,event):
-        if event.direction == gdk.SCROLL_UP:
+        delta = gdk.scroll_delta(event)
+        if delta > 0:
             amount = 1
-        elif event.direction == gdk.SCROLL_DOWN:
+        elif delta < 0:
             amount = -1
         else:
             return
@@ -441,9 +442,10 @@ class DateEntry(gtk.HBox):
 
     def on_delta_scroll_event(self,entry,event):
         delta = self.spin.get_value_as_int()
-        if event.direction == gdk.SCROLL_UP:
+        scroll_delta = gdk.scroll_delta(event)
+        if scroll_delta > 0:
             amount = 1 * delta
-        elif event.direction == gdk.SCROLL_DOWN:
+        elif scroll_delta < 0:
             amount = -1 * delta
         else:
             return

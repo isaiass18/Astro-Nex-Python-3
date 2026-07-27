@@ -110,6 +110,8 @@ class BridgeArea(gtk.DrawingArea):
         return True
 
     def on_scroll(self,da,event):
+        if not gtk.gdk.scroll_delta(event):
+            return False
         self.ops[0],self.ops[1] = self.ops[1],self.ops[0]
         self.redraw()
         return True 

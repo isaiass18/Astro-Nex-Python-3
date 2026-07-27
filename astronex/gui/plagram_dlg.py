@@ -191,10 +191,13 @@ class DrawPlagram(gtk.DrawingArea):
 
     
     def on_scroll(self,da,event):
-        if event.direction == gtk.gdk.SCROLL_UP:
-            self.zoom *= 1.2
-        elif event.direction == gtk.gdk.SCROLL_DOWN:
-            self.zoom = self.zoom/1.2 if self.zoom >= 1.2 else 1.0
+        delta = gtk.gdk.scroll_delta(event)
+        if not delta:
+            return False
+        if delta > 0:
+            self.zoom *= 1.2 ** delta
+        else:
+            self.zoom = max(1.0, self.zoom / (1.2 ** -delta))
         if self.zoom == 1.0:
             self.do_zoom = False
         else:
