@@ -74,7 +74,8 @@ class BridgeArea(gtk.DrawingArea):
         self.set_events(gtk.gdk.BUTTON_PRESS_MASK | 
                 gtk.gdk.BUTTON_RELEASE_MASK | 
                 gtk.gdk.POINTER_MOTION_MASK | 
-                gtk.gdk.POINTER_MOTION_HINT_MASK)
+                gtk.gdk.POINTER_MOTION_HINT_MASK |
+                gtk.gdk.SCROLL_MASK)
         self.connect("draw", self.dispatch)
         self.connect("scroll-event", self.on_scroll)        
         self.drawer = Drawer(boss.opts,self) 
@@ -114,9 +115,7 @@ class BridgeArea(gtk.DrawingArea):
         return True 
 
     def redraw(self): 
-        w = self.allocation.width
-        h = self.allocation.height
-        self.window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
+        self.queue_draw()
 
     def draw_pelabel(self,cr,w,h):
         date = self.dt

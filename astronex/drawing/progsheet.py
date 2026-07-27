@@ -95,8 +95,7 @@ class ProgMixin(object):
                 else:
                     if i % 48 == 0: year = y  
                     else: year = " "
-
-            x = hm + int(ho*(i/48))
+            x = hm + int(ho*(i//48))
             y = vm + vo*(i%48)
             cr.move_to(x,y)
             text = "%s.%s.%s" %  (age[i]['day'],age[i]['mon'],str(year))

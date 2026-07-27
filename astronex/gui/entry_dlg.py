@@ -50,6 +50,8 @@ class EntryDlg(gtk.Dialog):
                 _("Entradas"), parent,
                 gtk.DIALOG_DESTROY_WITH_PARENT,
                 ())
+        self.connect('key-press-event', lambda w,e: self.hide() or True if e.keyval == gtk.keysyms.Escape else False)
+        self.connect('delete-event', lambda w, e: self.hide() or True)
         self.connect('configure-event', self.on_configure_event) 
 
         self.set_size_request(400,580)
@@ -126,8 +128,7 @@ class EntryDlg(gtk.Dialog):
                 chart = curr.now
             self.boss.da.panel.nowbut.emit('clicked')
         main.actualize_pool(active,chart)
-        parent.entry = None
-        dialog.destroy()
+        dialog.hide()
         return
 
     def dlg_response(self,but,dialog,rid,parent):
@@ -147,9 +148,8 @@ class EntryDlg(gtk.Dialog):
             curr.add_to_pool(copy(chart),Slot.overwrite)
         main.actualize_pool(active,chart)
         self.boss.da.redraw()
-        parent.entry = None
         self.boss.da.panel.nowbut.emit('clicked')
-        dialog.destroy()
+        dialog.hide()
         return
     
     def create_datewidget(self):

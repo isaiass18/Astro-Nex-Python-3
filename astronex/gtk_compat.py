@@ -162,13 +162,25 @@ class VButtonBox(Gtk.ButtonBox):
 
 
 class AccelGroup(Gtk.AccelGroup):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # PyGTK kept the Python callable passed to ``connect_group`` alive as
+        # part of its wrapper.  With PyGObject the C accelerator can outlive a
+        # temporary bound-method wrapper.  On macOS this manifested as a
+        # SIGSEGV in gtk_accel_groups_activate when GTK later dispatched a
+        # shortcut.  Keep both the callback and signal handler for as long as
+        # the accelerator group itself exists.
+        self._legacy_accel_handlers = []
+
     def connect_group(self, accel_key, accel_mods, accel_flags, callback):
-        return self.connect(
+        handler = self.connect(
             accel_key,
             Gdk.ModifierType(accel_mods),
             Gtk.AccelFlags(accel_flags),
             callback,
         )
+        self._legacy_accel_handlers.append((callback, handler))
+        return handler
 
 
 class Toolbar(Gtk.Toolbar):
@@ -261,6 +273,11 @@ class _GdkBridge:
         "POINTER_MOTION_HINT_MASK": Gdk.EventMask.POINTER_MOTION_HINT_MASK,
         "POINTER_MOTION_MASK": Gdk.EventMask.POINTER_MOTION_MASK,
         "SCROLL": Gdk.EventType.SCROLL,
+        # GTK 2 exposed a single scroll mask.  GTK 3 separates wheel and
+        # touchpad smooth scrolling, therefore the compatibility name opts
+        # into both so legacy canvases receive either input source.
+        "SCROLL_MASK": (Gdk.EventMask.SCROLL_MASK |
+                        Gdk.EventMask.SMOOTH_SCROLL_MASK),
         "SCROLL_DOWN": Gdk.ScrollDirection.DOWN,
         "SCROLL_UP": Gdk.ScrollDirection.UP,
         "SHIFT_MASK": Gdk.ModifierType.SHIFT_MASK,
@@ -322,6 +339,7 @@ for _name in (
 
 _CONSTANTS = {
     "ACCEL_LOCKED": Gtk.AccelFlags.LOCKED,
+    "ALIGN_FILL": Gtk.Align.FILL,
     "ARROW_DOWN": Gtk.ArrowType.DOWN,
     "ARROW_LEFT": Gtk.ArrowType.LEFT,
     "ARROW_RIGHT": Gtk.ArrowType.RIGHT,

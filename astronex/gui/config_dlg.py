@@ -31,6 +31,7 @@ class ConfigDlg(gtk.Dialog):
                 gtk.DIALOG_DESTROY_WITH_PARENT,
                 (gtk.STOCK_CLOSE, gtk.RESPONSE_NONE,
                     gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        self.connect('key-press-event', lambda w,e: self.destroy() if e.keyval == gtk.keysyms.Escape else False)
         self.set_size_request(550,380)
 
         hbox = gtk.HBox()
@@ -245,6 +246,7 @@ class ColorsPage(gtk.VBox):
         table.set_col_spacing(1,3)
         table.set_col_spacing(3,3)
         table.set_row_spacing(3,6)
+        table.set_halign(3) # Gtk.Align.CENTER
         self.pack_start(table,False,False)
 
         table = gtk.Table(4,3) 
@@ -260,6 +262,7 @@ class ColorsPage(gtk.VBox):
         table.attach(lbl,0,1,3,4)
         table.attach(colbut,1,2,3,4)
         table.set_col_spacings(10)
+        table.set_halign(3) # Gtk.Align.CENTER
         self.pack_start(table,False,False)
 
         buttbox = gtk.HButtonBox()
@@ -276,7 +279,7 @@ class ColorsPage(gtk.VBox):
             colbut = gtk.ColorButton(gtk.gdk.color_parse(cols[labels[i][1]]))
             colbut.set_data('label',labels[i][1])
             colbut.connect('color_set',self.color_set_cb, labels[i][1])
-            r = i % ix ; cc = (i / ix) * 2
+            r = i % ix ; cc = (i // ix) * 2
             table.attach(lbl,cc,cc+1,r,r+1)
             table.attach(colbut,cc+1,cc+2,r,r+1)
 

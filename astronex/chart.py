@@ -413,7 +413,7 @@ class Chart(object):
         mint = str(mint).rjust(2,'0')
         deg = int(deg)
         deg = str(deg).rjust(2,'0')
-        return { 'deg': "%s\\u00b0 %s\\u00b4" % (deg,mint), 'name': name , 'col': col}
+        return { 'deg': "%s° %s´" % (deg,mint), 'name': name , 'col': col}
 
     def which_house(self,p):
         point = p

@@ -15,7 +15,9 @@ Mac Instalador/Astro-Nex-2.0-beta-macos-arm64.dmg
 - Versión de Astro-Nex: 2.0 beta.
 - Compatibilidad del DMG actual: macOS 26.0 o posterior.
 - El paquete contiene la aplicación `Astro-Nex.app`, Python, GTK3, el motor
-  astronómico compilado y todos los recursos.
+  astronómico compilado y todos los recursos, incluida `Astro-Nex.ttf`.
+- Al abrirse, la aplicación registra esa fuente de símbolos en CoreText sólo
+  para su propio proceso. El usuario no tiene que instalar fuentes manualmente.
 - Para Intel se debe crear una compilación separada desde un Mac Intel o un
   entorno de compilación Intel. No distribuir un DMG ARM64 como si fuera
   compatible con Intel.
@@ -55,12 +57,15 @@ chmod +x scripts/build_macos.sh
 ./scripts/build_macos.sh
 ```
 
-No sobrescribe un DMG existente. Para generar el archivo en otra carpeta,
-pasar una ruta como argumento:
+El comando siempre crea o actualiza el único DMG de pruebas y distribución:
 
-```bash
-./scripts/build_macos.sh "$HOME/Desktop/Astro-Nex-macOS"
+```text
+Mac Instalador/Astro-Nex-2.0-beta-macos-arm64.dmg
 ```
+
+Los directorios temporales de compilación no son instaladores ni se usan para
+las pruebas manuales: el DMG de `Mac Instalador` es el único que se monta,
+prueba y comparte.
 
 El script trata explícitamente una incompatibilidad entre HarfBuzz incluido
 por Pillow y GTK de Homebrew. Este paso es necesario para que el `.app` abra

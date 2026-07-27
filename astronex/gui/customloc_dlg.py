@@ -20,6 +20,7 @@ class CustomLocDlg(gtk.Dialog):
                 gtk.DIALOG_MODAL|gtk.DIALOG_DESTROY_WITH_PARENT,
                     (gtk.STOCK_SAVE, gtk.RESPONSE_OK,
                 gtk.STOCK_CLOSE, gtk.RESPONSE_NONE))
+        self.connect("key-press-event", lambda w,e: self.destroy() if e.keyval == gtk.keysyms.Escape else False)
         self.set_size_request(400,500)
 
         # ``widget`` is a read-only GObject field under PyGObject.

@@ -26,7 +26,8 @@ class DrawDiagram(gtk.DrawingArea):
         self.set_events(gtk.gdk.BUTTON_PRESS_MASK | 
                 gtk.gdk.BUTTON_RELEASE_MASK | 
                 gtk.gdk.POINTER_MOTION_MASK | 
-                gtk.gdk.POINTER_MOTION_HINT_MASK)
+                gtk.gdk.POINTER_MOTION_HINT_MASK |
+                gtk.gdk.SCROLL_MASK)
         self.connect("draw", self.dispatch)
         self.connect("button_press_event", self.on_diada_clicked)        
         self.connect("scroll-event", self.on_scroll)
@@ -61,9 +62,7 @@ class DrawDiagram(gtk.DrawingArea):
         return True
     
     def redraw(self): 
-        w = self.allocation.width
-        h = self.allocation.height
-        self.window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
+        self.queue_draw()
 
 #################################################
 crcol = ['card','fix','mut']
@@ -81,7 +80,8 @@ class HouseSelector(gtk.DrawingArea):
         self.set_events(gtk.gdk.BUTTON_PRESS_MASK | 
                 gtk.gdk.BUTTON_RELEASE_MASK | 
                 gtk.gdk.POINTER_MOTION_MASK | 
-                gtk.gdk.POINTER_MOTION_HINT_MASK)
+                gtk.gdk.POINTER_MOTION_HINT_MASK |
+                gtk.gdk.SCROLL_MASK)
         self.connect("draw", self.dispatch)
         self.connect("button_press_event", self.on_hs_clicked)        
         self.connect("scroll-event", self.on_scroll)
@@ -143,7 +143,7 @@ class HouseSelector(gtk.DrawingArea):
         cr.arc(0,0,r*0.03,0,180*PI) 
         cr.fill()
         for ang in range(0,360,30):
-            ix = (ang/30)%3
+            ix = (ang//30)%3
             a = 180 - ang
             cr.set_source_rgba(*crosscols[ix])
             cr.move_to(ri*math.cos(a*RAD),ri*math.sin(a*RAD))
@@ -192,9 +192,7 @@ class HouseSelector(gtk.DrawingArea):
         self.boss.da.drawer.set_bio(_h,None)
 
     def redraw(self): 
-        w = self.allocation.width
-        h = self.allocation.height
-        self.window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
+        self.queue_draw()
 
 ##################################################
 opcharts = ['draw_nat', 'draw_house',
@@ -224,7 +222,8 @@ class DrawAux(gtk.DrawingArea):
         self.set_events(gtk.gdk.BUTTON_PRESS_MASK | 
                 gtk.gdk.BUTTON_RELEASE_MASK | 
                 gtk.gdk.POINTER_MOTION_MASK | 
-                gtk.gdk.POINTER_MOTION_HINT_MASK)
+                gtk.gdk.POINTER_MOTION_HINT_MASK |
+                gtk.gdk.SCROLL_MASK)
         self.connect("draw", self.dispatch)
         self.connect("button_press_event", self.on_da_clicked)
         self.connect("scroll-event", self.on_scroll)
@@ -232,6 +231,14 @@ class DrawAux(gtk.DrawingArea):
         self.menu = gtk.Menu()
         for buf in initmenu:
             menu_item = gtk.MenuItem(buf)
+            if buf == _('Congelar'):
+                menu_item.set_tooltip_text(
+                    _('Mantiene estas cartas aunque se cambie la carta principal.')
+                )
+            elif buf == _('Permutar'):
+                menu_item.set_tooltip_text(
+                    _('Intercambia la carta principal y la carta de clic en esta ventana.')
+                )
             self.menu.append(menu_item)
             menu_item.connect("activate", self.on_menuitem_activate)
             menu_item.show()
@@ -281,9 +288,7 @@ class DrawAux(gtk.DrawingArea):
         return True
 
     def redraw(self): 
-        w = self.allocation.width
-        h = self.allocation.height
-        self.window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
+        self.queue_draw()
 
     def popup_menu(self):
         event = gtk.gdk.Event(gtk.gdk.BUTTON_PRESS)

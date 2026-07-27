@@ -433,11 +433,13 @@ class DrawMaster(gtk.Layout):
 
     def show_panel(self,menuitem=None):
         self.move(self.panel,0,0)
+        self.panel.show()
         self.panelvisible = True
         #boss.mpanel.stop_timeout()
 
     def hide_panel(self,menuitem=None):
         self.move(self.panel,-200,-200)
+        self.panel.hide()
         self.panelvisible = False
         if curr.curr_chart == curr.now:
             self.panel.nowbut.emit('clicked')
@@ -498,6 +500,7 @@ class DrawMaster(gtk.Layout):
 
     def dispatch(self, da, cr):
         cr = CairoContext(cr)
+        cr.save()
         if self.diadavisible:
             where = self.allocation.width - self.diada.allocation.width
             if self.where_diada != where:
@@ -524,17 +527,17 @@ class DrawMaster(gtk.Layout):
                 self.set_size_request(720,720)
     
         if op in bios and not self.hselvisible and curr.opmode == 'simple':
-            where = self.allocation.height - self.hsel.allocation.height
-            self.move(self.hsel,0,where) 
+            where = self.allocation.height - self.hsel.allocation.height - 35
+            self.move(self.hsel,10,where)
             self.hselvisible = True
         elif self.hselvisible and curr.opmode != 'simple' or op not in bios:
             self.move(self.hsel,-160,650) 
             self.hselvisible = False
 
         if self.hselvisible:
-            where = self.allocation.height - self.hsel.allocation.height
+            where = self.allocation.height - self.hsel.allocation.height - 35
             if self.where_hsel != where:
-                self.move(self.hsel,0,where) 
+                self.move(self.hsel,10,where)
                 self.where_hsel = where
         
         w = self.allocation.width
@@ -554,7 +557,8 @@ class DrawMaster(gtk.Layout):
         if self.diadavisible:
             w /= 0.85; h /= 0.85
         
-        cr.identity_matrix()
+        cr.restore()
+        cr.save()
         if self.pepending[0]:
             self.draw_pelabel(cr,w,h)
             self.pepending = [False,None,None]
@@ -574,6 +578,8 @@ class DrawMaster(gtk.Layout):
             radial.add_color_stop_rgba(0.0,0,0,1,0)
             radial.add_color_stop_rgba(0.9,1,0,0,1)
             cr.mask(radial)
+
+        cr.restore()
 
     def check_local_label(self):
         if curr.opmode == 'simple' and curr.curr_op == 'draw_local': 

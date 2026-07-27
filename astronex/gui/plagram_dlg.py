@@ -25,9 +25,10 @@ class PlagramWindow(gtk.Window):
         self.set_transient_for(parent)
         self.set_destroy_with_parent(True)
         self.set_title("Planetograma")
+
+        self.connect('key-press-event', lambda w,e: self.destroy() if e.keyval == gtk.keysyms.Escape else False)
         
         accel_group = gtk.AccelGroup()
-        accel_group.connect_group(gtk.keysyms.Escape,0,gtk.ACCEL_LOCKED,self.escape)
         accel_group.connect_group(gtk.keysyms.Menu,0,gtk.ACCEL_LOCKED,self.popup_menu)
         self.add_accel_group(accel_group) 
         self.accel_group = accel_group
@@ -38,9 +39,6 @@ class PlagramWindow(gtk.Window):
         self.set_default_size(int(aux_size*1.2),aux_size)
         self.connect('destroy', self.cb_exit,parent)
         self.show_all()
-
-    def escape(self,a,b,c,d):
-        self.destroy() 
 
     def cb_exit(self,e,parent):
         self.boss.mainwin.plagram = None
@@ -58,7 +56,8 @@ class DrawPlagram(gtk.DrawingArea):
         self.set_events(gtk.gdk.BUTTON_PRESS_MASK | 
                 gtk.gdk.BUTTON_RELEASE_MASK | 
                 gtk.gdk.POINTER_MOTION_MASK | 
-                gtk.gdk.POINTER_MOTION_HINT_MASK)
+                gtk.gdk.POINTER_MOTION_HINT_MASK |
+                gtk.gdk.SCROLL_MASK)
         self.connect("draw", self.dispatch)
         self.connect("button_press_event", self.on_da_clicked)
         self.connect("button_release_event", self.on_da_clicked)
@@ -116,31 +115,34 @@ class DrawPlagram(gtk.DrawingArea):
         self.menu.popup(None, None, None, 1, event.time)
         
     def on_menuitem_activate(self,menuitem):
-        if menuitem.child.get_text() == _('Exportar a imagen'):
+        text = menuitem.get_child().get_text() if menuitem.get_child() else menuitem.get_label()
+        if text == _('Exportar a imagen'):
             self.png_export()
-        elif menuitem.child.get_text() == _('Commutar años/edad'):
+        elif text == _('Commutar años/edad'):
             self.drawer.useagecircle = not self.drawer.useagecircle 
-        elif menuitem.child.get_text() == _('Exportar a PDF'):
+        elif text == _('Exportar a PDF'):
             self.pdf_export()
         self.redraw()
 
     def on_check_toggled(self,menuitem):
-        if menuitem.child.get_text() == _('Ver puntos de sombra'):
+        text = menuitem.get_child().get_text() if menuitem.get_child() else menuitem.get_label()
+        print("Toggled:", repr(text), "Active:", menuitem.get_active())
+        if text == _('Ver puntos de sombra'):
             if menuitem.get_active():
                 self.drawer.shadow = True
             else:
                 self.drawer.shadow = False
-        elif menuitem.child.get_text() == _('Ver lineas personales'):
+        elif text == _('Ver lineas personales'):
             if menuitem.get_active():
                 self.drawer.personlines = True
             else:
                 self.drawer.personlines = False
-        elif menuitem.child.get_text() == _('Ver puntos de cambio'):
+        elif text == _('Ver puntos de cambio'):
             if menuitem.get_active():
                 self.drawer.turnpoints = True
             else:
                 self.drawer.turnpoints = False
-        elif menuitem.child.get_text() == _('Ver puntos de cruce'):
+        elif text == _('Ver puntos de cruce'):
             if menuitem.get_active():
                 self.drawer.crosspoints = True
             else:
@@ -203,6 +205,7 @@ class DrawPlagram(gtk.DrawingArea):
 
 
     def dispatch(self,da,cr):
+        cr = pangocairo.CairoContext(cr)
         w = self.allocation.width
         h = self.allocation.height
         cr.set_source_rgb(1.0,1.0,1.0)
@@ -226,12 +229,7 @@ class DrawPlagram(gtk.DrawingArea):
         return False
         
     def redraw(self): 
-        w = self.allocation.width
-        h = self.allocation.height
-        try:
-            self.window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
-        except AttributeError:
-            pass
+        self.queue_draw()
 
     def popup_menu(self):
         event = gtk.gdk.Event(gtk.gdk.BUTTON_PRESS)

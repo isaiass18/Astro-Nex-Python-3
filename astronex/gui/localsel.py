@@ -16,10 +16,11 @@ class LocSelector(gtk.Dialog):
         gtk.Dialog.__init__(self,
                 _("Localidad"), parent,
                 gtk.DIALOG_DESTROY_WITH_PARENT,
-                ())
+                (gtk.STOCK_CLOSE, gtk.RESPONSE_NONE))
+        self.connect('key-press-event', lambda w,e: self.destroy() if e.keyval == gtk.keysyms.Escape else False)
         self.connect('configure-event', self.on_configure_event) 
 
-        self.set_size_request(400,500)
+        self.set_size_request(450,550)
         self.vbox.set_border_width(3)
         
         loc = self.create_locwidget()

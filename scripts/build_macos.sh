@@ -3,18 +3,16 @@
 set -euo pipefail
 
 project_dir=$(cd "$(dirname "$0")/.." && pwd)
-output_dir=${1:-"$project_dir/Mac Instalador"}
+# The distributable and the artifact used for every local test are the same
+# file. Build intermediates still live in a temporary directory below, but no
+# second test DMG is created outside this installer folder.
+output_dir="$project_dir/Mac Instalador"
 version=2.0-beta
 architecture=arm64
 dmg_path="$output_dir/Astro-Nex-$version-macos-$architecture.dmg"
 
 if [[ $(uname -s) != Darwin || $(uname -m) != arm64 ]]; then
     echo "This script builds the Apple Silicon (arm64) macOS installer."
-    exit 1
-fi
-
-if [[ -e "$dmg_path" ]]; then
-    echo "Refusing to overwrite existing artifact: $dmg_path"
     exit 1
 fi
 
@@ -69,7 +67,7 @@ install_name_tool -change "$(brew --prefix graphite2)/lib/libgraphite2.3.dylib" 
 codesign --force --deep --sign - "$app_path"
 codesign --verify --deep --strict "$app_path"
 
-hdiutil create -volname "Astro-Nex $version" -srcfolder "$app_path" \
+hdiutil create -ov -volname "Astro-Nex $version" -srcfolder "$app_path" \
     -format UDZO "$dmg_path"
 
 echo "Created: $dmg_path"

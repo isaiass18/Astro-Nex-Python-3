@@ -36,25 +36,52 @@ class SearchView(gtk.TreeView):
 
         view.set_search_entry(search_entry)
         view.set_search_column(0)
-        search_entry.set_text(key) 
+        search_entry.set_text(key)
 
         search_win.show_all()
         self.set_searchwin_pos(search_entry)
-        search_entry.set_position(-1)
+        search_entry.grab_focus()
 
-        self.start_time =  time.time()
-        self.timeout_handle = gobject.timeout_add(1000,self.check_idle)
+        def focus_entry():
+            search_win.present()
+            search_entry.grab_focus()
+            # Force X11 keyboard grab so the search box receives key events
+            # inside VNC/Xvfb, where undecorated windows are not focused by
+            # the window manager automatically.
+            gdk_win = search_win.get_window()
+            if gdk_win:
+                try:
+                    gtk.gdk.keyboard_grab(gdk_win, False, gtk.gdk.CURRENT_TIME)
+                except Exception:
+                    pass
+            search_entry.set_position(-1)
+            search_entry.select_region(-1, -1)
+            return False
+        gobject.idle_add(focus_entry)
+
+        self.start_time = time.time()
+        self.timeout_handle = gobject.timeout_add(1000, self.check_idle)
 
     def on_entry_keypress(self,entry,event):
+        self.start_time = time.time()
         if event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.Escape:
             self.destroy_searchwin()
-        return False; 
+            return True
+        return False
 
     def on_buttonpress(self,view,event):
+        # Always claim keyboard focus on click so that arrow keys work
+        # immediately after selecting a row, without needing to click again.
+        self.grab_focus()
         if self.searchbox_on:
             self.destroy_searchwin()
 
     def destroy_searchwin(self):
+        # Release the X11 keyboard grab taken when the search window opened.
+        try:
+            gtk.gdk.keyboard_ungrab(gtk.gdk.CURRENT_TIME)
+        except Exception:
+            pass
         self.set_search_entry(None)
         self.search_win.destroy()
         self.searchbox_on = False
@@ -68,26 +95,50 @@ class SearchView(gtk.TreeView):
         if not isinstance(parent, gtk.Window):
             return
         win_pos = parent.get_position()
-        x = win_pos[0] + self.allocation.width - search_entry.allocation.width 
-        y = win_pos[1] + self.allocation.height + self.allocation.y 
+        x = win_pos[0] + self.allocation.width - search_entry.allocation.width
+        y = win_pos[1] + self.allocation.height + self.allocation.y
         self.search_win.move(x,y)
 
+    def on_keypress(self,view,event):
+        if self.searchbox_on:
+            if (event.keyval > 255 or event.keyval < 32) and event.keyval not in (gtk.keysyms.BackSpace, gtk.keysyms.Return, gtk.keysyms.Escape):
+                return False
+            search_entry = view.get_search_entry()
+            if event.keyval == gtk.keysyms.BackSpace:
+                text = search_entry.get_text()
+                if len(text) > 0:
+                    search_entry.set_text(text[:-1])
+                    search_entry.set_position(-1)
+                return True
+            elif event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.Escape:
+                self.destroy_searchwin()
+                return True
+            # Use event.string so accented letters and non-ASCII keyboards work
+            char = event.string if event.string else (chr(event.keyval) if event.keyval < 256 else '')
+            if char and re.match(r'[^\x00-\x1f]', char):
+                search_entry.set_text(search_entry.get_text() + char)
+                search_entry.set_position(-1)
+                return True
+            return False
 
-    def on_keypress(self,view,event): 
+        # No search box open — let arrow keys and other navigation pass through
         if (event.keyval > 255 or event.keyval < 32):
-            return False 
+            return False
         if (event.state & gtk.gdk.CONTROL_MASK):
             return False
-        if re.match(r'[a-zA-Z\s]', chr(event.keyval)):
-            self.interactive_search(view, chr(event.keyval))
-            return True    
+        # Use event.string (GTK3 composed character) instead of chr(keyval)
+        # so that accented letters and non-ASCII keyboards work correctly.
+        char = event.string if event.string else ''
+        if char and re.match(r'[^\x00-\x1f]', char):
+            self.interactive_search(view, char)
+            return True
         return False
 
     def on_entry_buttonpress(self,entry,event):
         self.start_time = time.time()
 
     def check_idle(self):
-        elapsed_time = time.time() -self.start_time
+        elapsed_time = time.time() - self.start_time
         if (elapsed_time > 3):
             gobject.source_remove(self.timeout_handle)
             self.destroy_searchwin()

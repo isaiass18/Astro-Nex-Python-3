@@ -28,7 +28,7 @@ class Slot(gtk.VBox):
 
         self.imgfile1 = path.joinpath(appath,"astronex/resources/stock_inbox-24.png")
         self.imgfile2 = path.joinpath(appath,"astronex/resources/gtk-folder-24.png")
-        
+
         self.wname = id 
         self.chart_id = None
         self.timeout_sid = None
@@ -56,15 +56,27 @@ class Slot(gtk.VBox):
         table.attach(hbutbox,0,1,0,1)
 
         hbutbox = gtk.HBox()
-        but = gtk.Button()
+        # Spacer for centering the eye icon
+        spacer_left = gtk.Label("")
+        hbutbox.pack_start(spacer_left, True, True)
+
+        # Eye icon (centered)
+        ev = gtk.EventBox()
         img = gtk.Image()
-        imgfile = path.joinpath(appath,"astronex/resources/drivel-24.png")
+        imgfile = path.joinpath(appath,"astronex/resources/gnome-eog-24.png")
         img.set_from_file(str(imgfile))
-        but.set_image(img)
-        but.connect('clicked',self.on_entry_clicked)
-        self.mod = but
-        but.set_tooltip_text(_('Modificar carta'))
-        hbutbox.pack_end(but,False,False)
+        ev.add(img)
+        ev.modify_bg(gtk.STATE_NORMAL,gtk.gdk.color_parse("white"))
+        hbutbox.pack_start(ev, False, False)
+        ev.set_events(gtk.gdk.BUTTON_PRESS_MASK)
+        ev.connect("button_press_event",self.on_eye_clicked)
+        self.eye = ev
+
+        # Spacer for centering the eye icon
+        spacer_right = gtk.Label("")
+        hbutbox.pack_start(spacer_right, True, True)
+
+        # Clock icon (right aligned)
         but = gtk.Button()
         img = gtk.Image()
         imgfile = path.joinpath(appath,"astronex/resources/clock-24.png")
@@ -73,17 +85,19 @@ class Slot(gtk.VBox):
         but.connect('clicked',self.on_clock_clicked)
         self.clock = but
         but.set_tooltip_text(_('Carta del momento'))
-        hbutbox.pack_end(but,False,False)
-        ev = gtk.EventBox()
+        hbutbox.pack_start(but, False, False)
+
+        # Pencil icon (right aligned)
+        but = gtk.Button()
         img = gtk.Image()
-        imgfile = path.joinpath(appath,"astronex/resources/gnome-eog-24.png")
+        imgfile = path.joinpath(appath,"astronex/resources/drivel-24.png")
         img.set_from_file(str(imgfile))
-        ev.add(img)        
-        ev.modify_bg(gtk.STATE_NORMAL,gtk.gdk.color_parse("white"))
-        hbutbox.pack_end(ev,True,True)
-        ev.set_events(gtk.gdk.BUTTON_PRESS_MASK)
-        ev.connect("button_press_event",self.on_eye_clicked)
-        self.eye = ev
+        but.set_image(img)
+        but.connect('clicked',self.on_entry_clicked)
+        self.mod = but
+        but.set_tooltip_text(_('Modificar carta'))
+        hbutbox.pack_start(but, False, False)
+
         # Keep the action group at the remaining historical card width.  A
         # fixed request preserves the GTK2 spacing without asking Gtk.Grid to
         # expand the complete data panel.
@@ -111,15 +125,18 @@ class Slot(gtk.VBox):
 
         self.pack_start(eb)
         self.eb = eb
-        
+
         self.menu = gtk.Menu()
         for buf in (_('Exportar carta'),_('Importar carta')):
             menu_items = gtk.MenuItem(buf)
             self.menu.append(menu_items)
             menu_items.connect("activate", self.on_menuitem_activate)
             menu_items.show()
-        self.connect("button_press_event", self.on_slot_clicked)
-        self.connect('scroll-event', self.on_scroll_event)
+
+        eb.add_events(gtk.gdk.SCROLL_MASK | gtk.gdk.BUTTON_PRESS_MASK)
+        eb.connect("button_press_event", self.on_slot_clicked)
+        eb.connect('scroll-event', self.on_scroll_event)
+
         self.set_size_request(self.DATA_CARD_WIDTH,-1)
 
     def on_entry_clicked(self,but):
@@ -132,6 +149,7 @@ class Slot(gtk.VBox):
         if not mainwin.entry:
             mainwin.activate_entry()
         mainwin.entry.modify_entries(chart)
+        mainwin.entry.present()
 
     def on_eye_clicked(self,eye,event):
         if event.type == gtk.gdk.BUTTON_PRESS and event.button == 1:
@@ -598,7 +616,7 @@ class MainPanel(gtk.VBox):
         tb.set_show_arrow(True)
 
         tcal = gtk.ToggleToolButton()
-        tcal.connect('clicked',self.on_calpanel,boss)
+        tcal.connect('toggled',self.on_calpanel,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/cal.png")
         img.set_from_file(str(imgfile))
@@ -607,7 +625,7 @@ class MainPanel(gtk.VBox):
         tb.insert(tcal,-1)
     
         tpe = gtk.ToggleToolButton()
-        tpe.connect('clicked',self.on_pebut,boss)
+        tpe.connect('toggled',self.on_pebut,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/ap.png")
         img.set_from_file(str(imgfile))
@@ -625,7 +643,7 @@ class MainPanel(gtk.VBox):
         tb.insert(twin,-1)
     
         tasp = gtk.ToggleToolButton()
-        tasp.connect('clicked',self.on_plsel,boss)
+        tasp.connect('toggled',self.on_plsel,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/aspects.png")
         img.set_from_file(str(imgfile))
@@ -634,7 +652,7 @@ class MainPanel(gtk.VBox):
         tb.insert(tasp,-1)
 
         tcyc = gtk.ToggleToolButton()
-        tcyc.connect('clicked',self.on_cycles,boss)
+        tcyc.connect('toggled',self.on_cycles,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/cycles2.png")
         img.set_from_file(str(imgfile))
@@ -643,7 +661,7 @@ class MainPanel(gtk.VBox):
         tb.insert(tcyc,-1)
 
         tdia = gtk.ToggleToolButton()
-        tdia.connect('clicked',self.on_diada,boss)
+        tdia.connect('toggled',self.on_diada,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/subdia.png")
         img.set_from_file(str(imgfile))
@@ -652,7 +670,7 @@ class MainPanel(gtk.VBox):
         tb.insert(tdia,-1)
 
         tdia = gtk.ToggleToolButton()
-        tdia.connect('clicked',self.on_pebridge,boss)
+        tdia.connect('toggled',self.on_pebridge,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/bridge.png")
         img.set_from_file(str(imgfile))
@@ -801,7 +819,7 @@ class MainPanel(gtk.VBox):
         event = gtk.gdk.Event(gtk.gdk.BUTTON_PRESS)
         event.button = 1
         event.time = 0
-        slot.emit("button_press_event",event)
+        slot.eb.emit("button_press_event",event)
 
     @classmethod
     def slot_act_inactive(panel):

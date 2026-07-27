@@ -299,9 +299,7 @@ class ChartSnapshot(gtk.DrawingArea):
         return True
 
     def redraw(self): 
-        w = self.allocation.width
-        h = self.allocation.height
-        self.window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
+        self.queue_draw()
 
     def d_label(self,cr,w,h,chart):
         cr.identity_matrix()

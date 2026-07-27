@@ -34,7 +34,14 @@ class BioMixin(object):
         if surface.__class__.__name__ in ['DrawMaster','DrawAux']:
             info = { 'button': -1 }
             surface.set_data("move-info", info)
-            surface.connect('event',self.pe_rulercb,surface)
+            # GTK2's catch-all ``event`` signal used to deliver pointer
+            # events to the biography ruler.  Under GTK3 that route is not
+            # reliable once the drawing surface has specific handlers, so a
+            # normal click could be ignored while a double-click still took
+            # a different path.  Bind the three pointer signals explicitly.
+            for signal in ('button-press-event', 'button-release-event',
+                           'motion-notify-event'):
+                surface.connect(signal, self.pe_rulercb, surface)
         
         chart = curr.curr_chart
         prev_chart = chart,chart.first,curr.curr_op
@@ -70,7 +77,7 @@ class BioMixin(object):
             if not surface.opaux[0].startswith('bio'):
                 return False
         else:
-            if not curr.curr_op.startswith('bio') or curr.opmode != 'simple' or curr.curr_chart == curr.now:
+            if not curr.curr_op.startswith('bio') or curr.opmode != 'simple':
                 return False 
         state =  event.get_state()
         info = child.get_data("move-info")

@@ -10,6 +10,7 @@ class CycleSelector(gtk.Dialog):
                 _("Selector de ciclos PE"), parent,
                 gtk.DIALOG_DESTROY_WITH_PARENT,
                 (gtk.STOCK_CLOSE, gtk.RESPONSE_NONE,))
+        self.connect("key-press-event", lambda w,e: self.destroy() if e.keyval == gtk.keysyms.Escape else False)
         self.parnt = parent
 
         self.vbox.set_border_width(3)

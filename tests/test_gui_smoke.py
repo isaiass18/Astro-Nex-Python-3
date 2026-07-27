@@ -101,21 +101,50 @@ class GtkSmokeTest(unittest.TestCase):
         self._assert_visible(self.window.browser)
         self.window.browser = None
 
+    def test_aspect_selector_keeps_compact_button_layout(self):
+        """Aspect glyphs have the same explicit GTK3 dimensions."""
+        from astronex.gui.plselector_dlg import PlanSelector
+
+        selector = PlanSelector(self.window)
+        try:
+            button_box = selector.vbox.get_children()[0].get_child()
+            self.assertEqual(button_box.get_layout(), self._gtk.BUTTONBOX_SPREAD)
+            for button in button_box.get_children():
+                self.assertEqual(button.get_size_request(), (42, 30))
+        finally:
+            selector.destroy()
+            self._flush_events()
+
     def test_chart_canvas_receives_available_width(self):
         """A legacy omitted ``pack_start`` must still expand under GTK 3."""
         self._flush_events()
         self.assertGreaterEqual(self.window.da.ha.get_page_size(), 500)
+        self.assertTrue(self.window.da.get_hexpand())
+        self.assertTrue(self.window.da.get_vexpand())
+        self.assertTrue(self.window.da.get_parent().get_parent().get_hexpand())
         # On Windows Gdk.Screen.get_width() is the virtual desktop width.
         # The main window must use one monitor, otherwise drawings are placed
         # several screens to the right of the visible area.
         self.assertLessEqual(self.window.get_allocated_width(), 2500)
+
+    def test_chart_header_uses_the_visible_canvas_right_edge(self):
+        """Date/regent labels use the full window right edge in normal mode."""
+        self._flush_events()
+        canvas_width = self.window.da.get_allocated_width()
+        window_width = self.window.get_allocated_width()
+        self.assertEqual(
+            self.window.da._header_width(canvas_width * 0.85), window_width
+        )
 
     def test_data_cards_keep_legacy_dimensions_and_left_text(self):
         """GTK3 toolbar sizing must not stretch the two data-entry cards."""
         for slot in self.window.boss.mpanel.pool.values():
             # Gtk.EventBox/frame borders can add four pixels around the
             # 320-pixel historical content row.
-            self.assertIn(slot.get_allocated_width(), (320, 324))
+            # The fixed request is the legacy 320-pixel data card. GTK can
+            # allocate a few extra pixels on macOS for its native frame.
+            self.assertEqual(slot.get_size_request()[0], 320)
+            self.assertGreaterEqual(slot.get_allocated_width(), 320)
             self.assertGreaterEqual(slot.storage_but.get_allocated_width(), 120)
             self.assertEqual(slot.namelbl.get_property("xalign"), 0.0)
             self.assertEqual(slot.datelbl.get_property("xalign"), 0.0)
@@ -195,6 +224,125 @@ class GtkSmokeTest(unittest.TestCase):
             selector.set_house_from_date(datetime(2026, 7, 24, 12, 0))
         set_bio.assert_called_once_with(3, 0.25)
 
+    def test_calendar_toolbar_toggle_opens_on_first_use(self):
+        """The GTK3 calendar toggle opens and closes on its first use."""
+        calendar_button = self.window.boss.mpanel.toolbar.get_nth_item(0)
+        self.assertIsInstance(calendar_button, self._gtk.ToggleToolButton)
+        calendar_button.set_active(True)
+        self._flush_events()
+        self.assertTrue(self.window.boss.da.panelvisible)
+        self.assertFalse(self.window.boss.da.panel.get_visible())
+        self.assertEqual(
+            self.window.boss.da.panel.get_size_request(), (230, 150)
+        )
+        self.assertEqual(
+            self.window.boss.da.panel.get_allocated_width(), 230
+        )
+        self.window.boss.da.panel.spin.set_text("99")
+        self.assertEqual(self.window.boss.da.panel.spin.get_value_as_int(), 10)
+        calendar_button.set_active(False)
+        self._flush_events()
+        self.assertFalse(self.window.boss.da.panelvisible)
+        self.assertFalse(self.window.boss.da.panel.get_visible())
+
+    def test_calendar_toggle_invalidates_the_chart_immediately(self):
+        """Opening the panel must request a canvas repaint in the same turn."""
+        calendar_button = self.window.boss.mpanel.toolbar.get_nth_item(0)
+        with mock.patch.object(self.window.boss.da, "queue_draw") as redraw:
+            calendar_button.set_active(True)
+            self.assertTrue(redraw.called)
+        calendar_button.set_active(False)
+
+    def test_calendar_is_drawn_inside_the_chart_canvas(self):
+        """The calendar remains in-window instead of opening a GTK popup."""
+        calendar_button = self.window.boss.mpanel.toolbar.get_nth_item(0)
+        calendar_button.set_active(True)
+        self._flush_events()
+        self.assertTrue(self.window.boss.da.panelvisible)
+        calendar_button.set_active(False)
+
+    def test_clock_card_can_be_clicked_twice(self):
+        """The current-chart clock must tolerate a physical double click."""
+        clock = self.window.boss.mpanel.pool['master'].clock
+        clock.emit('clicked')
+        self._flush_events()
+        clock.emit('clicked')
+        self._flush_events()
+        self.assertEqual(self.window.boss.mpanel.pool['master'].chart_id, 'now')
+
+    def test_accelerator_callbacks_are_strongly_retained(self):
+        """GTK must never dispatch an accelerator to a released callback."""
+        handlers = self.window.accel_group._legacy_accel_handlers
+        self.assertGreater(len(handlers), 20)
+        self.assertTrue(all(callable(callback) for callback, _ in handlers))
+
+    def test_popup_canvases_receive_wheel_events(self):
+        """Auxiliary, diagram and PE-bridge canvases request GTK3 scrolling."""
+        import gtk
+        from astronex.gui.bridgewin import BridgePEWindow
+        from astronex.surfaces.sdasurface import DrawAux, DrawDiagram
+
+        scroll_mask = gtk.gdk.SCROLL_MASK
+        diagram = DrawDiagram(self.window.boss)
+        auxiliary = DrawAux(self.window.boss)
+        auxiliary_host = self._gtk.Window()
+        auxiliary_host.add(auxiliary)
+        auxiliary_host.show_all()
+        self._flush_events()
+        bridge = BridgePEWindow(self.window)
+        try:
+            self.assertTrue(diagram.get_events() & scroll_mask)
+            self.assertTrue(auxiliary.get_events() & scroll_mask)
+            self.assertTrue(bridge.sda.get_events() & scroll_mask)
+
+            before = auxiliary.opaux[0]
+            auxiliary.on_scroll(auxiliary, type("Scroll", (), {
+                "direction": gtk.gdk.SCROLL_DOWN,
+            })())
+            self.assertNotEqual(auxiliary.opaux[0], before)
+
+            # The right-click menu is not merely displayed: activating an
+            # entry changes the auxiliary chart family as it did in GTK2.
+            clicks_item = next(
+                item for item in auxiliary.menu.get_children()
+                if getattr(item.get_child(), "get_text", lambda: "")() == "Clics"
+            )
+            clicks_item.activate()
+            self.assertIs(auxiliary.opaux, auxiliary.opclicks)
+        finally:
+            bridge.destroy()
+            auxiliary_host.destroy()
+            self._flush_events()
+
+    def test_type_to_select_accepts_unicode_names(self):
+        """Typing accented names opens the record/locality selector search."""
+        from astronex.gui.searchview import SearchView
+
+        model = self._gtk.ListStore(str)
+        model.append(["Álvaro"])
+        model.append(["Élodie"])
+        view = SearchView(model)
+        host = self._gtk.Window()
+        host.add(view)
+        host.show_all()
+        self._flush_events()
+        try:
+            handled = view.on_keypress(view, type("Key", (), {
+                "state": 0,
+                "string": "É",
+            })())
+            self.assertTrue(handled)
+            self.assertTrue(view.searchbox_on)
+            frame = view.search_win.get_child().get_children()[0]
+            self.assertEqual(frame.get_child().get_text(), "É")
+            selected_model, selected_iter = view.get_selection().get_selected()
+            self.assertEqual(selected_model.get_value(selected_iter, 0), "Élodie")
+        finally:
+            if view.searchbox_on:
+                view.destroy_searchwin()
+            host.destroy()
+            self._flush_events()
+
     def test_pe_bridge_labels_render_under_gtk3(self):
         """PE bridge labels use the PangoCairo adapter, not raw Cairo."""
         import cairo
@@ -210,6 +358,28 @@ class GtkSmokeTest(unittest.TestCase):
             bridge.sda.draw_label(context, 450, 450)
         finally:
             bridge.destroy()
+            self._flush_events()
+
+    def test_floating_windows_have_reliable_close_paths(self):
+        """Auxiliary charts and PE bridge stay closable in remote sessions."""
+        from astronex.gui.bridgewin import BridgePEWindow
+
+        self.window.boss.da.make_auxwin()
+        auxiliary = self.window.boss.da.auxwins[-1]
+        self.assertEqual(auxiliary.get_transient_for(), self.window)
+        auxiliary.escape(None, None, None, None)
+        self._flush_events()
+        self.assertNotIn(auxiliary, self.window.boss.da.auxwins)
+
+        bridge = BridgePEWindow(self.window)
+        try:
+            self.assertTrue(bridge.get_decorated())
+            self.assertTrue(bridge.escape(None, None, None, None))
+            self._flush_events()
+            self.assertFalse(bridge.get_visible())
+        finally:
+            if bridge.get_visible():
+                bridge.destroy()
             self._flush_events()
 
     def test_planet_popup_renders_under_gtk3(self):

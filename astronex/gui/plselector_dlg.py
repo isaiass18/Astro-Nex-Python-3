@@ -11,6 +11,7 @@ class PlanSelector(gtk.Dialog):
                 _("Selector de aspectos"), parent,
                 gtk.DIALOG_DESTROY_WITH_PARENT,
                 (gtk.STOCK_CLOSE, gtk.RESPONSE_NONE,))
+        self.connect("key-press-event", lambda w,e: self.destroy() if e.keyval == gtk.keysyms.Escape else False)
         self.parnt = parent
         self.notwanted = set()
         self.plet = ['d','f','h','j','k','l','g','z','x','c','v']

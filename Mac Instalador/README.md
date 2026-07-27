@@ -23,8 +23,9 @@ equipos requieren una compilación específica.
 3. Arrastrar `Astro-Nex.app` a la carpeta `Aplicaciones`.
 4. Abrir Astro-Nex desde `Aplicaciones`.
 
-La aplicación ya incluye Python, GTK3 y el motor astronómico. No es necesario
-instalar Python, GTK ni Homebrew.
+La aplicación ya incluye Python, GTK3, el motor astronómico y la fuente de
+símbolos `Astro-Nex.ttf`. La fuente se registra sólo mientras Astro-Nex está
+abierto: no es necesario instalar Python, GTK, Homebrew ni la fuente en macOS.
 
 ## Primera apertura
 

@@ -255,11 +255,13 @@ class WinNex(gtk.Window):
     def on_entry_clicked(self,but):
         if not self.entry:
             self.entry = EntryDlg(self) 
+        self.entry.present()
 
     def entry_calc(self,a,b,c,d):
         if not self.entry:
             self.entry = EntryDlg(self) 
-            self.entry.modify_entries(self.boss.state.calc)
+        self.entry.modify_entries(self.boss.state.calc)
+        self.entry.present()
     
     def locselector(self,a,b,c,d):
         self.locselflag = True
