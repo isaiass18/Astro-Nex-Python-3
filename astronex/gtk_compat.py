@@ -325,7 +325,11 @@ class _GdkBridge:
         if event.direction == Gdk.ScrollDirection.SMOOTH:
             success, _delta_x, delta_y = event.get_scroll_deltas()
             if success:
-                return -delta_y
+                # Quartz reports high-resolution distances, not wheel
+                # notches.  Scale and cap them before passing them to legacy
+                # widgets; otherwise one short gesture can be interpreted as
+                # dozens of discrete actions.
+                return max(-0.25, min(0.25, -delta_y * 0.1))
         return 0.0
 
     def __getattr__(self, name):

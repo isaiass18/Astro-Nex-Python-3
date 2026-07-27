@@ -699,3 +699,104 @@ del gesto.
 
 Se añadió una prueba que compara un evento de rueda y un evento suave de
 trackpad. Ambas rutas se convierten a la misma dirección de desplazamiento.
+
+## 27 de julio de 2026 — sensibilidad y límite de zoom del trackpad
+
+### Incidencia observada
+
+En macOS, un desplazamiento corto en el trackpad podía ampliar el
+planetograma de forma extrema. Quartz entrega distancias de desplazamiento de
+alta resolución, no los pasos discretos de una rueda. Al tratarlas como pasos
+completos, el zoom se multiplicaba demasiado rápido y Cairo quedaba ocupado
+redibujando una carta gigantesca; macOS podía marcar la aplicación como no
+respondiente.
+
+### Corrección
+
+Los deltas suaves se escalan y se limitan antes de llegar a los controles
+históricos. El planetograma aplica un factor mucho menor para trackpad que
+para una rueda convencional y su zoom queda acotado entre el tamaño normal y
+4×. Un gesto breve cambia el tamaño gradualmente y no puede sacar el dibujo a
+una escala que bloquee la interfaz.
+
+### Verificación
+
+La prueba gráfica simula un delta suave muy grande: se limita a un cambio
+pequeño, diez eventos conservan un zoom inferior a 1.2× y una secuencia larga
+nunca supera el límite de 4×.
+
+## 27 de julio de 2026 — alineación uniforme de tarjetas de datos
+
+### Incidencia observada
+
+Las dos tarjetas de datos podían quedar centradas en posiciones diferentes.
+GTK3 calculaba el ancho natural de cada tarjeta a partir de sus propios textos;
+una fecha o localidad más larga ensanchaba una fila y desplazaba la otra.
+
+### Corrección
+
+Se descartó igualar artificialmente el ancho natural de las tarjetas: en
+GTK3/macOS esa restricción encogía el panel completo y lo centraba dentro de
+la ventana. El panel conserva su distribución histórica; la alineación de los
+controles de acción se resuelve dentro de cada tabla, sin cambiar el tamaño
+global de la interfaz.
+
+### Verificación
+
+La prueba gráfica verifica directamente el borde derecho del grupo de
+acciones en cada tarjeta.
+
+## 27 de julio de 2026 — botones de acción alineados en ambas tarjetas
+
+### Incidencia observada
+
+Aunque las tarjetas ya tenían la misma anchura, los botones de reloj y edición
+de la segunda fila quedaban desplazados a la izquierda cuando su localidad era
+más corta. GTK3 repartía el ancho de sus columnas de forma independiente en
+cada tabla y el grupo de acciones no ocupaba el espacio sobrante.
+
+### Corrección
+
+El grupo que contiene el ojo, reloj y lápiz se expande hasta el borde derecho
+de la tabla. Sus dos espaciadores internos conservan el ojo centrado y anclan
+reloj y lápiz al mismo borde derecho en las dos filas, sin depender del texto
+de localidad.
+
+### Verificación
+
+La prueba gráfica comprueba que el borde final del grupo de acciones coincide
+con el borde derecho de la tabla principal y secundaria.
+
+## 27 de julio de 2026 — icono de Astro-Nex en el instalador macOS
+
+### Corrección
+
+El compilador macOS convierte `astronex/resources/nex.ico`, el logo del
+instalador de Windows, en un archivo `.icns` Retina y lo entrega a PyInstaller.
+La aplicación dentro del DMG muestra así el icono de Astro-Nex en Finder,
+Aplicaciones y el Dock.
+
+### Verificación
+
+Se generó el `.icns` con `iconutil` y macOS lo reconoce como un icono válido.
+
+## 27 de julio de 2026 — posición estable del panel principal en macOS
+
+### Incidencia observada
+
+En una ventana amplia de macOS, el contenedor horizontal heredado podía
+centrar el bloque completo de controles y carta. El panel aparecía separado
+del borde izquierdo y el `ScrolledWindow` centraba también la carta, dejando
+un gran vacío entre ambas zonas.
+
+### Corrección
+
+Se contrastó el comportamiento con la instancia VNC funcional y se restauró
+su distribución original basada en `HBox`, sin una cuadrícula adicional ni
+forzar la expansión de la fila de acciones. Así se conservan las proporciones
+históricas de la interfaz.
+
+### Verificación
+
+La prueba gráfica de tarjetas sigue pasando y el código de distribución local
+coincide con el de la instancia VNC funcional.

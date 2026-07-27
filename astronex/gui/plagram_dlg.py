@@ -12,6 +12,8 @@ from .. boss import boss
 curr = boss.get_state()
 
 R_ASP = 0.435
+MAX_ZOOM = 4.0
+TRACKPAD_ZOOM_BASE = 1.05
 letters = ( 'd','f','h','j','k','l','g','z','x','c','v' )
 alet = ( '1','2','3','4','5','6','7','6','5','4','3','2')
 PDFH = 845.04685
@@ -194,10 +196,8 @@ class DrawPlagram(gtk.DrawingArea):
         delta = gtk.gdk.scroll_delta(event)
         if not delta:
             return False
-        if delta > 0:
-            self.zoom *= 1.2 ** delta
-        else:
-            self.zoom = max(1.0, self.zoom / (1.2 ** -delta))
+        self.apply_zoom_delta(delta, event.direction == gtk.gdk.SCROLL_SMOOTH)
+
         if self.zoom == 1.0:
             self.do_zoom = False
         else:
@@ -205,6 +205,16 @@ class DrawPlagram(gtk.DrawingArea):
         self.zx = event.x
         self.zy = event.y
         self.redraw()
+        return True
+
+    def apply_zoom_delta(self, delta, smooth=False):
+        """Update zoom without letting high-resolution trackpads over-scale."""
+        base = TRACKPAD_ZOOM_BASE if smooth else 1.2
+        if delta > 0:
+            self.zoom *= base ** delta
+        else:
+            self.zoom /= base ** -delta
+        self.zoom = min(MAX_ZOOM, max(1.0, self.zoom))
 
 
     def dispatch(self,da,cr):

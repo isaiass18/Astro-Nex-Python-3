@@ -566,6 +566,10 @@ class MainPanel(gtk.VBox):
         
         appath = boss.app.appath
         curr = boss.get_state()
+        # The two rows share the same first table column.  Grouping only the
+        # locality labels keeps their trailing action buttons in one vertical
+        # line without changing the width of the surrounding main panel.
+        self.location_size_group = gtk.SizeGroup(gtk.SIZE_GROUP_HORIZONTAL)
         
         self._add_slot('master')
         self._add_slot('click')
@@ -601,6 +605,7 @@ class MainPanel(gtk.VBox):
         frame = gtk.Frame()
         alignment = gtk.Alignment(0.5, 0.0, 0.0, 0.0)
         widget = Slot(name)
+        self.location_size_group.add_widget(widget.loclbl)
         MainPanel.pool[name] = widget
         alignment.add(widget)
         frame.add(alignment)

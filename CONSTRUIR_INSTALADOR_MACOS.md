@@ -50,7 +50,10 @@ Mac Instalador/Astro-Nex-2.0-beta-20260727-013000-macos-arm64.dmg
 ## Compilación automática
 
 El script crea un entorno de compilación local, compila `_pysw`, genera la
-aplicación con PyInstaller, incluye GTK3 y crea el DMG.
+aplicación con PyInstaller, incluye GTK3 y crea el DMG. También transforma
+automáticamente `astronex/resources/nex.ico` en el icono `.icns` de macOS;
+por tanto Finder, Aplicaciones y el Dock muestran el mismo logo de Astro-Nex
+que el instalador de Windows.
 
 ```bash
 chmod +x scripts/build_macos.sh
@@ -74,6 +77,26 @@ BUILD_ID=beta.1 ./scripts/build_macos.sh
 El archivo resultante será `Astro-Nex-2.0-beta-beta.1-macos-arm64.dmg`.
 Los directorios temporales de compilación no son instaladores ni se usan para
 las pruebas manuales.
+
+## Conservación de instaladores
+
+Después de crear correctamente un DMG nuevo, se deben eliminar todos los DMG
+anteriores de Astro-Nex en `Mac Instalador`. Es una regla obligatoria: así no
+se acumulan instaladores ni se comparte por accidente una versión antigua con
+el mismo número beta.
+
+El script lo hace automáticamente **sólo después** de terminar con éxito la
+creación del nuevo DMG. Si la compilación falla, los instaladores anteriores
+se conservan para no perder un artefacto válido.
+
+Antes de borrar, comprobar por nombre y fecha cuál es el recién generado:
+
+```bash
+ls -lt "Mac Instalador"/*.dmg
+```
+
+Al terminar, debe quedar un único DMG: el que acaba de pasar las verificaciones
+de esta guía.
 
 El script trata explícitamente una incompatibilidad entre HarfBuzz incluido
 por Pillow y GTK de Homebrew. Este paso es necesario para que el `.app` abra

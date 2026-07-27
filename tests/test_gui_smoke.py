@@ -134,10 +134,22 @@ class GtkSmokeTest(unittest.TestCase):
         wheel = type("Scroll", (), {"direction": gtk.gdk.SCROLL_UP})()
         smooth = type("Scroll", (), {
             "direction": gtk.gdk.SCROLL_SMOOTH,
-            "get_scroll_deltas": lambda self: (True, 0.0, -0.25),
+            "get_scroll_deltas": lambda self: (True, 0.0, -20.0),
         })()
         self.assertEqual(gtk.gdk.scroll_delta(wheel), 1.0)
         self.assertEqual(gtk.gdk.scroll_delta(smooth), 0.25)
+
+    def test_planetogram_trackpad_zoom_is_gradual_and_bounded(self):
+        """A short smooth gesture cannot make Cairo draw an enormous chart."""
+        from astronex.gui.plagram_dlg import DrawPlagram, MAX_ZOOM
+
+        drawer = type("Zoom", (), {"zoom": 1.0})()
+        for _ in range(10):
+            DrawPlagram.apply_zoom_delta(drawer, 0.25, smooth=True)
+        self.assertLess(drawer.zoom, 1.2)
+        for _ in range(100):
+            DrawPlagram.apply_zoom_delta(drawer, 0.25, smooth=True)
+        self.assertLessEqual(drawer.zoom, MAX_ZOOM)
 
     def test_chart_header_uses_the_visible_canvas_right_edge(self):
         """Date/regent labels use the full window right edge in normal mode."""
@@ -166,9 +178,18 @@ class GtkSmokeTest(unittest.TestCase):
         alignment = self.window.boss.mpanel.pool['master'].get_parent()
         self.assertEqual(alignment.get_property("xalign"), 0.5)
 
-        table = self.window.boss.mpanel.pool['master'].eb.get_child()
-        action_box = table.get_child_at(1, 0)
-        self.assertEqual(action_box.get_size_request()[0], 195)
+        master = self.window.boss.mpanel.pool['master']
+        click = self.window.boss.mpanel.pool['click']
+        master_table = master.eb.get_child()
+        click_table = click.eb.get_child()
+        master_action = master_table.get_child_at(1, 0)
+        click_action = click_table.get_child_at(1, 0)
+        self.assertEqual(master_action.get_size_request()[0], 195)
+        self.assertEqual(click_action.get_size_request()[0], 195)
+        self.assertEqual(
+            master_action.get_allocation().x + master_action.get_allocated_width(),
+            click_action.get_allocation().x + click_action.get_allocated_width(),
+        )
 
     def test_legacy_context_menus_open_under_gtk3(self):
         """PyGTK's five-argument Menu.popup form remains usable."""
