@@ -891,17 +891,14 @@ desactivado no ocurría nada.
 
 ### Corrección
 
-El manejador general del área de carta consumía el doble clic antes de que
-`BioMixin.pe_rulercb` recibiera el evento. Para una operación `bio_*` simple,
-ahora devuelve el evento sin consumirlo y deja que el manejador de Biografías
-active el botón de momento actual y reposicione la guía.
-
-El botón de momento actual actualiza además la fecha y el redibujado de forma
-directa. Antes dependía de que `Gtk.Calendar` emitiera `day-selected`; al
-volver a seleccionar el mismo día después del primer clic de un doble clic,
-GTK no emitía la señal y la guía quedaba en esa primera posición.
+El manejador general del área de carta debe dejar los eventos de una operación
+`bio_*` simple en manos de `BioMixin.pe_rulercb`. Ese manejador diferencia el
+estado del icono Punto de Edad: con PE activo permite clic y arrastre para
+mover la guía; con PE inactivo consume esos eventos sin marcar la gráfica y
+un doble clic lleva la fecha al momento actual.
 
 ### Verificación
 
-Se verificará en VNC que, en una Biografía, el primer doble clic lleva la guía
-al momento actual con el icono PE activo y también con el icono desactivado.
+Se verificará en VNC que, en una Biografía, el clic sólo mueve la guía con PE
+activo; con PE inactivo no marca la gráfica y el doble clic vuelve al momento
+actual.
