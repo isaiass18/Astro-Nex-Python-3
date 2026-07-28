@@ -148,6 +148,12 @@ class DrawMaster(gtk.Layout):
             self.menu.popup(None, None, None, event.button, event.time)
             return True
         if event.type == gtk.gdk._2BUTTON_PRESS and event.button == 1:
+            # Biographies own the double-click gesture: it moves their PE
+            # ruler to the current moment. Do not consume it here merely
+            # because the PE overlay is hidden; doing so prevents
+            # BioMixin.pe_rulercb from receiving the event.
+            if curr.curr_op in bios and curr.opmode == 'simple':
+                return False
             if showAP or curr.curr_chart == curr.now or curr.curr_op in ['draw_transits','rad_and_transit']:
                 self.panel.nowbut.emit('clicked')
                 info['button'] = 100; #now

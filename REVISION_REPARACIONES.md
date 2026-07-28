@@ -880,3 +880,23 @@ no al manejador de atajos de Astro-Nex.
 El selector de aspectos se posiciona relativo a la esquina superior izquierda
 de la ventana principal, con margen bajo la barra de título. Esto conserva la
 ubicación histórica y evita que Windows lo oculte en el origen absoluto (0,0).
+
+## 28 de julio de 2026 — doble clic en Biografías y guía del PE
+
+### Incidencia observada
+
+En Biografías, el doble clic debía situar la guía del Punto de Edad en el
+momento actual tanto si el icono PE estaba activo como si no. Con el icono
+desactivado no ocurría nada.
+
+### Corrección
+
+El manejador general del área de carta consumía el doble clic antes de que
+`BioMixin.pe_rulercb` recibiera el evento. Para una operación `bio_*` simple,
+ahora devuelve el evento sin consumirlo y deja que el manejador de Biografías
+active el botón de momento actual y reposicione la guía.
+
+### Verificación
+
+Se verificará en VNC que, en una Biografía, el doble clic lleva la guía al
+momento actual con el icono PE activo y también con el icono desactivado.
