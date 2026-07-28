@@ -10,6 +10,7 @@ dist/
 *.egg-info/
 .venv/
 .venv-macos-build/
+.venv-ucrt64/
 
 # Generated output
 *.log
@@ -24,3 +25,14 @@ ip.rtf
 # OS/editor metadata
 .DS_Store
 Thumbs.db
+
+# Local orchestration and one-off repair helpers
+.agents/
+add_esc.py
+fix_layout.py
+astronex/gui/*_patch.py
+
+# Private review material; keep it outside the repository before publishing.
+DEPLOYMENT.private.md
+capturas errores/
+*.rtf
