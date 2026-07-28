@@ -881,24 +881,29 @@ El selector de aspectos se posiciona relativo a la esquina superior izquierda
 de la ventana principal, con margen bajo la barra de título. Esto conserva la
 ubicación histórica y evita que Windows lo oculte en el origen absoluto (0,0).
 
-## 28 de julio de 2026 — doble clic en Biografías y guía del PE
+## 28 de julio de 2026 — interacción de Biografías y guía del PE
 
 ### Incidencia observada
 
-En Biografías, el doble clic debía situar la guía del Punto de Edad en el
-momento actual tanto si el icono PE estaba activo como si no. Con el icono
-desactivado no ocurría nada.
+La nota funcional original de Joan indica que el clic simple sobre la
+Biografía no debe actuar por sí solo; el doble clic se reserva para volver al
+momento actual. Durante la migración se habilitó el clic simple para explorar
+tránsitos aun sin PE activo, alterando esa regla histórica.
 
 ### Corrección
 
-El manejador general del área de carta debe dejar los eventos de una operación
-`bio_*` simple en manos de `BioMixin.pe_rulercb`. Ese manejador diferencia el
-estado del icono Punto de Edad: con PE activo permite clic y arrastre para
-mover la guía; con PE inactivo consume esos eventos sin marcar la gráfica y
-un doble clic lleva la fecha al momento actual.
+El manejador general del área de carta deja los eventos de una operación
+`bio_*` simple en manos de `BioMixin.pe_rulercb`, que aplica esta regla:
+
+- con Punto de Edad activo (`Ctrl+A`), clic y arrastre mueven la guía;
+- con Punto de Edad inactivo, el clic simple y el arrastre se consumen sin
+  marcar ni cambiar la gráfica;
+- con Punto de Edad inactivo, el doble clic restablece la fecha y la guía al
+  momento actual;
+- con Punto de Edad activo, el doble clic no restablece la guía: conserva la
+  posición marcada.
 
 ### Verificación
 
-Se verificará en VNC que, en una Biografía, el clic sólo mueve la guía con PE
-activo; con PE inactivo no marca la gráfica y el doble clic vuelve al momento
-actual.
+La batería automática completó 43 pruebas correctas. En VNC queda la
+verificación visual de los cuatro casos anteriores sobre una Biografía.
