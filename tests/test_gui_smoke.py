@@ -110,7 +110,7 @@ class GtkSmokeTest(unittest.TestCase):
             button_box = selector.vbox.get_children()[0].get_child()
             self.assertEqual(button_box.get_layout(), self._gtk.BUTTONBOX_SPREAD)
             for button in button_box.get_children():
-                self.assertEqual(button.get_size_request(), (42, 30))
+                self.assertEqual(button.get_size_request(), (80, 24))
         finally:
             selector.destroy()
             self._flush_events()

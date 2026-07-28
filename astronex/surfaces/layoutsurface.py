@@ -29,8 +29,10 @@ extended = ['prog_nat','prog_nod','prog_soul','prog_local','compo_one','compo_tw
 
 _COMPACT_PANEL_STYLE = Gtk.CssProvider()
 _COMPACT_PANEL_STYLE.load_from_data(b"""
-.astronex-compact-calendar { font-size: 8pt; min-width: 220px; padding: 0px; }
+.astronex-compact-calendar { font-size: 10pt; min-width: 220px; padding: 0px; }
 .astronex-compact-date-control { min-width: 0px; min-height: 0px; padding: 0px; font-size: 8pt; }
+spinbutton.astronex-compact-date-control entry { min-width: 0px; padding: 0px; }
+spinbutton.astronex-compact-date-control button { min-width: 12px; padding: 0px; }
 """)
 _compact_style_screens = set()
 
@@ -45,12 +47,6 @@ def _add_compact_style(widget, style_class):
         _compact_style_screens.add(screen_id)
     widget.get_style_context().add_class(style_class)
 
-
-class CompactSpinButton(gtk.SpinButton):
-    """Prevent GTK3's native spin control from widening the calendar bar."""
-
-    def do_get_preferred_width(self):
-        return 64, 64
 
 class DrawMaster(gtk.Layout):
     fullscreen = False
@@ -821,9 +817,10 @@ class ChangeDatePanel(gtk.VBox):
             return widget
         
         adj = gtk.Adjustment(1,1,10,1,5)
-        self.spin = compact(CompactSpinButton(adj))
+        self.spin = compact(gtk.SpinButton(adj))
         self.spin.set_wrap(True)
         self.spin.set_alignment(1.0)
+        self.spin.set_width_chars(1)
         self.spin.set_size_request(32,24)
         butbox.pack_start(self.spin,False,False)
 
@@ -866,7 +863,10 @@ class ChangeDatePanel(gtk.VBox):
         but.connect('clicked',self.on_now_clicked)
         self.nowbut = but
         self.pack_start(butbox,False,False) 
-        self.set_size_request(230,150)
+        # Leave a little vertical breathing room for the calendar frame and
+        # the bottom controls.  At 150 px some GTK3 themes clipped their
+        # lower-left edge by a few pixels.
+        self.set_size_request(230,160)
     
     def on_calendar_day_selected(self,cal,parent):
         y,m,d = cal.get_date()

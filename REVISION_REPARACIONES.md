@@ -849,12 +849,13 @@ y los botones del selector hacían la ventana sensiblemente más alta.
 ### Corrección
 
 El calendario aplica métricas compactas sólo a sus propios controles y conserva
-un panel de 230 × 150 píxeles. El selector de aspectos recupera la distribución
+un panel de 230 × 160 píxeles, dejando margen para que no se recorte el borde
+inferior. El selector de aspectos recupera la distribución
 `SPREAD` y limita sus botones a la altura histórica, sin afectar otros diálogos
 ni las preferencias globales del tema GTK.
 
 ### Verificación
 
-En macOS Apple Silicon, el calendario se asigna a 230 × 150 y el selector queda
+En macOS Apple Silicon, el calendario se asigna a 230 × 160 y el selector queda
 en 360 píxeles de alto, con once botones de 27 píxeles. Se comprobará también
 en VNC antes de reconstruir el DMG de distribución.
