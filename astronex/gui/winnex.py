@@ -326,8 +326,9 @@ class WinNex(gtk.Window):
 
     def _walk_widgets(self, widget):
         yield widget
-        if isinstance(widget, gtk.Container):
-            for child in widget.get_children():
+        get_children = getattr(widget, 'get_children', None)
+        if get_children is not None:
+            for child in get_children():
                 for descendant in self._walk_widgets(child):
                     yield descendant
 
