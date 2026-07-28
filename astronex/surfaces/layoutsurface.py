@@ -847,7 +847,9 @@ class ChangeDatePanel(gtk.VBox):
         self.combo.append_text(_("dias"))
         self.combo.set_active(2)
         self.combo.set_size_request(60,24)
-        butbox.pack_start(self.combo,False,False) 
+        # The date unit is the flexible middle control.  Let it absorb the
+        # remaining width so this row ends flush with the compact calendar.
+        butbox.pack_start(self.combo,True,True)
         
         button = compact(gtk.Button())
         button.set_size_request(28,24)

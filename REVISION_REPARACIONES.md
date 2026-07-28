@@ -860,3 +860,11 @@ ni las preferencias globales del tema GTK.
 En macOS Apple Silicon, el calendario se asigna a 230 × 160 y el selector queda
 en 360 píxeles de alto, con once botones de 27 píxeles. Se comprobará también
 en VNC antes de reconstruir el DMG de distribución.
+
+La fila inferior del calendario distribuye el espacio libre en el selector de
+unidad (minutos, horas o días), de modo que sus controles terminan alineados
+con el borde derecho del calendario tanto en macOS como en VNC.
+
+Los atajos de teclado numérico se comprobaron en Windows y funcionan. La
+incidencia observada en VNC corresponde al reenvío de teclas del cliente VNC,
+no al manejador de atajos de Astro-Nex.
