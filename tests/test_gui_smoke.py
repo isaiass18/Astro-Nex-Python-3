@@ -116,12 +116,16 @@ class GtkSmokeTest(unittest.TestCase):
             self._flush_events()
 
     def test_migration_credit_title_is_not_locale_dependent(self):
-        """The GTK-translated documenter heading is replaced on macOS too."""
+        """The Spanish GTK Credits button updates the documenter heading."""
         credit_row = self._gtk.HBox()
+        credits_button = self._gtk.Button("Créditos")
         heading = self._gtk.Label("Documentado por")
+        credit_row.add(credits_button)
         credit_row.add(heading)
 
-        self.window._set_migration_credit_title(credit_row)
+        self.window._connect_migration_credit(credit_row)
+        credits_button.emit("clicked")
+        self._flush_events()
 
         self.assertEqual(heading.get_text(), "Migración a Python 3")
 
@@ -281,6 +285,9 @@ class GtkSmokeTest(unittest.TestCase):
         self.assertLessEqual(self.window.boss.da.panel.get_allocated_width(), 232)
         self.assertEqual(
             self.window.boss.da.panel.calendar.get_allocated_width(), 230
+        )
+        self.assertEqual(
+            self.window.boss.da.panel.spin.get_size_request(), (52, 24)
         )
         calendar_button.set_active(False)
         self._flush_events()

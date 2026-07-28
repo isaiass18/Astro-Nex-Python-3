@@ -865,6 +865,10 @@ La fila inferior del calendario distribuye el espacio libre en el selector de
 unidad (minutos, horas o días), de modo que sus controles terminan alineados
 con el borde derecho del calendario tanto en macOS como en VNC.
 
+El campo numérico reserva 52 píxeles para que los valores de uno y dos dígitos
+y sus flechas integradas no queden comprimidos; el selector de unidad cede el
+espacio equivalente.
+
 Los atajos de teclado numérico se comprobaron en Windows y funcionan. La
 incidencia observada en VNC corresponde al reenvío de teclas del cliente VNC,
 no al manejador de atajos de Astro-Nex.

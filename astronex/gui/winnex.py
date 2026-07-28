@@ -308,11 +308,13 @@ class WinNex(gtk.Window):
         about.show_all()
 
     def _connect_migration_credit(self, about):
-        """Label the second GTK credits row without losing its mail link."""
+        """Label the GTK documenter row without depending on its locale."""
         for widget in self._walk_widgets(about):
-            if isinstance(widget, gtk.Button) and "redits" in (widget.get_label() or ""):
+            # GTK translates this button ("Credits" / "Créditos").  Only
+            # the Credits page has the documenter heading, so other dialog
+            # buttons simply trigger a harmless no-op.
+            if isinstance(widget, gtk.Button):
                 widget.connect('clicked', self._rename_migration_credit, about)
-                break
 
     def _rename_migration_credit(self, button, about):
         idle_add(self._set_migration_credit_title, about)

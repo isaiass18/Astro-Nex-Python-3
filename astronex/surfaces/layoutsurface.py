@@ -827,8 +827,11 @@ class ChangeDatePanel(gtk.VBox):
         self.spin = compact(gtk.SpinButton(adj))
         self.spin.set_wrap(True)
         self.spin.set_alignment(1.0)
-        self.spin.set_width_chars(1)
-        self.spin.set_size_request(32,24)
+        self.spin.set_width_chars(2)
+        # A two-digit value and GTK3's built-in +/- arrows need more room.
+        # The expandable unit selector gives up this space while the row
+        # remains flush with the calendar.
+        self.spin.set_size_request(52,24)
         butbox.pack_start(self.spin,False,False)
 
         button = compact(gtk.Button())
