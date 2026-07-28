@@ -320,7 +320,7 @@ class WinNex(gtk.Window):
     def _set_migration_credit_title(self, about):
         for widget in self._walk_widgets(about):
             if isinstance(widget, gtk.Label) and widget.get_text() == "Documented by":
-                widget.set_text("Migración de Python")
+                widget.set_text("Migración a Python 3")
                 break
         return False
 
