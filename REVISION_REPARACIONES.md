@@ -800,3 +800,40 @@ históricas de la interfaz.
 
 La prueba gráfica de tarjetas sigue pasando y el código de distribución local
 coincide con el de la instancia VNC funcional.
+
+## 27 de julio de 2026 — cambio prematuro del ciclo del Punto de Edad
+
+### Incidencia observada
+
+Al llegar al 1 de enero del año que completa un ciclo de 72 años, Punto de
+Edad cambiaba la biografía a la casa 1 y al ciclo siguiente, aunque el
+aniversario natal todavía no hubiera ocurrido. La guía del PE quedaba fuera de
+la biografía que correspondía a la casa 12.
+
+Se reprodujo con los dos casos informados:
+
+- Núria Alberich, nacida el 12/11/1954: el error aparecía el 01/01/2026 y el
+  cambio correcto corresponde al 12/11/2026.
+- Joan Solé, nacido el 30/12/1957: el error aparecía el 01/01/2029 y el cambio
+  correcto corresponde al 30/12/2029.
+
+### Corrección
+
+`Chart.get_cycles` ya no deduce el ciclo solamente del año del calendario.
+Calcula el posible ciclo de 72 años y verifica su fecha de inicio real —el
+aniversario natal con su hora—. Si la fecha consultada es anterior, conserva
+el ciclo previo.
+
+### Verificación
+
+Se añadieron `tests/test_age_cycles.py` y tres casos de regresión. En la
+instancia VNC pasaron los dos límites de Núria y Joan, además de la ruta de
+fecha con zona horaria usada por el selector. El 1 de enero permanece en casa
+12 y ciclo 1; el cambio a casa 1 y ciclo 2 ocurre en el aniversario exacto.
+Astro-Nex fue reiniciado en VNC con esta corrección para la validación manual.
+
+Durante la validación manual se detectó que el selector de fecha de VNC entrega
+una fecha con zona horaria, mientras que el cálculo histórico de lapsos usa
+fechas locales sin zona. Se normalizan ambos valores a la misma hora civil
+local antes de compararlos, evitando la excepción de dibujo. La prueba cubre
+también esta ruta con fecha consciente de zona horaria.

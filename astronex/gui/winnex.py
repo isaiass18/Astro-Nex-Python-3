@@ -298,7 +298,11 @@ class WinNex(gtk.Window):
             about.set_license(license_file.read())
         about.set_copyright("Copyright © 2006")
         about.set_website("http://astro-nex.com")
-        about.set_authors(["Jose Antonio Rodríguez <jar@eideia.net>"])
+        about.set_authors([
+            "Jose Antonio Rodríguez <jar@eideia.net>",
+            "Migración de Python 2 a Python 3: Isaias Silva Amaya "
+            "<isaiass18@gmail.com>",
+        ])
         imgfile = path.joinpath(appath,"resources/splash.png")
         logo = gtk.gdk.pixbuf_new_from_file(imgfile)
         about.set_logo(logo)

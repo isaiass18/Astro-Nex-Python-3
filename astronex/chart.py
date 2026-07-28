@@ -1010,6 +1010,10 @@ class Chart(object):
 
 ####### biography
     def which_house_today(self,now):
+        if now.tzinfo is not None:
+            # Biography lapses are stored as local civil datetimes.  Keep the
+            # date selector on that same representation before subtracting.
+            now = now.replace(tzinfo=None)
         wh = 0
         wi = 0.5
         cycles = self.get_cycles(now)
@@ -1064,11 +1068,26 @@ class Chart(object):
 #############
     def get_cycles(self,nowdt=None): 
         date,_ = parsestrtime(self.date)
-        _,_,year = date.split("/")
+        _,_,year = (int(value) for value in date.split("/"))
         if not nowdt:
             nowdt = datetime.now()
-        nowyear = nowdt.year
-        cycles,_ = divmod(nowyear-int(year),72)
+        if not isinstance(nowdt, datetime):
+            nowdt = datetime.combine(nowdt,time.min)
+        elif nowdt.tzinfo is not None:
+            # ``house_time_lapsus`` returns local civil (naive) datetimes.
+            # The interactive date selector, however, supplies an aware
+            # datetime.  PE cycles are based on the local natal anniversary,
+            # so compare their wall-clock values rather than mixing types.
+            nowdt = nowdt.replace(tzinfo=None)
+
+        # A new 72-year cycle starts on the natal anniversary, not on 1
+        # January of the calendar year that happens to be 72 years later.
+        # Using only ``nowdt.year`` advanced PE/biography to house 1 months
+        # too early for people born after New Year's Day.
+        cycles = max(0, (nowdt.year-year) // 72)
+        cycle_start = self.house_time_lapsus(0,cycles)['begin']
+        if cycles and nowdt < cycle_start:
+            cycles -= 1
         return cycles
 
 #######
