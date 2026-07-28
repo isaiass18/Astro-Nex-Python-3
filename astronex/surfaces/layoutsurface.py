@@ -520,7 +520,12 @@ class DrawMaster(gtk.Layout):
     def make_plsel(self):
         if not self.plselector:
             self.plselector = PlanSelector(self.boss.mainwin)
-            self.plselector.move(0,0)
+            # Keep the selector at Astro-Nex's upper-left corner, as in the
+            # original UI.  Absolute (0, 0) may place it behind the title bar
+            # on Windows, so anchor it below the parent window decoration.
+            wx, wy = self.boss.mainwin.get_position()
+            self.plselector.move(wx + 8, wy + 36)
+            self.plselector.present()
 
     def make_cycleswin(self): 
         if not self.cycleselector:

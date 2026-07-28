@@ -876,3 +876,7 @@ depender de que GTK lo nombre `Credits` o `Créditos`.
 Los atajos de teclado numérico se comprobaron en Windows y funcionan. La
 incidencia observada en VNC corresponde al reenvío de teclas del cliente VNC,
 no al manejador de atajos de Astro-Nex.
+
+El selector de aspectos se posiciona relativo a la esquina superior izquierda
+de la ventana principal, con margen bajo la barra de título. Esto conserva la
+ubicación histórica y evita que Windows lo oculte en el origen absoluto (0,0).
