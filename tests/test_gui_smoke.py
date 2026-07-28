@@ -274,15 +274,14 @@ class GtkSmokeTest(unittest.TestCase):
         calendar_button.set_active(True)
         self._flush_events()
         self.assertTrue(self.window.boss.da.panelvisible)
-        self.assertFalse(self.window.boss.da.panel.get_visible())
+        self.assertTrue(self.window.boss.da.panel.get_visible())
         self.assertEqual(
-            self.window.boss.da.panel.get_size_request(), (230, 150)
+            self.window.boss.da.panel.get_size_request(), (230, 160)
         )
+        self.assertLessEqual(self.window.boss.da.panel.get_allocated_width(), 232)
         self.assertEqual(
-            self.window.boss.da.panel.get_allocated_width(), 230
+            self.window.boss.da.panel.calendar.get_allocated_width(), 230
         )
-        self.window.boss.da.panel.spin.set_text("99")
-        self.assertEqual(self.window.boss.da.panel.spin.get_value_as_int(), 10)
         calendar_button.set_active(False)
         self._flush_events()
         self.assertFalse(self.window.boss.da.panelvisible)

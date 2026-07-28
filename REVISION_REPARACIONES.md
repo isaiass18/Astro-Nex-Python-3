@@ -848,9 +848,10 @@ y los botones del selector hacían la ventana sensiblemente más alta.
 
 ### Corrección
 
-El calendario aplica métricas compactas sólo a sus propios controles y conserva
-un panel de 230 × 160 píxeles, dejando margen para que no se recorte el borde
-inferior. El selector de aspectos recupera la distribución
+El calendario aplica métricas compactas sólo a sus propios controles y limita
+su anchura real a 230 píxeles; el panel conserva 230 × 160 píxeles, dejando
+margen para que no se recorte el borde inferior. El selector de aspectos
+recupera la distribución
 `SPREAD` y limita sus botones a la altura histórica, sin afectar otros diálogos
 ni las preferencias globales del tema GTK.
 

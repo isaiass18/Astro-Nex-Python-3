@@ -48,6 +48,13 @@ def _add_compact_style(widget, style_class):
     widget.get_style_context().add_class(style_class)
 
 
+class CompactCalendar(gtk.Calendar):
+    """Keep the in-canvas date selector within its historical width."""
+
+    def do_get_preferred_width(self):
+        return 230, 230
+
+
 class DrawMaster(gtk.Layout):
     fullscreen = False
     panning = False
@@ -796,7 +803,7 @@ class ChangeDatePanel(gtk.VBox):
         self.time = curr.date.ld.time()
         self.internal_signal = True
         self.needsredrawing = True
-        self.calendar = gtk.Calendar()
+        self.calendar = CompactCalendar()
         # GTK3 themes use a much larger natural calendar than the GTK2
         # reference.  Scope this compact style to the in-canvas calendar so
         # its historical proportions do not enlarge the chart area.
