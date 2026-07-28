@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import gtk
 import pango
+from gi.repository import Gtk
 from .. drawing.dispatcher import DrawMixin
 
 class PlanSelector(gtk.Dialog):
@@ -32,9 +33,18 @@ class PlanSelector(gtk.Dialog):
 
     def create_buttonlist(self):
         font = pango.FontDescription("Astro-Nex")
+        self._button_style = Gtk.CssProvider()
+        self._button_style.load_from_data(
+            b"button { min-width: 0px; min-height: 0px; padding: 0px; }"
+        )
         vbuttonbox = gtk.VButtonBox() 
+        vbuttonbox.set_layout(gtk.BUTTONBOX_SPREAD)
         for let in self.plet:
             but = gtk.ToggleButton(let)
+            but.get_style_context().add_provider(
+                self._button_style, Gtk.STYLE_PROVIDER_PRIORITY_USER
+            )
+            but.set_size_request(80,24)
             but.child.modify_font(font)
             but.set_mode(True)
             but.connect("toggled",self.on_but_toggled)

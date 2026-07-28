@@ -837,3 +837,24 @@ una fecha con zona horaria, mientras que el cálculo histórico de lapsos usa
 fechas locales sin zona. Se normalizan ambos valores a la misma hora civil
 local antes de compararlos, evitando la excepción de dibujo. La prueba cubre
 también esta ruta con fecha consciente de zona horaria.
+
+## 28 de julio de 2026 — proporciones de calendario y selector de aspectos
+
+### Incidencia observada
+
+En GTK3, el calendario integrado y el selector de aspectos ocupaban más espacio
+que sus equivalentes de Astro-Nex 1.2. El calendario ampliaba el área de carta
+y los botones del selector hacían la ventana sensiblemente más alta.
+
+### Corrección
+
+El calendario aplica métricas compactas sólo a sus propios controles y conserva
+un panel de 230 × 150 píxeles. El selector de aspectos recupera la distribución
+`SPREAD` y limita sus botones a la altura histórica, sin afectar otros diálogos
+ni las preferencias globales del tema GTK.
+
+### Verificación
+
+En macOS Apple Silicon, el calendario se asigna a 230 × 150 y el selector queda
+en 360 píxeles de alto, con once botones de 27 píxeles. Se comprobará también
+en VNC antes de reconstruir el DMG de distribución.

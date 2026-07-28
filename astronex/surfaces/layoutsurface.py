@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import gtk,gobject
+from gi.repository import Gtk
 import cairo,pango
 from ..pangocairo_compat import CairoContext
 import math
@@ -25,6 +26,31 @@ bios = ['bio_nat','bio_nod','bio_soul','bio_dharma']
 peops = ['draw_nat','draw_nod','draw_soul','draw_local']
 sheetops = ['dat_nat', 'dat_nod', 'dat_house', 'prog_nat', 'prog_nod', 'prog_local', 'prog_soul' ]
 extended = ['prog_nat','prog_nod','prog_soul','prog_local','compo_one','compo_two']
+
+_COMPACT_PANEL_STYLE = Gtk.CssProvider()
+_COMPACT_PANEL_STYLE.load_from_data(b"""
+.astronex-compact-calendar { font-size: 8pt; min-width: 220px; padding: 0px; }
+.astronex-compact-date-control { min-width: 0px; min-height: 0px; padding: 0px; font-size: 8pt; }
+""")
+_compact_style_screens = set()
+
+
+def _add_compact_style(widget, style_class):
+    screen = widget.get_screen()
+    screen_id = id(screen)
+    if screen_id not in _compact_style_screens:
+        Gtk.StyleContext.add_provider_for_screen(
+            screen, _COMPACT_PANEL_STYLE, Gtk.STYLE_PROVIDER_PRIORITY_USER
+        )
+        _compact_style_screens.add(screen_id)
+    widget.get_style_context().add_class(style_class)
+
+
+class CompactSpinButton(gtk.SpinButton):
+    """Prevent GTK3's native spin control from widening the calendar bar."""
+
+    def do_get_preferred_width(self):
+        return 64, 64
 
 class DrawMaster(gtk.Layout):
     fullscreen = False
@@ -775,6 +801,10 @@ class ChangeDatePanel(gtk.VBox):
         self.internal_signal = True
         self.needsredrawing = True
         self.calendar = gtk.Calendar()
+        # GTK3 themes use a much larger natural calendar than the GTK2
+        # reference.  Scope this compact style to the in-canvas calendar so
+        # its historical proportions do not enlarge the chart area.
+        _add_compact_style(self.calendar, 'astronex-compact-calendar')
         self.calendar.set_display_options(gtk.CALENDAR_SHOW_HEADING | gtk.CALENDAR_WEEK_START_MONDAY)
         self.calendar.connect('day-selected', self.on_calendar_day_selected,parent)
         self.mth_hid = self.calendar.connect('month-changed',self.on_calendar_day_selected,parent)
@@ -785,15 +815,20 @@ class ChangeDatePanel(gtk.VBox):
         self.connect("button_press_event", lambda s,but: True)
         
         butbox = gtk.HBox()
+
+        def compact(widget):
+            _add_compact_style(widget, 'astronex-compact-date-control')
+            return widget
         
         adj = gtk.Adjustment(1,1,10,1,5)
-        self.spin = gtk.SpinButton(adj)
+        self.spin = compact(CompactSpinButton(adj))
         self.spin.set_wrap(True)
         self.spin.set_alignment(1.0)
-        self.spin.set_size_request(40,-1)
+        self.spin.set_size_request(32,24)
         butbox.pack_start(self.spin,False,False)
 
-        button = gtk.Button() 
+        button = compact(gtk.Button())
+        button.set_size_request(28,24)
         button.set_events(gtk.gdk.BUTTON_PRESS_MASK|gtk.gdk.BUTTON_RELEASE_MASK)
         arrow = gtk.Arrow(gtk.ARROW_LEFT, gtk.SHADOW_NONE)
         button.add(arrow)
@@ -802,15 +837,16 @@ class ChangeDatePanel(gtk.VBox):
         button.connect("button_release_event",self.on_panel_clicked,parent)
         butbox.pack_start(button,False,False)
         
-        self.combo = gtk.combo_box_new_text()
+        self.combo = compact(gtk.combo_box_new_text())
         self.combo.append_text(_("minutos"))
         self.combo.append_text(_("horas"))
         self.combo.append_text(_("dias"))
         self.combo.set_active(2)
-        self.combo.set_size_request(70,-1)
+        self.combo.set_size_request(60,24)
         butbox.pack_start(self.combo,False,False) 
         
-        button = gtk.Button()
+        button = compact(gtk.Button())
+        button.set_size_request(28,24)
         button.set_events(gtk.gdk.BUTTON_PRESS_MASK|gtk.gdk.BUTTON_RELEASE_MASK)
         arrow = gtk.Arrow(gtk.ARROW_RIGHT, gtk.SHADOW_NONE)
         button.add(arrow)
@@ -819,7 +855,8 @@ class ChangeDatePanel(gtk.VBox):
         button.connect("button_release_event",self.on_panel_clicked,parent)
         butbox.pack_start(button,False,False)
 
-        but = gtk.Button()
+        but = compact(gtk.Button())
+        but.set_size_request(28,24)
         img = gtk.Image()
         appath = boss.app.appath
         imgfile = path.joinpath(appath,"astronex/resources/refresh-18.png")
@@ -829,6 +866,7 @@ class ChangeDatePanel(gtk.VBox):
         but.connect('clicked',self.on_now_clicked)
         self.nowbut = but
         self.pack_start(butbox,False,False) 
+        self.set_size_request(230,150)
     
     def on_calendar_day_selected(self,cal,parent):
         y,m,d = cal.get_date()
