@@ -907,3 +907,23 @@ El manejador general del área de carta deja los eventos de una operación
 
 La batería automática completó 43 pruebas correctas. En VNC queda la
 verificación visual de los cuatro casos anteriores sobre una Biografía.
+
+## 28 de julio de 2026 — alineación de la tabla de Orbes
+
+### Incidencia observada
+
+En **Configuración → Orbes**, las filas de símbolos planetarios quedaban
+ligeramente desalineadas respecto a los valores de sus orbes en GTK3.
+
+### Corrección
+
+Los símbolos y los valores se construían en contenedores independientes: un
+`VBox` con la fuente Astro-Nex para los planetas y una `Gtk.Table` para los
+números. GTK3 calcula alturas diferentes para ambas fuentes. Se reunieron las
+seis columnas en una misma tabla y se centró cada etiqueta en su celda, de
+modo que todos los valores comparten la fila exacta de su grupo planetario.
+
+### Verificación
+
+La batería automática completó 43 pruebas correctas. Se verificará visualmente
+en VNC que las cuatro filas de símbolos y valores quedan alineadas.

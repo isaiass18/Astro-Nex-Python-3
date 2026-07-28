@@ -389,41 +389,38 @@ class OrbsPage(gtk.VBox):
         gtk.VBox.__init__(self)
         self.set_border_width(6)
 
-        hbox = gtk.HBox()
-        vbox = gtk.VBox()
-        vbox.set_border_width(4)
-        vbox.set_size_request(54,-1)
         font = pango.FontDescription("Astro-Nex")
-        labs = ['','d,f', 'h,j,l', 'k,g','z,x,c']
-        for l in labs:
-            lbl = gtk.Label(l)
-            lbl.modify_font(font)
-            vbox.pack_start(lbl,False,False,4)
         frame = gtk.Frame()
-        frame.add(vbox)
-        hbox.pack_start(frame,False,False)
-        
-        frame = gtk.Frame()
-        table = gtk.Table(5,5)
+        # Keep the planet glyphs and their orb values in the same table.
+        # Separate VBox/Table containers acquire different row heights in
+        # GTK3 because Astro-Nex glyphs have different font metrics.
+        table = gtk.Table(5,6)
         table.set_border_width(6)
         table.set_row_spacings(3)
-        table.set_col_spacings(12) 
+        table.set_col_spacings(12)
         frame.add(table)
+        labs = ['', 'd,f', 'h,j,l', 'k,g', 'z,x,c']
+        for i,l in enumerate(labs):
+            lbl = gtk.Label(l)
+            lbl.modify_font(font)
+            lbl.set_alignment(0.5,0.5)
+            table.attach(lbl,0,1,i,i+1)
         labs = ['2','36','4','5','17']
         for j,l in enumerate(labs):
             lbl = gtk.Label(l)
             lbl.modify_font(font)
-            table.attach(lbl,j,j+1,0,1)
+            lbl.set_alignment(0.5,0.5)
+            table.attach(lbl,j+1,j+2,0,1)
         cat = ['lum','normal','short','far']
         for i,c in enumerate(cat):
             for j,o in enumerate(getattr(boss.opts,c)):
                 # PyGTK coerced numeric values here.  PyGObject's Gtk.Label
                 # requires text, which otherwise prevents Preferences opening.
                 lbl = gtk.Label(str(o))
-                table.attach(lbl,j,j+1,i+1,i+2)
-        hbox.pack_start(frame,False,False)
+                lbl.set_alignment(0.5,0.5)
+                table.attach(lbl,j+1,j+2,i+1,i+2)
         align = gtk.Alignment(0.5,0.5)
-        align.add(hbox)
+        align.add(frame)
         self.pack_start(align,False,False)
 
 class LangPage(gtk.VBox):
