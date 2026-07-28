@@ -129,6 +129,21 @@ class GtkSmokeTest(unittest.TestCase):
 
         self.assertEqual(heading.get_text(), "Migración a Python 3")
 
+    def test_migration_credit_title_follows_the_active_language(self):
+        titles = {
+            'en': 'Python 3 Migration',
+            'es': 'Migración a Python 3',
+            'ca': 'Migració a Python 3',
+            'de': 'Migration zu Python 3',
+        }
+        original_language = self.window.boss.opts.lang
+        try:
+            for language, expected in titles.items():
+                self.window.boss.opts.lang = language
+                self.assertEqual(self.window._migration_credit_title(), expected)
+        finally:
+            self.window.boss.opts.lang = original_language
+
     def test_chart_canvas_receives_available_width(self):
         """A legacy omitted ``pack_start`` must still expand under GTK 3."""
         self._flush_events()

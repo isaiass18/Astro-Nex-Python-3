@@ -869,6 +869,10 @@ El campo numérico reserva 52 píxeles para que los valores de uno y dos dígito
 y sus flechas integradas no queden comprimidos; el selector de unidad cede el
 espacio equivalente.
 
+El crédito de migración se muestra en el idioma activo de Astro-Nex: español,
+inglés, catalán o alemán. También se identifica el botón de créditos sin
+depender de que GTK lo nombre `Credits` o `Créditos`.
+
 Los atajos de teclado numérico se comprobaron en Windows y funcionan. La
 incidencia observada en VNC corresponde al reenvío de teclas del cliente VNC,
 no al manejador de atajos de Astro-Nex.

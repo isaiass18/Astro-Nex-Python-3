@@ -326,9 +326,20 @@ class WinNex(gtk.Window):
             # Match its stable prefix instead of one particular translation.
             text = widget.get_text() if isinstance(widget, gtk.Label) else ""
             if text.casefold().startswith("document"):
-                widget.set_text("Migración a Python 3")
+                widget.set_text(self._migration_credit_title())
                 break
         return False
+
+    def _migration_credit_title(self):
+        """Return the migration credit in Astro-Nex's active language."""
+        language = (getattr(self.boss.opts, 'lang', 'es') or 'es').lower()
+        language = language.replace('_', '-').split('-', 1)[0]
+        return {
+            'en': 'Python 3 Migration',
+            'es': 'Migración a Python 3',
+            'ca': 'Migració a Python 3',
+            'de': 'Migration zu Python 3',
+        }.get(language, 'Migración a Python 3')
 
     def _walk_widgets(self, widget):
         yield widget
