@@ -55,12 +55,26 @@ símbolos astrológicos.
 Windows puede mostrar una advertencia porque el ejecutable todavía no está
 firmado. Ejecuta únicamente una copia descargada de este repositorio oficial.
 
+### macOS (Apple Silicon: M1, M2, M3 y M4)
+
+1. Descarga el repositorio como ZIP desde **Code → Download ZIP** y
+   descomprímelo.
+2. Abre [Astro-Nex-2.0-beta-20260728-053000-macos-arm64.dmg](Mac%20Instalador/Astro-Nex-2.0-beta-20260728-053000-macos-arm64.dmg).
+3. Copia `Astro-Nex.app` a la carpeta **Aplicaciones** y ábrelo desde allí.
+
+Este instalador es para Macs con procesador Apple Silicon y macOS 26 o
+posterior. Incluye Python, GTK3, el motor astronómico y la tipografía de
+Astro-Nex; no hace falta instalar dependencias adicionales. La aplicación se
+firma de forma ad-hoc, por lo que macOS puede solicitar una confirmación la
+primera vez que se abre.
+
 ## Más información
 
 - [Guía completa de la migración e instalación](MIGRACION_PYTHON3.md)
 - [Detalles del instalador Windows](Windows%20Instalador/README.md)
+- [Cómo construir el instalador macOS](CONSTRUIR_INSTALADOR_MACOS.md)
 - [Instrucciones técnicas de instalación](INSTALL)
 
-Astro-Nex fue migrado de Python 2/PyGTK a Python 3/GTK3. Linux y Windows usan
-la misma fuente; los binarios nativos se construyen específicamente para cada
-plataforma.
+Astro-Nex fue migrado de Python 2/PyGTK a Python 3/GTK3. Linux, Windows y
+macOS usan la misma fuente; los binarios nativos se construyen específicamente
+para cada plataforma.
