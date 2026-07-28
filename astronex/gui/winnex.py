@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys,os
 from .. extensions.path import path
+from ..gobject_compat import idle_add
 import gtk
 from .. surfaces.layoutsurface import DrawMaster
 from .. surfaces.pngsurface import DrawPng
@@ -298,15 +299,37 @@ class WinNex(gtk.Window):
             about.set_license(license_file.read())
         about.set_copyright("Copyright © 2006")
         about.set_website("http://astro-nex.com")
-        about.set_authors([
-            "Jose Antonio Rodríguez <jar@eideia.net>",
-            "Migración de Python",
-            "Isaias Silva Amaya <isaiass18@gmail.com>",
-        ])
+        about.set_authors(["Jose Antonio Rodríguez <jar@eideia.net>"])
+        about.set_documenters(["Isaias Silva Amaya <isaiass18@gmail.com>"])
+        self._connect_migration_credit(about)
         imgfile = path.joinpath(appath,"resources/splash.png")
         logo = gtk.gdk.pixbuf_new_from_file(imgfile)
         about.set_logo(logo)
         about.show_all()
+
+    def _connect_migration_credit(self, about):
+        """Label the second GTK credits row without losing its mail link."""
+        for widget in self._walk_widgets(about):
+            if isinstance(widget, gtk.Button) and "redits" in (widget.get_label() or ""):
+                widget.connect('clicked', self._rename_migration_credit, about)
+                break
+
+    def _rename_migration_credit(self, button, about):
+        idle_add(self._set_migration_credit_title, about)
+
+    def _set_migration_credit_title(self, about):
+        for widget in self._walk_widgets(about):
+            if isinstance(widget, gtk.Label) and widget.get_text() == "Documented by":
+                widget.set_text("Migración de Python")
+                break
+        return False
+
+    def _walk_widgets(self, widget):
+        yield widget
+        if isinstance(widget, gtk.Container):
+            for child in widget.get_children():
+                for descendant in self._walk_widgets(child):
+                    yield descendant
 
     def on_about_response(self,dialog,response):
         if response < 0:
