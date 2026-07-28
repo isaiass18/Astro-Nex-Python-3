@@ -319,7 +319,11 @@ class WinNex(gtk.Window):
 
     def _set_migration_credit_title(self, about):
         for widget in self._walk_widgets(about):
-            if isinstance(widget, gtk.Label) and widget.get_text() == "Documented by":
+            # This heading belongs to GTK, so it is translated by the system
+            # locale ("Documentado por" on macOS in Spanish), not by Astro-Nex.
+            # Match its stable prefix instead of one particular translation.
+            text = widget.get_text() if isinstance(widget, gtk.Label) else ""
+            if text.casefold().startswith("document"):
                 widget.set_text("Migración a Python 3")
                 break
         return False

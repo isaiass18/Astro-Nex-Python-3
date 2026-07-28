@@ -115,6 +115,16 @@ class GtkSmokeTest(unittest.TestCase):
             selector.destroy()
             self._flush_events()
 
+    def test_migration_credit_title_is_not_locale_dependent(self):
+        """The GTK-translated documenter heading is replaced on macOS too."""
+        credit_row = self._gtk.HBox()
+        heading = self._gtk.Label("Documentado por")
+        credit_row.add(heading)
+
+        self.window._set_migration_credit_title(credit_row)
+
+        self.assertEqual(heading.get_text(), "Migración a Python 3")
+
     def test_chart_canvas_receives_available_width(self):
         """A legacy omitted ``pack_start`` must still expand under GTK 3."""
         self._flush_events()
