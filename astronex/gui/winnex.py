@@ -300,7 +300,7 @@ class WinNex(gtk.Window):
         about.set_copyright("Copyright © 2006")
         about.set_website("http://astro-nex.com")
         about.set_authors(["Jose Antonio Rodríguez <jar@eideia.net>"])
-        about.set_documenters(["Isaias Silva Amaya - isaiass19@gmail.com"])
+        about.set_documenters(["Isaias Silva Amaya (isaiass18@gmail.com)"])
         self._connect_migration_credit(about)
         imgfile = path.joinpath(appath,"resources/splash.png")
         logo = gtk.gdk.pixbuf_new_from_file(imgfile)
