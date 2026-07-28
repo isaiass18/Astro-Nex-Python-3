@@ -820,7 +820,8 @@ class ChangeDatePanel(gtk.VBox):
         # its historical proportions do not enlarge the chart area.
         _add_compact_style(self.calendar, 'astronex-compact-calendar')
         self.calendar.set_display_options(gtk.CALENDAR_SHOW_HEADING | gtk.CALENDAR_WEEK_START_MONDAY)
-        self.calendar.connect('day-selected', self.on_calendar_day_selected,parent)
+        self.drawmaster = parent
+        self.day_hid = self.calendar.connect('day-selected', self.on_calendar_day_selected,parent)
         self.mth_hid = self.calendar.connect('month-changed',self.on_calendar_day_selected,parent)
         frame.add(self.calendar)
         self.pack_start(frame, False, False)
@@ -901,7 +902,11 @@ class ChangeDatePanel(gtk.VBox):
                 date = datetime.combine(datetime(y,m+1,d-1),time) 
             except ValueError:
                 date = datetime.combine(datetime(y,m+1,d-3),time) 
-        curr.date.setdt(date) 
+        self.apply_date(date, parent)
+
+    def apply_date(self,date,parent):
+        """Update the active moment even when Gtk.Calendar keeps its day."""
+        curr.date.setdt(date)
         curr.refresh_nowchart()
         boss.mpanel.act_now(curr.now)
         if parent.cycleselector:
@@ -932,7 +937,22 @@ class ChangeDatePanel(gtk.VBox):
         return True
 
     def on_now_clicked(self,but):
-        self.set_date(datetime.now(),True)
+        # Gtk.Calendar does not emit ``day-selected`` when the current day is
+        # selected again. A biography double click can first move the guide
+        # within that day, so relying on that signal left the guide at the
+        # first-click position. Apply the moment directly, then synchronize
+        # the calendar without emitting a duplicate update.
+        date = datetime.now()
+        self.time = date.time()
+        self.internal_signal = True
+        self.apply_date(date, self.drawmaster)
+        self.calendar.handler_block(self.day_hid)
+        self.calendar.handler_block(self.mth_hid)
+        try:
+            self.set_cal(date)
+        finally:
+            self.calendar.handler_unblock(self.mth_hid)
+            self.calendar.handler_unblock(self.day_hid)
 
     def update_cycles(self,delta):
         y,m,d = self.calendar.get_date()

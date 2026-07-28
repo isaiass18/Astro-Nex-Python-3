@@ -896,7 +896,12 @@ El manejador general del área de carta consumía el doble clic antes de que
 ahora devuelve el evento sin consumirlo y deja que el manejador de Biografías
 active el botón de momento actual y reposicione la guía.
 
+El botón de momento actual actualiza además la fecha y el redibujado de forma
+directa. Antes dependía de que `Gtk.Calendar` emitiera `day-selected`; al
+volver a seleccionar el mismo día después del primer clic de un doble clic,
+GTK no emitía la señal y la guía quedaba en esa primera posición.
+
 ### Verificación
 
-Se verificará en VNC que, en una Biografía, el doble clic lleva la guía al
-momento actual con el icono PE activo y también con el icono desactivado.
+Se verificará en VNC que, en una Biografía, el primer doble clic lleva la guía
+al momento actual con el icono PE activo y también con el icono desactivado.
