@@ -82,7 +82,7 @@ Generar la distribución en modo ventana:
 ```bash
 python -m PyInstaller --noconfirm --clean --windowed \
   --name Astro-Nex \
-  --icon astronex/resources/nex.ico \
+  --icon astronex/resources/nex-beta.ico \
   --paths . \
   --hidden-import pysw \
   --hidden-import _pysw \

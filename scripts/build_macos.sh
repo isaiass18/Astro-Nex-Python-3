@@ -34,7 +34,8 @@ harfbuzz_prefix=$(brew --prefix harfbuzz)
 python_bin=${PYTHON_BIN:-python3}
 venv_dir="$project_dir/.venv-macos-build"
 build_dir=$(mktemp -d /tmp/astronex-macos.XXXXXX)
-icon_source="$project_dir/astronex/resources/nex.ico"
+# Keep the Finder/Dock icon visually distinct from the stable 1.2 release.
+icon_source="$project_dir/astronex/resources/nex-beta.ico"
 iconset_dir="$build_dir/Astro-Nex.iconset"
 icon_path="$build_dir/Astro-Nex.icns"
 

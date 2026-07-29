@@ -969,3 +969,25 @@ recibe el resto del panel, como en la distribución histórica.
 La batería automática completó 43 pruebas correctas. Se verificará en VNC que
 la lista de personas, la casilla de tabla y el selector inferior conservan las
 proporciones de 1.2.
+
+## 28 de julio de 2026 — identidad visual del acceso Beta
+
+### Incidencia observada
+
+El acceso directo de la versión Beta usaba exactamente el mismo icono que
+Astro-Nex 1.2, lo que hacía difícil distinguir ambas instalaciones en macOS y
+Windows.
+
+### Corrección
+
+Se añadió una variante Beta del emblema original, sin insignias ni texto: es
+el mismo dibujo de Astro-Nex con un tono ligeramente más oscuro y una
+saturación apenas mayor. Los recursos `iconex-beta-22.png`,
+`iconex-beta-48.png` y `nex-beta.ico` se usan ahora respectivamente en la
+ventana, en el acceso Linux y al construir los instaladores de macOS y Windows.
+El icono de la versión estable no se modifica.
+
+### Verificación
+
+Se comprobará al generar cada instalador que Finder/Dock y el acceso directo
+de Windows muestran la variante oscura de Beta.

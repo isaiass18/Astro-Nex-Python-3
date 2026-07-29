@@ -13,7 +13,8 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=Windows Instalador
 OutputBaseFilename=Astro-Nex-Setup
-SetupIconFile=astronex\resources\nex.ico
+; The Beta installer and its Start-menu shortcut use the darker Beta artwork.
+SetupIconFile=astronex\resources\nex-beta.ico
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern

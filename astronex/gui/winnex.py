@@ -226,7 +226,9 @@ class WinNex(gtk.Window):
         self.da.ha = scrolled.get_hadjustment()
         self.da.va = scrolled.get_vadjustment()
 
-        imgfile = path.joinpath(appath,"resources/iconex-22.png")
+        # Beta uses the same Astro-Nex mark in a slightly darker tone so its
+        # window identity matches the macOS and Windows launcher icon.
+        imgfile = path.joinpath(appath,"resources/iconex-beta-22.png")
         try:
             self.set_icon_from_file(str(imgfile))
         except Exception:
