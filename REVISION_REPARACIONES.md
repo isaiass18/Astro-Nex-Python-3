@@ -958,10 +958,11 @@ menos espacio visible.
 
 ### Corrección
 
-El área desplazable del navegador recupera una altura solicitada de 160
-píxeles lógicos y su bloque ya no absorbe espacio vertical sobrante. El
-selector de operaciones inferior conserva la expansión y recibe el resto del
-panel, como en la distribución histórica.
+El área desplazable del navegador usa una altura solicitada de 220 píxeles
+lógicos, suficiente para mostrar aproximadamente doce personas con las
+métricas de filas de GTK3, y su bloque ya no absorbe espacio vertical
+sobrante. El selector de operaciones inferior conserva la expansión y recibe
+el resto del panel, como en la distribución histórica.
 
 ### Verificación
 
