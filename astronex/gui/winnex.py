@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys,os
+from gi.repository import Gtk
 from .. extensions.path import path
 from ..gobject_compat import idle_add
 import gtk
@@ -18,6 +19,33 @@ from .aux_dlg import AuxWindow
 from .shell_dlg import ShellDialog
 from .quickhelp import HelpWindow
 from .inieditor import IniEditor
+
+
+_MAIN_TOOLBAR_STYLE = Gtk.CssProvider()
+_MAIN_TOOLBAR_STYLE.load_from_data(b"""
+toolbar.astronex-main-toolbar {
+    min-height: 0px;
+    padding: 0px;
+}
+toolbar.astronex-main-toolbar toolbutton,
+toolbar.astronex-main-toolbar button {
+    min-height: 0px;
+    min-width: 0px;
+    padding: 2px 4px;
+}
+""")
+_main_toolbar_style_screens = set()
+
+
+def _add_main_toolbar_style(toolbar):
+    screen = toolbar.get_screen()
+    screen_id = id(screen)
+    if screen_id not in _main_toolbar_style_screens:
+        Gtk.StyleContext.add_provider_for_screen(
+            screen, _MAIN_TOOLBAR_STYLE, Gtk.STYLE_PROVIDER_PRIORITY_USER
+        )
+        _main_toolbar_style_screens.add(screen_id)
+    toolbar.get_style_context().add_class('astronex-main-toolbar')
 
 class WinNex(gtk.Window):
 
@@ -92,6 +120,7 @@ class WinNex(gtk.Window):
         self.tb.set_size_request(300,-1)
         self.tb.set_tooltips(True)
         self.tb.set_style(gtk.TOOLBAR_ICONS)
+        _add_main_toolbar_style(self.tb)
         
         ti = gtk.ToolButton()
         ti.connect('clicked',self.cb_exit)

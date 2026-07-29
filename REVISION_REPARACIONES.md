@@ -927,3 +927,22 @@ modo que todos los valores comparten la fila exacta de su grupo planetario.
 
 La batería automática completó 43 pruebas correctas. Se verificará visualmente
 en VNC que las cuatro filas de símbolos y valores quedan alineadas.
+
+## 28 de julio de 2026 — altura de la barra principal
+
+### Incidencia observada
+
+En GTK3, la primera fila de iconos de la barra principal dejaba más espacio
+vertical respecto a la cabecera de la ventana que en la presentación Python
+2/GTK2.
+
+### Corrección
+
+Se aplicó una clase CSS exclusiva de la barra principal. Reduce el relleno y
+las dimensiones mínimas de sus `ToolButton` sin cambiar los iconos de 32
+píxeles ni afectar las barras de herramientas internas.
+
+### Verificación
+
+La batería automática completó 43 pruebas correctas. Se verificará visualmente
+en VNC que la primera fila conserva una altura compacta equivalente a GTK2.
