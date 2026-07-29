@@ -394,7 +394,10 @@ class ChartBrowser(gtk.VBox):
         self.clip = None
 
         sw = gtk.ScrolledWindow()
-        #sw.set_size_request(-1,160)
+        # Keep the people browser at the historical GTK2 height.  GTK3
+        # otherwise gives this scroll area the extra vertical space intended
+        # for the chart-operation selector below it.
+        sw.set_size_request(-1,160)
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         sw.add(self.chartview) 
         self.pack_start(sw,True,True)
@@ -589,7 +592,7 @@ class MainPanel(gtk.VBox):
         frame.add(tb) 
         self.toolbar = tb
         hbox.pack_start(frame,False,False) 
-        self.pack_start(hbox,True,True)
+        self.pack_start(hbox,False,False)
         
         self.chooser = OpPanel(boss)
         self.pack_end(self.chooser,True,True)

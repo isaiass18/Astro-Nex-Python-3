@@ -946,3 +946,25 @@ píxeles ni afectar las barras de herramientas internas.
 
 La batería automática completó 43 pruebas correctas. Se verificará visualmente
 en VNC que la primera fila conserva una altura compacta equivalente a GTK2.
+
+## 28 de julio de 2026 — proporción del navegador de personas
+
+### Incidencia observada
+
+En el panel principal de GTK3, el navegador de personas mostraba varias filas
+más que la presentación Python 2/GTK2 y la casilla de selección de tabla
+ocupaba más alto. El selector de cartas inferior recibía, en consecuencia,
+menos espacio visible.
+
+### Corrección
+
+El área desplazable del navegador recupera una altura solicitada de 160
+píxeles lógicos y su bloque ya no absorbe espacio vertical sobrante. El
+selector de operaciones inferior conserva la expansión y recibe el resto del
+panel, como en la distribución histórica.
+
+### Verificación
+
+La batería automática completó 43 pruebas correctas. Se verificará en VNC que
+la lista de personas, la casilla de tabla y el selector inferior conservan las
+proporciones de 1.2.
