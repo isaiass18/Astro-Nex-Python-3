@@ -397,10 +397,10 @@ class ChartBrowser(gtk.VBox):
         # Keep the people browser at the historical GTK2 height.  GTK3
         # otherwise gives this scroll area the extra vertical space intended
         # for the chart-operation selector below it.
-        # The 320 logical-pixel request matches the historical panel once
+        # The 380 logical-pixel request matches the historical panel once
         # GTK3 row metrics and the VNC display scale are applied: about
-        # twelve people remain visible above the operation selector.
-        sw.set_size_request(-1,320)
+        # fourteen people remain visible above the operation selector.
+        sw.set_size_request(-1,380)
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         sw.add(self.chartview) 
         self.pack_start(sw,True,True)
