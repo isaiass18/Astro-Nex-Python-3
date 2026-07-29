@@ -51,9 +51,9 @@ Mac Instalador/Astro-Nex-2.0-beta-20260727-013000-macos-arm64.dmg
 
 El script crea un entorno de compilación local, compila `_pysw`, genera la
 aplicación con PyInstaller, incluye GTK3 y crea el DMG. También transforma
-automáticamente `astronex/resources/nex.ico` en el icono `.icns` de macOS;
-por tanto Finder, Aplicaciones y el Dock muestran el mismo logo de Astro-Nex
-que el instalador de Windows.
+automáticamente `astronex/resources/nex-beta.ico` en el icono `.icns` de
+macOS; por tanto Finder, Aplicaciones y el Dock muestran la variante oscura
+que identifica la versión Beta, igual que el instalador de Windows.
 
 ```bash
 chmod +x scripts/build_macos.sh
