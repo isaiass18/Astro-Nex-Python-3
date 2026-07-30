@@ -77,21 +77,17 @@ class BioMixin(object):
             if not surface.opaux[0].startswith('bio'):
                 return False
         else:
-            if not curr.curr_op.startswith('bio') or curr.opmode != 'simple':
+            if (
+                not curr.curr_op.startswith('bio')
+                or curr.opmode != 'simple'
+                or curr.curr_chart == curr.now
+            ):
                 return False 
-        state =  event.get_state()
         info = child.get_data("move-info")
         width = child.allocation.width
-        pe_active = self.get_showAP()
         if event.type == gtk.gdk._2BUTTON_PRESS:
-            # The ruler is only editable while Punto de Edad is active. When
-            # it is inactive, a double click is the explicit shortcut back to
-            # the current moment; when active it remains a normal ruler click.
-            if not pe_active:
-                boss.da.panel.nowbut.emit('clicked')
-                info['button'] = 100; #now
-            return True
-        if not pe_active:
+            boss.da.panel.nowbut.emit('clicked')
+            info['button'] = 100; #now
             return True
         elif event.type == gtk.gdk.BUTTON_PRESS:
             if event.button != 1: return False

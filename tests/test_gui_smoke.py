@@ -5,6 +5,7 @@ Run on a graphical desktop or with Xvfb:
 """
 
 import os
+import sys
 import tempfile
 import unittest
 from datetime import date, datetime
@@ -150,11 +151,15 @@ class GtkSmokeTest(unittest.TestCase):
         self.assertGreaterEqual(self.window.da.ha.get_page_size(), 500)
         self.assertTrue(self.window.da.get_hexpand())
         self.assertTrue(self.window.da.get_vexpand())
-        self.assertTrue(self.window.da.get_parent().get_parent().get_hexpand())
         # On Windows Gdk.Screen.get_width() is the virtual desktop width.
         # The main window must use one monitor, otherwise drawings are placed
         # several screens to the right of the visible area.
         self.assertLessEqual(self.window.get_allocated_width(), 2500)
+
+    def test_chart_canvas_uses_scrolled_window_directly(self):
+        """Extended charts must not be wrapped in a GtkViewport on GTK3."""
+        parent = self.window.da.get_parent()
+        self.assertIsInstance(parent, self._gtk.ScrolledWindow)
 
     def test_scroll_delta_supports_mouse_wheels_and_macos_trackpads(self):
         """The GTK3 bridge normalizes discrete and smooth scrolling."""
@@ -293,7 +298,6 @@ class GtkSmokeTest(unittest.TestCase):
         calendar_button.set_active(True)
         self._flush_events()
         self.assertTrue(self.window.boss.da.panelvisible)
-        self.assertTrue(self.window.boss.da.panel.get_visible())
         self.assertEqual(
             self.window.boss.da.panel.get_size_request(), (230, 160)
         )
@@ -304,10 +308,15 @@ class GtkSmokeTest(unittest.TestCase):
         self.assertEqual(
             self.window.boss.da.panel.spin.get_size_request(), (52, 24)
         )
+        self.assertEqual(
+            self.window.boss.da.child_get_property(self.window.boss.da.panel, "y"), 0
+        )
         calendar_button.set_active(False)
         self._flush_events()
         self.assertFalse(self.window.boss.da.panelvisible)
-        self.assertFalse(self.window.boss.da.panel.get_visible())
+        self.assertEqual(
+            self.window.boss.da.child_get_property(self.window.boss.da.panel, "y"), -200
+        )
 
     def test_calendar_toggle_invalidates_the_chart_immediately(self):
         """Opening the panel must request a canvas repaint in the same turn."""
@@ -333,6 +342,107 @@ class GtkSmokeTest(unittest.TestCase):
         clock.emit('clicked')
         self._flush_events()
         self.assertEqual(self.window.boss.mpanel.pool['master'].chart_id, 'now')
+
+    def test_biography_ruler_matches_python2_interaction(self):
+        """Biography charts keep the original drag/double-click behaviour."""
+        import gtk
+        from astronex.drawing import biograph
+
+        class PointerWindow:
+            def __init__(self, x, y=0):
+                self.x = x
+                self.y = y
+
+            def get_pointer(self):
+                return None, self.x, self.y, 0
+
+        class Event:
+            def __init__(self, event_type, button=1, x=0, y=0, pointer_x=None):
+                self.type = event_type
+                self.button = button
+                self.x = x
+                self.y = y
+                self.window = PointerWindow(pointer_x if pointer_x is not None else x, y)
+
+            def get_state(self):
+                return 0
+
+        drawer = self.window.boss.da.drawer
+        surface = self.window.boss.da
+        pe_button = self.window.boss.mpanel.toolbar.get_nth_item(1)
+        original_op = biograph.curr.curr_op
+        original_mode = biograph.curr.opmode
+        original_chart = biograph.curr.curr_chart
+        original_gridw = drawer.gridw
+        original_hoff = drawer.hoff
+        original_house_t = drawer.house_t
+        original_ruler = biograph.ruler[:]
+        original_release = biograph.release
+        width = surface.allocation.width or 800
+
+        try:
+            pe_button.set_active(False)
+            self._flush_events()
+            biograph.curr.curr_op = 'bio_nat'
+            biograph.curr.opmode = 'simple'
+            biograph.curr.curr_chart = object()
+            drawer.gridw = float(width)
+            drawer.hoff = 0.0
+            drawer.house_t = {
+                'begin': datetime(2000, 1, 1),
+                'lapsus': date(2000, 4, 10) - date(2000, 1, 1),
+            }
+            biograph.ruler[0] = 0.25
+            biograph.release = False
+            surface.set_data("move-info", {'button': -1})
+
+            with mock.patch.object(surface, "queue_draw"), mock.patch.object(
+                self.window.boss.da.panel, "set_date"
+            ) as set_date, mock.patch.object(
+                self.window.boss.da.panel.nowbut, "emit"
+            ) as now_emit:
+                drawer.pe_rulercb(
+                    surface,
+                    Event(gtk.gdk.BUTTON_PRESS, x=width * 0.25),
+                    surface,
+                )
+                drawer.pe_rulercb(
+                    surface,
+                    Event(
+                        gtk.gdk.MOTION_NOTIFY,
+                        x=width * 0.25,
+                        pointer_x=width * 0.6,
+                    ),
+                    surface,
+                )
+                drawer.pe_rulercb(
+                    surface,
+                    Event(gtk.gdk.BUTTON_RELEASE, x=width * 0.6),
+                    surface,
+                )
+
+                self.assertAlmostEqual(biograph.ruler[0], 0.6, places=2)
+                self.assertTrue(biograph.release)
+                self.assertTrue(set_date.called)
+
+                drawer.pe_rulercb(
+                    surface,
+                    Event(gtk.gdk._2BUTTON_PRESS, x=width * 0.6),
+                    surface,
+                )
+                now_emit.assert_called_with('clicked')
+        finally:
+            pe_button.set_active(False)
+            biograph.curr.curr_op = original_op
+            biograph.curr.opmode = original_mode
+            biograph.curr.curr_chart = original_chart
+            drawer.gridw = original_gridw
+            drawer.hoff = original_hoff
+            drawer.house_t = original_house_t
+            biograph.ruler[:] = original_ruler
+            biograph.release = original_release
+            surface.set_data("move-info", {'button': -1})
+            self._flush_events()
 
     def test_accelerator_callbacks_are_strongly_retained(self):
         """GTK must never dispatch an accelerator to a released callback."""
@@ -377,6 +487,72 @@ class GtkSmokeTest(unittest.TestCase):
             bridge.destroy()
             auxiliary_host.destroy()
             self._flush_events()
+
+    def test_extended_pair_chart_anchors_overlays_to_the_visible_area(self):
+        """Extended pair charts pin overlays to the visible viewport."""
+        surface = self.window.boss.da
+        state = self.window.boss.get_state()
+        original_op = state.curr_op
+        original_mode = state.opmode
+        original_clickmode = state.clickmode
+
+        try:
+            state.curr_op = 'compo_two'
+            state.opmode = 'simple'
+            state.clickmode = 'click'
+            surface.set_size_request(720, 1080)
+            surface.ha.value = 0
+            surface.va.value = 260
+            self._flush_events()
+
+            surface.show_panel()
+            surface.show_diada()
+            self._flush_events()
+
+            self.assertEqual(surface.ha.value, 0)
+            self.assertEqual(surface.va.value, 0)
+            self.assertTrue(surface.panel.get_visible())
+            self.assertTrue(surface.diada.get_visible())
+            self.assertIs(surface.panel.get_parent(), surface.overlay_host)
+            self.assertIs(surface.diada.get_parent(), surface.overlay_host)
+        finally:
+            surface.hide_panel()
+            surface.hide_diada()
+            surface.set_size_request(720, 720)
+            state.curr_op = original_op
+            state.opmode = original_mode
+            state.clickmode = original_clickmode
+            self._flush_events()
+
+    def test_chart_browser_height_matches_backend_layout(self):
+        """The left browser keeps VNC proportions without overgrowing on macOS."""
+        browser = self.window.boss.mpanel.browser
+        scroller = next(
+            child for child in browser.get_children()
+            if isinstance(child, self._gtk.ScrolledWindow)
+        )
+        expected_height = 260 if sys.platform == 'darwin' else 330
+        self.assertEqual(scroller.get_size_request(), (-1, expected_height))
+
+    def test_toolbar_state_hides_stale_overlays(self):
+        """The canvas must drop stale overlay flags when the toolbar is off."""
+        surface = self.window.boss.da
+        toolbar = self.window.boss.mpanel.toolbar
+        calendar_button = toolbar.get_nth_item(0)
+        diagram_button = toolbar.get_nth_item(5)
+
+        surface.panelvisible = True
+        surface.diadavisible = True
+        calendar_button.set_active(False)
+        diagram_button.set_active(False)
+        self._flush_events()
+
+        surface.sync_overlays_with_toolbar()
+
+        self.assertFalse(surface.panelvisible)
+        self.assertFalse(surface.diadavisible)
+        self.assertFalse(surface.panel.get_visible())
+        self.assertFalse(surface.diada.get_visible())
 
     def test_type_to_select_accepts_unicode_names(self):
         """Typing accented names opens the record/locality selector search."""

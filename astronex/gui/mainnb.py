@@ -13,6 +13,21 @@ from .searchview import SearchView
 curr = None
 boss = None
 
+
+def _connect_toggle_proxy(button, handler, boss):
+    """Preserve GTK2 toggle semantics across GTK3 clicks and set_active()."""
+    button._astronex_last_handled_state = button.get_active()
+
+    def dispatch(widget, *args):
+        active = widget.get_active()
+        if getattr(widget, "_astronex_last_handled_state", None) == active:
+            return
+        widget._astronex_last_handled_state = active
+        handler(widget, boss)
+
+    button.connect('clicked', dispatch)
+    button.connect('toggled', dispatch)
+
 class Slot(gtk.VBox):
     overwrite = False
     storage = None
@@ -394,13 +409,13 @@ class ChartBrowser(gtk.VBox):
         self.clip = None
 
         sw = gtk.ScrolledWindow()
-        # Keep the people browser at the historical GTK2 height.  GTK3
-        # otherwise gives this scroll area the extra vertical space intended
-        # for the chart-operation selector below it.
-        # The 330 logical-pixel request matches the historical panel once
-        # GTK3 row metrics and the VNC display scale are applied: about
-        # fourteen people remain visible above the operation selector.
-        sw.set_size_request(-1,330)
+        # VNC needs the historical 330 px browser height documented in the
+        # repair notes. On macOS Quartz the same request overexpands this
+        # list, so keep a shorter request there to preserve chart space.
+        browser_height = 330
+        if sys.platform == 'darwin':
+            browser_height = 260
+        sw.set_size_request(-1,browser_height)
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         sw.add(self.chartview) 
         self.pack_start(sw,True,True)
@@ -627,7 +642,7 @@ class MainPanel(gtk.VBox):
         tb.set_show_arrow(True)
 
         tcal = gtk.ToggleToolButton()
-        tcal.connect('toggled',self.on_calpanel,boss)
+        _connect_toggle_proxy(tcal,self.on_calpanel,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/cal.png")
         img.set_from_file(str(imgfile))
@@ -636,7 +651,7 @@ class MainPanel(gtk.VBox):
         tb.insert(tcal,-1)
     
         tpe = gtk.ToggleToolButton()
-        tpe.connect('toggled',self.on_pebut,boss)
+        _connect_toggle_proxy(tpe,self.on_pebut,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/ap.png")
         img.set_from_file(str(imgfile))
@@ -654,7 +669,7 @@ class MainPanel(gtk.VBox):
         tb.insert(twin,-1)
     
         tasp = gtk.ToggleToolButton()
-        tasp.connect('toggled',self.on_plsel,boss)
+        _connect_toggle_proxy(tasp,self.on_plsel,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/aspects.png")
         img.set_from_file(str(imgfile))
@@ -663,7 +678,7 @@ class MainPanel(gtk.VBox):
         tb.insert(tasp,-1)
 
         tcyc = gtk.ToggleToolButton()
-        tcyc.connect('toggled',self.on_cycles,boss)
+        _connect_toggle_proxy(tcyc,self.on_cycles,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/cycles2.png")
         img.set_from_file(str(imgfile))
@@ -672,7 +687,7 @@ class MainPanel(gtk.VBox):
         tb.insert(tcyc,-1)
 
         tdia = gtk.ToggleToolButton()
-        tdia.connect('toggled',self.on_diada,boss)
+        _connect_toggle_proxy(tdia,self.on_diada,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/subdia.png")
         img.set_from_file(str(imgfile))
@@ -681,7 +696,7 @@ class MainPanel(gtk.VBox):
         tb.insert(tdia,-1)
 
         tdia = gtk.ToggleToolButton()
-        tdia.connect('toggled',self.on_pebridge,boss)
+        _connect_toggle_proxy(tdia,self.on_pebridge,boss)
         img = gtk.Image()
         imgfile = path.joinpath(appath,"resources/bridge.png")
         img.set_from_file(str(imgfile))

@@ -220,11 +220,19 @@ class WinNex(gtk.Window):
 
         scrolled = gtk.ScrolledWindow()
         scrolled.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scrolled.add_with_viewport(self.da)
+        # GtkLayout is directly scrollable on GTK3.
+        self.da.set_hexpand(True)
+        self.da.set_vexpand(True)
+        scrolled.add(self.da)
         scrolled.set_shadow_type(gtk.SHADOW_NONE)
-        hbox.pack_start(scrolled)
+        overlay = Gtk.Overlay()
+        overlay.set_hexpand(True)
+        overlay.set_vexpand(True)
+        overlay.add(scrolled)
+        hbox.pack_start(overlay)
         self.da.ha = scrolled.get_hadjustment()
         self.da.va = scrolled.get_vadjustment()
+        self.da.attach_overlay_host(overlay)
 
         # Beta uses the same Astro-Nex mark in a slightly darker tone so its
         # window identity matches the macOS and Windows launcher icon.

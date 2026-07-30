@@ -353,6 +353,8 @@ class OpPanel(gtk.VBox):
             boss.da.redraw_auxwins(True)
         else:
             boss.da.toggle_menulist('pez','remove')
+        boss.da.sync_overlays_with_toolbar()
+        boss.da.queue_draw()
         if op == 'draw_nat':
             boss.da.toggle_menulist('hz','add')
         else:

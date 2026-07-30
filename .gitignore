@@ -38,6 +38,7 @@ astronex/gui/*_patch.py
 DEPLOYMENT.private.md
 capturas errores/
 *.rtf
+Astro-Nex-1.2.3-inicial python2/
 
 # Mobile/offline local artifacts
 mobile/
@@ -48,6 +49,7 @@ REVISION_REPARACIONES.md
 SINCRONIZACION_ENTORNOS.md
 MOVIL_API_IOS_ESTADO.md
 FLUJO_DE_TRABAJO_WINDOWS.md
+INSTANCIAS_PRIVADAS.md
 mobile/api/__pycache__/
 mobile/api/.runtime/
 mobile/ios/**/xcuserdata/

@@ -123,6 +123,96 @@ class DrawMaster(gtk.Layout):
         self.va = None
         self.m_x = 0
         self.m_y = 0
+        self._last_extended_op = None
+        self._overlay_reanchor_pending = False
+        self._overlay_reanchor_source = None
+        self.overlay_host = None
+
+    def _reset_viewport_to_origin(self):
+        if self.ha:
+            self.ha.set_value(0)
+        if self.va:
+            self.va.set_value(0)
+
+    def attach_overlay_host(self, overlay):
+        self.overlay_host = overlay
+        for widget, halign in ((self.panel, Gtk.Align.START), (self.diada, Gtk.Align.END)):
+            parent = widget.get_parent()
+            if parent is self:
+                self.remove(widget)
+            if parent is not overlay:
+                overlay.add_overlay(widget)
+            widget.set_halign(halign)
+            widget.set_valign(Gtk.Align.START)
+        self._sync_overlay_positions()
+
+    def _schedule_overlay_reanchor(self):
+        self._overlay_reanchor_pending = curr.curr_op == 'compo_two'
+        if not self._overlay_reanchor_pending:
+            return
+        if self._overlay_reanchor_source:
+            gobject.source_remove(self._overlay_reanchor_source)
+        self._overlay_reanchor_source = gobject.idle_add(self._apply_overlay_reanchor)
+
+    def _apply_overlay_reanchor(self):
+        self._overlay_reanchor_source = None
+        if curr.curr_op != 'compo_two':
+            self._overlay_reanchor_pending = False
+            return False
+        self._reset_viewport_to_origin()
+        self._sync_overlay_positions()
+        self.queue_draw()
+        self._overlay_reanchor_pending = False
+        return False
+
+    def _visible_origin(self):
+        x = self.ha.value if self.ha else 0
+        y = self.va.value if self.va else 0
+        return x, y
+
+    def _visible_width(self):
+        if self.ha and self.ha.page_size:
+            return self.ha.page_size
+        return self.allocation.width
+
+    def _sync_overlay_positions(self):
+        if self.overlay_host:
+            if self.panelvisible:
+                self.panel.show()
+            else:
+                self.panel.hide()
+
+            if self.diadavisible:
+                self.diada.show()
+            else:
+                self.diada.hide()
+            return
+        origin_x, origin_y = self._visible_origin()
+        if self.panelvisible:
+            self.move(self.panel,int(origin_x),int(origin_y))
+            self.panel.show()
+        else:
+            self.move(self.panel,-200,-200)
+            self.panel.hide()
+
+        if self.diadavisible:
+            where = origin_x + self._visible_width() - self.diada.allocation.width
+            self.move(self.diada,int(where),int(origin_y))
+            self.diada.show()
+        else:
+            self.move(self.diada,-280,0)
+            self.diada.hide()
+
+    def _sync_overlay_visibility_from_toolbar(self):
+        toolbar = getattr(boss.mpanel, 'toolbar', None)
+        if not toolbar:
+            return
+        self.panelvisible = toolbar.get_nth_item(0).get_active()
+        self.diadavisible = toolbar.get_nth_item(5).get_active()
+
+    def sync_overlays_with_toolbar(self):
+        self._sync_overlay_visibility_from_toolbar()
+        self._sync_overlay_positions()
     
     def create_special_area(self):
         frame = gtk.Frame()
@@ -469,15 +559,16 @@ class DrawMaster(gtk.Layout):
             aux.sda.redraw()
 
     def show_panel(self,menuitem=None):
-        self.move(self.panel,0,0)
-        self.panel.show()
+        if curr.curr_op in ['compo_one', 'compo_two']:
+            self._reset_viewport_to_origin()
+            self._schedule_overlay_reanchor()
         self.panelvisible = True
+        self._sync_overlay_positions()
         #boss.mpanel.stop_timeout()
 
     def hide_panel(self,menuitem=None):
-        self.move(self.panel,-200,-200)
-        self.panel.hide()
         self.panelvisible = False
+        self._sync_overlay_positions()
         if curr.curr_chart == curr.now:
             self.panel.nowbut.emit('clicked')
             #boss.mpanel.start_timeout()
@@ -497,14 +588,16 @@ class DrawMaster(gtk.Layout):
         self.redraw_auxwins()
     
     def show_diada(self,menuitem=None):
-        where = self.allocation.width - self.diada.allocation.width
-        self.move(self.diada,where,0) 
+        if curr.curr_op in ['compo_one', 'compo_two']:
+            self._reset_viewport_to_origin()
+            self._schedule_overlay_reanchor()
         self.diadavisible = True 
+        self._sync_overlay_positions()
         self.redraw()
     
     def hide_diada(self,menuitem=None):
-        self.move(self.diada,-280,0) 
         self.diadavisible = False
+        self._sync_overlay_positions()
         self.redraw()
     
     def make_auxwin(self):
@@ -543,10 +636,11 @@ class DrawMaster(gtk.Layout):
     def dispatch(self, da, cr):
         cr = CairoContext(cr)
         cr.save()
+        self._sync_overlay_visibility_from_toolbar()
         if self.diadavisible:
             where = self.allocation.width - self.diada.allocation.width
             if self.where_diada != where:
-                self.move(self.diada,where,0) 
+                self.move(self.diada,where,0)
                 self.where_diada = where
         
         op = curr.curr_op
@@ -563,10 +657,25 @@ class DrawMaster(gtk.Layout):
                     else:
                         pad = self.allocation.width * 0.55
                 self.set_size_request(720,int(720+pad))
+            if op != self._last_extended_op:
+                self._reset_viewport_to_origin()
+                self._schedule_overlay_reanchor()
+                self._last_extended_op = op
         else:
+            self._overlay_reanchor_pending = False
+            if self._overlay_reanchor_source:
+                gobject.source_remove(self._overlay_reanchor_source)
+                self._overlay_reanchor_source = None
+            self._last_extended_op = None
             if DrawMixin.extended_canvas:
                 DrawMixin.extended_canvas = False
                 self.set_size_request(720,720)
+
+        if op == 'compo_two' and self._overlay_reanchor_pending:
+            self._reset_viewport_to_origin()
+        self._sync_overlay_positions()
+        if op == 'compo_two' and not self._overlay_reanchor_source:
+            self._overlay_reanchor_pending = False
     
         if op in bios and not self.hselvisible and curr.opmode == 'simple':
             where = self.allocation.height - self.hsel.allocation.height - 35
