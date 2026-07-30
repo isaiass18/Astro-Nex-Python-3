@@ -40,6 +40,14 @@ capturas errores/
 *.rtf
 
 # Mobile/offline local artifacts
+mobile/
+mobile-hybrid/
+docs/mobile-offline/
+PROCEDIMIENTO_PUSH_GITHUB.md
+REVISION_REPARACIONES.md
+SINCRONIZACION_ENTORNOS.md
+MOVIL_API_IOS_ESTADO.md
+FLUJO_DE_TRABAJO_WINDOWS.md
 mobile/api/__pycache__/
 mobile/api/.runtime/
 mobile/ios/**/xcuserdata/
