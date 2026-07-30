@@ -1051,3 +1051,60 @@ El icono de la versión estable no se modifica.
 
 Se comprobará al generar cada instalador que Finder/Dock y el acceso directo
 de Windows muestran la variante oscura de Beta.
+
+## 30 de julio de 2026 — ajuste fino del calendario compacto y retono de la Beta
+
+### Incidencia observada
+
+La primera compactación GTK3 del calendario integrado aún dejaba diferencias
+visuales claras respecto a Astro-Nex 1.2: el bloque seguía viéndose más ancho
+que la referencia histórica, el campo numérico inferior había heredado el
+aspecto de `SpinButton` estándar con `+/-`, y la flecha interna del selector
+de unidad quedaba demasiado cerca del botón derecho. Además, la identidad Beta
+seguía demasiado cercana en tono a la edición Python 2/estable, por lo que su
+icono y el splash todavía se distinguían poco.
+
+### Corrección
+
+Se ajustó el panel de fecha sólo en su presentación, sin alterar la lógica de
+avance temporal:
+
+- el calendario compacto reduce su anchura preferida a 205 píxeles y el panel
+  completo recupera una altura más próxima a la referencia histórica;
+- el primer control inferior deja de usar el `SpinButton` nativo de GTK3 y
+  vuelve a representarse como campo numérico pequeño con flechas verticales
+  apiladas, como en Python 2;
+- las flechas laterales se simplifican a triángulos y el selector de unidad
+  gana separación entre su flecha interna y el botón de avance.
+
+Además, se oscurecieron de forma uniforme los recursos Beta ya introducidos,
+sin añadir insignias ni texto nuevo:
+
+- `astronex/resources/iconex-beta-22.png`
+- `astronex/resources/iconex-beta-48.png`
+- `astronex/resources/nex-beta.ico`
+- `astronex/resources/splash.png`
+
+Con ello, la misma tonalidad más oscura se refleja en ventana, splash, accesos
+Linux y en los instaladores macOS y Windows.
+
+### Verificación
+
+Se mantuvieron correctas las pruebas GTK3 más sensibles a este panel:
+
+- `test_chart_canvas_uses_scrolled_window_directly`
+- `test_extended_pair_chart_anchors_overlays_to_the_visible_area`
+- `test_toolbar_state_hides_stale_overlays`
+
+La validación automática ejecutada en macOS fue:
+
+```bash
+ASTRONEX_GUI_SMOKE=1 ./.venv-macos-build/bin/python -m unittest \
+  tests.test_gui_smoke.GtkSmokeTest.test_chart_canvas_uses_scrolled_window_directly \
+  tests.test_gui_smoke.GtkSmokeTest.test_extended_pair_chart_anchors_overlays_to_the_visible_area \
+  tests.test_gui_smoke.GtkSmokeTest.test_toolbar_state_hides_stale_overlays
+```
+
+Y el instalador reconstruido para revisión visual fue:
+
+- `Mac Instalador/Astro-Nex-2.0-beta-20260730-141028-macos-arm64.dmg`

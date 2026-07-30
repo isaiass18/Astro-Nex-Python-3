@@ -42,3 +42,47 @@ ASTRONEX_GUI_SMOKE=1 ./.venv-macos-build/bin/python -m unittest \
 También se reconstruyó y probó visualmente el instalador macOS:
 
 - `Mac Instalador/Astro-Nex-2.0-beta-20260730-131509-macos-arm64.dmg`
+
+## 30 de julio de 2026 — calendario compacto y tono Beta más oscuro
+
+### Incidencia observada
+
+Tras la migración a GTK3, el calendario integrado seguía viéndose más grande
+que en Astro-Nex 1.2 y el primer control inferior ya no conservaba el aspecto
+de campo numérico con mini flechas verticales del original. Además, la
+variante Beta del icono seguía demasiado cerca del tono de la edición 1.2 y
+se distinguía poco en Finder, Dock, ventana, splash y accesos.
+
+### Corrección
+
+Se ajustó el panel compacto del calendario para acercarlo visualmente a la
+referencia Python 2:
+
+- el calendario reduce su anchura preferida y la fila inferior recupera
+  proporciones más próximas al diseño histórico;
+- el control numérico vuelve a presentarse como campo pequeño con flechas
+  verticales apiladas, en lugar del `SpinButton` estándar de GTK3;
+- el selector de unidad separa mejor su flecha interna del botón derecho.
+
+En paralelo, se oscurecieron de forma uniforme los recursos gráficos de la
+identidad Beta, sin añadir texto ni cambiar el dibujo:
+
+- `astronex/resources/iconex-beta-22.png`
+- `astronex/resources/iconex-beta-48.png`
+- `astronex/resources/nex-beta.ico`
+- `astronex/resources/splash.png`
+
+### Verificación
+
+Se validó con pruebas GTK3 centradas en la carta y sus overlays:
+
+```bash
+ASTRONEX_GUI_SMOKE=1 ./.venv-macos-build/bin/python -m unittest \
+  tests.test_gui_smoke.GtkSmokeTest.test_chart_canvas_uses_scrolled_window_directly \
+  tests.test_gui_smoke.GtkSmokeTest.test_extended_pair_chart_anchors_overlays_to_the_visible_area \
+  tests.test_gui_smoke.GtkSmokeTest.test_toolbar_state_hides_stale_overlays
+```
+
+También se reconstruyó el instalador macOS listo para revisión visual:
+
+- `Mac Instalador/Astro-Nex-2.0-beta-20260730-141028-macos-arm64.dmg`

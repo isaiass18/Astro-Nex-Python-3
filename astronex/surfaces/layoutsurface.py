@@ -29,10 +29,12 @@ extended = ['prog_nat','prog_nod','prog_soul','prog_local','compo_one','compo_tw
 
 _COMPACT_PANEL_STYLE = Gtk.CssProvider()
 _COMPACT_PANEL_STYLE.load_from_data(b"""
-.astronex-compact-calendar { font-size: 10pt; min-width: 220px; padding: 0px; }
-.astronex-compact-date-control { min-width: 0px; min-height: 0px; padding: 0px; font-size: 8pt; }
-spinbutton.astronex-compact-date-control entry { min-width: 0px; padding: 0px; }
-spinbutton.astronex-compact-date-control button { min-width: 12px; padding: 0px; }
+.astronex-compact-calendar { font-size: 8.5pt; min-width: 198px; padding: 0px; }
+.astronex-compact-date-control { min-width: 0px; min-height: 0px; padding: 0px; font-size: 7.5pt; }
+entry.astronex-compact-date-control { min-width: 0px; min-height: 0px; padding: 0px 1px; border-radius: 0px; box-shadow: none; }
+combobox.astronex-compact-date-control box { padding: 0px; }
+combobox.astronex-compact-date-control button { min-width: 0px; min-height: 0px; padding: 0px 3px 0px 0px; }
+combobox.astronex-compact-date-control arrow { min-width: 12px; min-height: 10px; }
 """)
 _compact_style_screens = set()
 
@@ -52,7 +54,7 @@ class CompactCalendar(gtk.Calendar):
     """Keep the in-canvas date selector within its historical width."""
 
     def do_get_preferred_width(self):
-        return 230, 230
+        return 205, 205
 
 
 class DrawMaster(gtk.Layout):
@@ -942,21 +944,35 @@ class ChangeDatePanel(gtk.VBox):
             _add_compact_style(widget, 'astronex-compact-date-control')
             return widget
         
-        adj = gtk.Adjustment(1,1,10,1,5)
-        self.spin = compact(gtk.SpinButton(adj))
-        self.spin.set_wrap(True)
+        stepbox = gtk.HBox(False, 0)
+        self.spin = compact(gtk.Entry())
         self.spin.set_alignment(1.0)
         self.spin.set_width_chars(2)
-        # A two-digit value and GTK3's built-in +/- arrows need more room.
-        # The expandable unit selector gives up this space while the row
-        # remains flush with the calendar.
-        self.spin.set_size_request(52,24)
-        butbox.pack_start(self.spin,False,False)
+        self.spin.set_max_length(2)
+        self.spin.set_text('1')
+        self.spin.set_size_request(24,20)
+        stepbox.pack_start(self.spin, False, False)
+
+        spinner = gtk.VBox(False, 0)
+        up = compact(gtk.Button())
+        up.set_size_request(12,10)
+        up.add(gtk.Label(u'\u25b4'))
+        up.connect('clicked', self.on_step_adjust, 1)
+        spinner.pack_start(up, False, False)
+
+        down = compact(gtk.Button())
+        down.set_size_request(12,10)
+        down.add(gtk.Label(u'\u25be'))
+        down.connect('clicked', self.on_step_adjust, -1)
+        spinner.pack_start(down, False, False)
+
+        stepbox.pack_start(spinner, False, False)
+        butbox.pack_start(stepbox,False,False)
 
         button = compact(gtk.Button())
-        button.set_size_request(28,24)
+        button.set_size_request(24,20)
         button.set_events(gtk.gdk.BUTTON_PRESS_MASK|gtk.gdk.BUTTON_RELEASE_MASK)
-        arrow = gtk.Arrow(gtk.ARROW_LEFT, gtk.SHADOW_NONE)
+        arrow = gtk.Label(u'\u25c0')
         button.add(arrow)
         button.set_data('dir','<')
         button.connect("button_press_event",self.on_panel_clicked,parent)
@@ -968,15 +984,13 @@ class ChangeDatePanel(gtk.VBox):
         self.combo.append_text(_("horas"))
         self.combo.append_text(_("dias"))
         self.combo.set_active(2)
-        self.combo.set_size_request(60,24)
-        # The date unit is the flexible middle control.  Let it absorb the
-        # remaining width so this row ends flush with the compact calendar.
+        self.combo.set_size_request(54,20)
         butbox.pack_start(self.combo,True,True)
         
         button = compact(gtk.Button())
-        button.set_size_request(28,24)
+        button.set_size_request(24,20)
         button.set_events(gtk.gdk.BUTTON_PRESS_MASK|gtk.gdk.BUTTON_RELEASE_MASK)
-        arrow = gtk.Arrow(gtk.ARROW_RIGHT, gtk.SHADOW_NONE)
+        arrow = gtk.Label(u'\u25b6')
         button.add(arrow)
         button.set_data('dir','>')
         button.connect("button_press_event",self.on_panel_clicked,parent)
@@ -984,7 +998,7 @@ class ChangeDatePanel(gtk.VBox):
         butbox.pack_start(button,False,False)
 
         but = compact(gtk.Button())
-        but.set_size_request(28,24)
+        but.set_size_request(24,20)
         img = gtk.Image()
         appath = boss.app.appath
         imgfile = path.joinpath(appath,"astronex/resources/refresh-18.png")
@@ -994,10 +1008,7 @@ class ChangeDatePanel(gtk.VBox):
         but.connect('clicked',self.on_now_clicked)
         self.nowbut = but
         self.pack_start(butbox,False,False) 
-        # Leave a little vertical breathing room for the calendar frame and
-        # the bottom controls.  At 150 px some GTK3 themes clipped their
-        # lower-left edge by a few pixels.
-        self.set_size_request(230,160)
+        self.set_size_request(205,142)
     
     def on_calendar_day_selected(self,cal,parent):
         y,m,d = cal.get_date()
@@ -1025,7 +1036,7 @@ class ChangeDatePanel(gtk.VBox):
         self.internal_signal = True
 
     def on_panel_clicked(self,but,event,parent):
-        delta = self.spin.get_value_as_int()        
+        delta = self.get_step_value()
         if but.get_data('dir') == '<':
             delta = -delta
         change = self.changes[self.combo.get_active()] 
@@ -1033,6 +1044,21 @@ class ChangeDatePanel(gtk.VBox):
             self.timeout_sid = gobject.timeout_add(80,self.start_spining,delta,change)
         elif event.type == gtk.gdk.BUTTON_RELEASE:
             gobject.source_remove(self.timeout_sid)
+
+    def get_step_value(self):
+        raw = self.spin.get_text().strip()
+        try:
+            value = int(raw)
+        except (TypeError, ValueError):
+            value = 1
+        value = max(1, min(10, value))
+        self.spin.set_text(str(value))
+        return value
+
+    def on_step_adjust(self, button, delta):
+        value = self.get_step_value()
+        value = max(1, min(10, value + delta))
+        self.spin.set_text(str(value))
 
     def start_spining(self,delta,change):
         dt = self.set_delta((delta,change))
