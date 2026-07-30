@@ -25,8 +25,49 @@ ArchitecturesInstallIn64BitMode=x64compatible
 Source: "Windows Instalador\Astro-Nex\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "Windows Instalador\Astro-Nex\_internal\astronex\resources\Astro-Nex.ttf"; DestDir: "{autofonts}"; FontInstall: "Astro-Nex"; Flags: onlyifdoesntexist uninsneveruninstall
 
+[Tasks]
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
+
 [Icons]
 Name: "{autoprograms}\Astro-Nex"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "Abrir Astro-Nex"; Flags: nowait postinstall skipifsilent
+
+[Code]
+var
+  DataPage: TOutputMsgMemoWizardPage;
+
+procedure InitializeWizard;
+var
+  SearchRec: TFindRec;
+  FileList: String;
+  DirPath: String;
+begin
+  DirPath := ExpandConstant('{%USERPROFILE}\.astronex');
+  FileList := '';
+  
+  if FindFirst(DirPath + '\*.db', SearchRec) then
+  begin
+    try
+      repeat
+        if (SearchRec.Attributes and FILE_ATTRIBUTE_DIRECTORY) = 0 then
+        begin
+          FileList := FileList + SearchRec.Name + #13#10;
+        end;
+      until not FindNext(SearchRec);
+    finally
+      FindClose(SearchRec);
+    end;
+  end;
+  
+  if FileList <> '' then
+  begin
+    DataPage := CreateOutputMsgMemoPage(wpWelcome,
+      'Bases de datos detectadas',
+      'El instalador ha detectado datos de una instalación anterior.',
+      'Astro-Nex utilizará automáticamente las siguientes bases de datos encontradas en su sistema. Su información y cartas astrales se conservarán de manera segura:',
+      FileList);
+  end;
+end;
