@@ -246,6 +246,8 @@ class  BrowserPanel(gtk.HBox):
                 return
         id = model.get_value(iter,1)
         table = self.tables.get_active_text()
+        if table is None:
+            return
         curr.datab.load_chart(table,id,chart)
         try:
             self.chsnap.redraw()
@@ -257,6 +259,8 @@ class  BrowserPanel(gtk.HBox):
         id = model.get_value(iter,1)
         chart = curr.charts[Slot.storage]
         table = self.tables.get_active_text()
+        if table is None:
+            return
         curr.datab.load_chart(table,id,chart)
         curr.add_to_pool(copy(chart),Slot.overwrite)
         MainPanel.actualize_pool(Slot.storage,chart) 

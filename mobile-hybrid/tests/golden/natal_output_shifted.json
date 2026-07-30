@@ -1,0 +1,257 @@
+{
+  "planets": [
+    {
+      "index": 0,
+      "name": "sun",
+      "longitude": 84.42802987642277,
+      "sign": "geminis",
+      "degree": 24.42802987642277
+    },
+    {
+      "index": 1,
+      "name": "moon",
+      "longitude": 349.55110530551116,
+      "sign": "piscis",
+      "degree": 19.551105305511157
+    },
+    {
+      "index": 2,
+      "name": "mercury",
+      "longitude": 66.22917124205316,
+      "sign": "geminis",
+      "degree": 6.229171242053155
+    },
+    {
+      "index": 3,
+      "name": "venus",
+      "longitude": 49.14515034567137,
+      "sign": "tauro",
+      "degree": 19.145150345671368
+    },
+    {
+      "index": 4,
+      "name": "mars",
+      "longitude": 11.265925946440543,
+      "sign": "aries",
+      "degree": 11.265925946440543
+    },
+    {
+      "index": 5,
+      "name": "jupiter",
+      "longitude": 105.95716260332179,
+      "sign": "cancer",
+      "degree": 15.957162603321791
+    },
+    {
+      "index": 6,
+      "name": "saturn",
+      "longitude": 294.01358663850004,
+      "sign": "capricornio",
+      "degree": 24.013586638500044
+    },
+    {
+      "index": 7,
+      "name": "uranus",
+      "longitude": 278.1530612242001,
+      "sign": "capricornio",
+      "degree": 8.153061224200087
+    },
+    {
+      "index": 8,
+      "name": "neptune",
+      "longitude": 283.7092643528366,
+      "sign": "capricornio",
+      "degree": 13.709264352836612
+    },
+    {
+      "index": 9,
+      "name": "pluto",
+      "longitude": 225.39526058692311,
+      "sign": "scorpio",
+      "degree": 15.395260586923115
+    },
+    {
+      "index": 10,
+      "name": "node",
+      "longitude": 308.1233476042434,
+      "sign": "acuario",
+      "degree": 8.123347604243406
+    }
+  ],
+  "aspects": [
+    {
+      "p1": 0,
+      "p2": 1,
+      "name": "cuad",
+      "angle": 270.0,
+      "orb": 175.12307542908837,
+      "goodwill": false
+    },
+    {
+      "p1": 0,
+      "p2": 6,
+      "name": "quinc",
+      "angle": 210.0,
+      "orb": 59.58555676207726,
+      "goodwill": false
+    },
+    {
+      "p1": 1,
+      "p2": 3,
+      "name": "sext",
+      "angle": 300.0,
+      "orb": 240.4059549598398,
+      "goodwill": false
+    },
+    {
+      "p1": 1,
+      "p2": 5,
+      "name": "trig",
+      "angle": 240.0,
+      "orb": 123.59394270218937,
+      "goodwill": false
+    },
+    {
+      "p1": 1,
+      "p2": 6,
+      "name": "sext",
+      "angle": 60.0,
+      "orb": 4.462481332988887,
+      "goodwill": false
+    },
+    {
+      "p1": 1,
+      "p2": 9,
+      "name": "trig",
+      "angle": 120.0,
+      "orb": 4.1558447185880425,
+      "goodwill": false
+    },
+    {
+      "p1": 2,
+      "p2": 7,
+      "name": "quinc",
+      "angle": 210.0,
+      "orb": 61.92388998214693,
+      "goodwill": false
+    },
+    {
+      "p1": 2,
+      "p2": 10,
+      "name": "trig",
+      "angle": 240.0,
+      "orb": 121.89417636219025,
+      "goodwill": false
+    },
+    {
+      "p1": 3,
+      "p2": 5,
+      "name": "sext",
+      "angle": 60.0,
+      "orb": 3.187987742349577,
+      "goodwill": false
+    },
+    {
+      "p1": 3,
+      "p2": 6,
+      "name": "trig",
+      "angle": 240.0,
+      "orb": 124.86843629282868,
+      "goodwill": false
+    },
+    {
+      "p1": 3,
+      "p2": 8,
+      "name": "trig",
+      "angle": 240.0,
+      "orb": 114.56411400716524,
+      "goodwill": false
+    },
+    {
+      "p1": 3,
+      "p2": 9,
+      "name": "opos",
+      "angle": 180.0,
+      "orb": 3.749889758748253,
+      "goodwill": false
+    },
+    {
+      "p1": 4,
+      "p2": 5,
+      "name": "cuad",
+      "angle": 90.0,
+      "orb": 4.6912366568812445,
+      "goodwill": false
+    },
+    {
+      "p1": 4,
+      "p2": 7,
+      "name": "cuad",
+      "angle": 270.0,
+      "orb": 176.88713527775957,
+      "goodwill": false
+    },
+    {
+      "p1": 4,
+      "p2": 8,
+      "name": "cuad",
+      "angle": 270.0,
+      "orb": 182.4433384063961,
+      "goodwill": false
+    },
+    {
+      "p1": 4,
+      "p2": 10,
+      "name": "sext",
+      "angle": 300.0,
+      "orb": 236.8574216578029,
+      "goodwill": true
+    },
+    {
+      "p1": 5,
+      "p2": 8,
+      "name": "opos",
+      "angle": 180.0,
+      "orb": 2.2478982504851786,
+      "goodwill": false
+    },
+    {
+      "p1": 5,
+      "p2": 9,
+      "name": "trig",
+      "angle": 120.0,
+      "orb": 0.5619020163986761,
+      "goodwill": false
+    },
+    {
+      "p1": 7,
+      "p2": 10,
+      "name": "semi",
+      "angle": 30.0,
+      "orb": 0.02971361995668076,
+      "goodwill": false
+    },
+    {
+      "p1": 8,
+      "p2": 9,
+      "name": "sext",
+      "angle": 60.0,
+      "orb": 1.6859962340865025,
+      "goodwill": false
+    }
+  ],
+  "houses": [
+    183.42909524017762,
+    213.09129173108437,
+    241.25199815561655,
+    270.05384351541886,
+    299.95518012268485,
+    331.761811434946,
+    3.4290952401776167,
+    33.09129173108437,
+    61.25199815561655,
+    90.05384351541885,
+    119.95518012268485,
+    151.76181143494605
+  ]
+}

@@ -68,8 +68,13 @@ cd /home/ubuntu/astronex-github-vnc-test
 git fetch origin main
 git reset --hard origin/main
 git clean -fd
-DISPLAY=:1 nohup .venv/bin/python nex.py > /tmp/astronex.log 2>&1 &
+/home/ubuntu/restart_vnc.sh
 ```
+
+`restart_vnc.sh` reinicia la sesión gráfica completa del entorno VNC:
+`Xvfb`, `x11vnc`, `openbox`, `websockify`, `nex.py` y el botón flotante
+`restarter.py`. Si se relanza sólo `nex.py`, Astro-Nex volverá a abrir pero
+el botón de reinicio puede desaparecer de noVNC.
 
 `git clean -fd` elimina únicamente archivos no versionados de la carpeta de
 trabajo. Antes de usarlo, archivar fuera del repositorio cualquier archivo

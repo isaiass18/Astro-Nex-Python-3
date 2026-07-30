@@ -1,0 +1,28 @@
+{
+  "signdyn": {
+    "elem": {
+      "fire": 11,
+      "earth": 38,
+      "air": 27,
+      "water": 37
+    },
+    "cross": {
+      "card": 52,
+      "fix": 29,
+      "mut": 32
+    }
+  },
+  "housedyn": {
+    "elem": {
+      "fire": 32,
+      "earth": 8,
+      "air": 26,
+      "water": 39
+    },
+    "cross": {
+      "card": 27,
+      "fix": 32,
+      "mut": 46
+    }
+  }
+}

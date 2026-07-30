@@ -20,11 +20,13 @@ dist/
 *.key
 .env
 .env.*
+mobile/ios/AstroNexMobile/Secrets.xcconfig
 ip.rtf
 
 # OS/editor metadata
 .DS_Store
 Thumbs.db
+.vscode/
 
 # Local orchestration and one-off repair helpers
 .agents/
@@ -36,3 +38,16 @@ astronex/gui/*_patch.py
 DEPLOYMENT.private.md
 capturas errores/
 *.rtf
+
+# Mobile/offline local artifacts
+mobile/api/__pycache__/
+mobile/api/.runtime/
+mobile/ios/**/xcuserdata/
+mobile/ios/**/*.xcuserstate
+mobile-hybrid/.runtime/
+mobile-hybrid/web/node_modules/
+mobile-hybrid/web/dist/
+mobile-hybrid/web/DerivedData/
+mobile-hybrid/web/build/
+mobile-hybrid/web/ios/App/.bundle/
+mobile-hybrid/web/ios/App/vendor/bundle/
