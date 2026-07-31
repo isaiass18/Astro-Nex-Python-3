@@ -1,26 +1,15 @@
-FROM ubuntu:18.04
+FROM python:3.9-slim-buster
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
-# Install dependencies and add deadsnakes PPA for Python 3.9
-RUN apt-get update && apt-get install -y software-properties-common wget \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get update \
-    && apt-get install -y python3.9 python3.9-venv python3.9-dev \
-    # Install GTK3 and core dependencies
+# Install dependencies (Python 3.9 is already included in this image)
+RUN apt-get update && apt-get install -y \
+    build-essential \
     libgtk-3-dev libcairo2-dev libgirepository1.0-dev \
-    # Install packaging tools
     dpkg-dev \
     && rm -rf /var/lib/apt/lists/*
-
-# Set python3 to point to python3.9
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
-
-# Setup virtualenv
-RUN python3 -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
 
 # Upgrade pip and install wheel
 RUN pip install --upgrade pip wheel
@@ -74,7 +63,7 @@ RUN echo "Package: astronex" > /deb_build/DEBIAN/control \
     && echo "Architecture: amd64" >> /deb_build/DEBIAN/control \
     && echo "Maintainer: Isaias <isaias@example.com>" >> /deb_build/DEBIAN/control \
     && echo "Description: Astro-Nex 2.0 Astrology Software" >> /deb_build/DEBIAN/control \
-    && echo "Depends: libgtk-3-0" >> /deb_build/DEBIAN/control
+    && echo "Depends: libgtk-3-0, python3-gi, python3-gi-cairo, gir1.2-gtk-3.0" >> /deb_build/DEBIAN/control
 
 # Create postinst script to update font cache
 RUN echo "#!/bin/sh" > /deb_build/DEBIAN/postinst \
