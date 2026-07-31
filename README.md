@@ -15,10 +15,9 @@ instalación. Es un servicio público de prueba.
 
 La forma principal y más sencilla de instalar Astro-Nex en sistemas basados en Debian y Ubuntu es utilizando el instalador precompilado `.deb`.
 
-1. Descarga el repositorio como ZIP desde **Code → Download ZIP** y descomprímelo.
-2. Entra a la carpeta `Linux Instalador`.
-3. Dale **doble clic** al archivo `astronex_2.0_amd64.deb` para instalarlo visualmente desde tu Centro de Software.
-   *(Alternativamente, puedes instalarlo desde la terminal ejecutando `sudo apt install ./astronex_2.0_amd64.deb` en esa carpeta).*
+1. **[Descarga el instalador Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)** (`Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`).
+2. Dale **doble clic** al archivo para instalarlo visualmente desde tu Centro de Software.
+   *(Alternativamente, puedes instalarlo desde la terminal ejecutando `sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb` en la carpeta de descargas).*
 
 #### Método Alternativo (Script de instalación local)
 
@@ -49,15 +48,11 @@ Para que el instalador ejecute también las pruebas:
 
 ### Windows 8 y Windows 10 (64 bits)
 
-1. Descarga el repositorio como ZIP desde **Code → Download ZIP** y
-   descomprímelo.
-2. Abre `Windows Instalador\Astro-Nex-Setup.exe`.
-3. Sigue el asistente de instalación y ejecuta Astro-Nex desde el acceso
+1. **[Descarga el instalador Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)** (`Astro-Nex-v2.0-beta-Windows-x64.exe`).
+2. Sigue el asistente de instalación y ejecuta Astro-Nex desde el acceso
    creado por el instalador.
 
-No hay que instalar Python, GTK ni dependencias adicionales. Como alternativa
-portable, se puede abrir `Windows Instalador\Astro-Nex\Astro-Nex.exe`, pero
-no se debe mover ese EXE sin su carpeta `_internal`.
+No hay que instalar Python, GTK ni dependencias adicionales.
 
 Al usar la variante portable, instala también la fuente
 `Astro-Nex.ttf` que está dentro de su carpeta: haz doble clic sobre el archivo
@@ -69,9 +64,8 @@ firmado. Ejecuta únicamente una copia descargada de este repositorio oficial.
 
 ### macOS (Apple Silicon: M1, M2, M3 y M4)
 
-1. Descarga el repositorio como ZIP desde **Code → Download ZIP** y
-   descomprímelo.
-2. Abre [Astro-Nex-2.0-beta-20260728-053000-macos-arm64.dmg](Mac%20Instalador/Astro-Nex-2.0-beta-20260728-053000-macos-arm64.dmg).
+1. **[Descarga el instalador macOS desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)** (`Astro-Nex-v2.0-beta-macOS-arm64.dmg`).
+2. Ábrelo con doble clic.
 3. Copia `Astro-Nex.app` a la carpeta **Aplicaciones** y ábrelo desde allí.
 
 Este instalador es para Macs con procesador Apple Silicon y macOS 26 o
