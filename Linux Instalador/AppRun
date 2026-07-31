@@ -28,5 +28,12 @@ if [ -f "${HERE}/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache" ]; then
     sed "s|\"libpixbuf|\"${GDK_PIXBUF_MODULEDIR}/libpixbuf|g" "${HERE}/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache" > "$GDK_PIXBUF_MODULE_FILE" 2>/dev/null || true
 fi
 
+# Ensure the Astro-Nex font is available to the system fontconfig
+if [ ! -f "$HOME/.fonts/Astro-Nex.ttf" ]; then
+    mkdir -p "$HOME/.fonts"
+    cp "${HERE}/usr/share/fonts/truetype/astronex/Astro-Nex.ttf" "$HOME/.fonts/" 2>/dev/null || true
+    fc-cache -f "$HOME/.fonts" 2>/dev/null || true
+fi
+
 # Run the application using the bundled Python
 exec "${HERE}/usr/bin/python3" "${HERE}/usr/share/astronex/nex.py" "$@"
