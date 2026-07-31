@@ -1,44 +1,56 @@
-# Construir Instalador para Linux (Paquete .deb)
+# Construir Instalador para Linux (Paquete .deb y .AppImage)
 
-Esta guía explica cómo construir el instalador nativo `.deb` para Linux utilizando una arquitectura híbrida **Windows-AWS**.
+Esta guía explica cómo construir los instaladores para Linux utilizando una arquitectura híbrida **Windows-AWS**.
 
-Dado que Windows puede carecer de virtualización (Hyper-V) para correr Docker localmente, este proceso automatizado se conecta a una instancia remota de Linux en AWS, delega el trabajo pesado (compilación) en la nube y descarga automáticamente el instalador terminado en tu escritorio.
+Dado que construir entornos de Linux desde Windows o Mac puede ser problemático por la falta de librerías nativas, este proceso automatizado se conecta a una instancia remota de Linux en AWS, delega el trabajo pesado (compilación) en la nube y descarga automáticamente el instalador terminado en tu escritorio.
 
-## 1. Adiós a PyInstaller, Hola Empaquetado Nativo
+## 1. La Estrategia Dual
 
-En el pasado, Astro-Nex intentó usar PyInstaller para Linux, pero fallaba constantemente por incompatibilidades con las librerías gráficas de GTK y Cairo. 
+Astro-Nex soporta dos formatos de instalación para Linux:
 
-La solución definitiva e implementada actualmente es **Empaquetado Nativo**. El archivo `.deb` ya no es un ejecutable gigante de 100MB, sino un paquete ligero de 5MB que:
-1. Copia el código fuente de Python directamente a `/usr/share/astronex`.
-2. Declara las dependencias nativas en el sistema (ej. `python3-gi`, `python3-ipython`).
-3. Usa la versión de Python del sistema operativo del usuario.
+1. **El paquete `.deb` Nativo (Para Ubuntu/Debian/Mint)**: 
+   Es la opción recomendada para estas distribuciones. El instalador pesa solo ~5MB ya que aprovecha las dependencias del sistema (Python, GTK, temas gráficos) y se integra nativamente. A cambio, los ejecutables `.so` (como el cálculo de efemérides) deben coincidir con la versión de Python del sistema. Por ello, el script permite elegir para qué versión de Ubuntu construirlo.
+   
+2. **El `.AppImage` Autocontenido (Para Fedora, Arch, o portabilidad)**:
+   Si el usuario no tiene Ubuntu o prefieres enviar un instalador universal, esta opción empaqueta todo: Python 3.8, librerías GTK, `_pysw.so`, fuentes y recursos en un solo archivo de ~60-100MB. Este AppImage se construye basado en Ubuntu 20.04 garantizando compatibilidad con cualquier distribución igual o más reciente.
 
-## 2. El "Sweet Spot" de Compatibilidad (Python 3.8+)
+## 2. Requisitos Previos
 
-Aunque usemos tu servidor de AWS (que corre Ubuntu), la compilación de la librería en C (`_pysw.so`) ocurre **dentro de un contenedor Docker ligero de Python 3.9**.
-- **El truco de compatibilidad:** Para garantizar que el instalador funcione en cualquier versión de Python 3.8+, el `Dockerfile` renombra automáticamente la librería compilada de `_pysw.cpython-39-x86_64-linux-gnu.so` a un genérico `_pysw.so`. De esta forma, cualquier versión moderna de Python puede cargar el motor astrológico.
-- **Requisito mínimo:** Astro-Nex requiere **Python 3.8 o superior**. Si un usuario de Ubuntu 18.04 (Python 3.6) lo instala, el programa le mostrará educadamente un mensaje en la terminal indicando que su sistema es demasiado viejo, evitando así un fallo misterioso.
-
-## 3. Requisitos Previos (En tu Windows)
-
-No necesitas instalar Docker en Windows. Sólo requieres:
+No necesitas instalar Docker en tu entorno local. Sólo requieres:
 1. Tener la llave de seguridad SSH `astronext.pem` en la carpeta raíz del proyecto.
 2. Contar con conexión a internet.
+3. Para Windows: no se requieren programas adicionales.
+4. Para Mac/Linux: tener instalada la terminal (`bash` o `zsh`) y el comando `ssh`.
 
-## 4. Cómo construir el Instalador (1 clic)
+## 3. Cómo construir los Instaladores
 
+### En Windows:
 1. Abre el Explorador de Archivos de Windows.
-2. Navega a la carpeta: `H:\Astro-Nex-1.2.3\Linux Instalador`
-3. Dale doble clic al archivo `construir_deb.bat`.
+2. Navega a la carpeta: `Astro-Nex-1.2.3\Linux Instalador`
+3. Dale doble clic al archivo `construir_linux.bat`.
+4. Aparecerá un menú interactivo preguntando qué paquete deseas construir. Elige la opción deseada y presiona Enter.
 
-**¿Qué hace este botón mágico?**
-- Lee tu llave `astronext.pem`.
-- Se conecta en silencio por SSH a tu instancia de AWS.
-- Ejecuta Docker en la nube y compila el paquete `.deb` ligero usando el `Dockerfile` nativo.
-- Usa el protocolo `scp` para enviarte el archivo `astronex_2.0_amd64.deb` terminado directo a tu carpeta de Windows.
-- Limpia los restos en el servidor para no ocupar espacio.
+### En Mac / Linux:
+1. Abre la Terminal.
+2. Navega a la carpeta: `cd ruta/a/Astro-Nex-1.2.3/Linux\ Instalador`
+3. Ejecuta el script: `./construir_linux.sh`
+4. Aparecerá un menú interactivo. Ingresa el número de tu elección y presiona Enter.
 
-## 5. Estructura y Mantenimiento
+**¿Qué hacen estos scripts automatizados?**
+- Leen tu llave `astronext.pem`.
+- Se conectan en silencio por SSH a tu instancia de AWS.
+- Ejecutan Docker en la nube, usando el archivo de configuración correspondiente.
+- Descargan el paquete `.deb` o `.AppImage` terminado directo a tu carpeta local.
 
-- `Dockerfile`: Reside en tu proyecto y contiene las instrucciones para el contenedor. Define las dependencias (`python3-gi`, `python3-ipython`, etc.), compila el código en C, renombra la librería para que sea universal, y arma la estructura `.deb`.
-- `construir_deb.bat`: Es el puente que conecta tu entorno local de Windows con AWS. Si la IP del servidor cambia, actualiza la variable `AWS_IP` dentro de este archivo.
+El archivo resultante tendrá la nueva nomenclatura estándar:
+- `Astro-Nex-v2.0-beta-Ubuntu22.04-amd64.deb`
+- `Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`
+- `Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`
+- Limpian los restos en el servidor.
+
+## 4. Estructura y Mantenimiento
+
+- `Dockerfile.deb`: Define cómo se empaqueta el archivo `.deb`. Acepta un argumento `UBUNTU_VER` para garantizar que la compilación de C (`_pysw.so`) coincida con la versión de Python de ese Ubuntu (ej. 22.04 o 24.04).
+- `Dockerfile.appimage`: Usa `ubuntu:20.04` y descarga `linuxdeploy` y `linuxdeploy-plugin-gtk` para empaquetar una versión autocontenida de Python y GTK sin depender del sistema del usuario.
+- `AppRun`: Es el punto de entrada personalizado del `AppImage` que inyecta manualmente las rutas correctas (GTK, Python, Typelibs) para que Astro-Nex inicie de forma transparente.
+- `construir_linux.bat` / `.sh`: Es el puente que conecta tu entorno local con AWS. Si la IP del servidor AWS cambia, actualiza la variable `AWS_IP` dentro de estos archivos.

@@ -22,13 +22,13 @@ fi
 chmod 400 "$PEM_FILE"
 
 if [ "$OPCION" = "1" ]; then
-    TARGET_FILE="astronex_2.0_ubuntu22.04_amd64.deb"
+    TARGET_FILE="Astro-Nex-v2.0-beta-Ubuntu22.04-amd64.deb"
     BUILD_CMD="sudo docker build --build-arg UBUNTU_VER=22.04 -t astronex-builder -f 'Linux Instalador/Dockerfile.deb' ."
 elif [ "$OPCION" = "2" ]; then
-    TARGET_FILE="astronex_2.0_ubuntu24.04_amd64.deb"
+    TARGET_FILE="Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb"
     BUILD_CMD="sudo docker build --build-arg UBUNTU_VER=24.04 -t astronex-builder -f 'Linux Instalador/Dockerfile.deb' ."
 elif [ "$OPCION" = "3" ]; then
-    TARGET_FILE="Astro-Nex-x86_64.AppImage"
+    TARGET_FILE="Astro-Nex-v2.0-beta-Linux-x86_64.AppImage"
     BUILD_CMD="sudo docker build -t astronex-builder -f 'Linux Instalador/Dockerfile.appimage' ."
 else
     echo "Opción no válida."

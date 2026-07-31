@@ -21,13 +21,13 @@ if not exist "%PEM_FILE%" (
 )
 
 if "%OPCION%"=="1" (
-    set TARGET_FILE=astronex_2.0_ubuntu22.04_amd64.deb
+    set TARGET_FILE=Astro-Nex-v2.0-beta-Ubuntu22.04-amd64.deb
     set BUILD_CMD=sudo docker build --build-arg UBUNTU_VER=22.04 -t astronex-builder -f 'Linux Instalador/Dockerfile.deb' .
 ) else if "%OPCION%"=="2" (
-    set TARGET_FILE=astronex_2.0_ubuntu24.04_amd64.deb
+    set TARGET_FILE=Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
     set BUILD_CMD=sudo docker build --build-arg UBUNTU_VER=24.04 -t astronex-builder -f 'Linux Instalador/Dockerfile.deb' .
 ) else if "%OPCION%"=="3" (
-    set TARGET_FILE=Astro-Nex-x86_64.AppImage
+    set TARGET_FILE=Astro-Nex-v2.0-beta-Linux-x86_64.AppImage
     set BUILD_CMD=sudo docker build -t astronex-builder -f 'Linux Instalador/Dockerfile.appimage' .
 ) else (
     echo Opcion no valida.

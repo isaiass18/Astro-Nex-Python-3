@@ -1,6 +1,6 @@
 # Construir el instalador de Windows
 
-Esta guía genera `Windows Instalador\Astro-Nex-Setup.exe` desde el código
+Esta guía genera `Windows Instalador\Astro-Nex-v2.0-beta-Windows-x64.exe` desde el código
 actual del repositorio. El resultado es un **instalador**, no sólo una versión
 portable: instala también la fuente `Astro-Nex.ttf` en Windows.
 
@@ -124,7 +124,7 @@ Compilar con Inno Setup desde PowerShell:
 ```
 
 La ruta puede variar según la instalación de Inno Setup. El resultado debe ser
-`Windows Instalador\Astro-Nex-Setup.exe`.
+`Windows Instalador\Astro-Nex-v2.0-beta-Windows-x64.exe`.
 
 ## Verificación final
 
@@ -151,7 +151,7 @@ Name: "{autoprograms}\Astro-Nex"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 # Construir el instalador de Windows
 
-Esta guía genera `Windows Instalador\Astro-Nex-Setup.exe` desde el código
+Esta guía genera `Windows Instalador\Astro-Nex-v2.0-beta-Windows-x64.exe` desde el código
 actual del repositorio. El resultado es un **instalador**, no sólo una versión
 portable: instala también la fuente `Astro-Nex.ttf` en Windows.
 
@@ -275,7 +275,7 @@ Compilar con Inno Setup desde PowerShell:
 ```
 
 La ruta puede variar según la instalación de Inno Setup. El resultado debe ser
-`Windows Instalador\Astro-Nex-Setup.exe`.
+`Windows Instalador\Astro-Nex-v2.0-beta-Windows-x64.exe`.
 
 ## Verificación final
 

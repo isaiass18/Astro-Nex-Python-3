@@ -6,7 +6,7 @@ M3 o M4). El usuario final no necesita instalar Python, GTK ni Homebrew.
 Cada ejecución produce un DMG nuevo, por ejemplo:
 
 ```text
-Mac Instalador/Astro-Nex-2.0-beta-20260727-013000-macos-arm64.dmg
+Mac Instalador/Astro-Nex-v2.0-beta-macOS-arm64.dmg
 ```
 
 ## Alcance
@@ -64,7 +64,7 @@ El comando crea un DMG con un identificador de fecha/hora que no sobrescribe
 el anterior:
 
 ```text
-Mac Instalador/Astro-Nex-2.0-beta-AAAAMMDD-HHMMSS-macos-arm64.dmg
+Mac Instalador/Astro-Nex-v<version>-macOS-arm64.dmg
 ```
 
 Para usar un identificador de publicación legible, se puede indicar
@@ -74,7 +74,7 @@ explícitamente:
 BUILD_ID=beta.1 ./scripts/build_macos.sh
 ```
 
-El archivo resultante será `Astro-Nex-2.0-beta-beta.1-macos-arm64.dmg`.
+El archivo resultante será `Astro-Nex-v2.0-beta-macOS-arm64.dmg`.
 Los directorios temporales de compilación no son instaladores ni se usan para
 las pruebas manuales.
 
@@ -149,7 +149,7 @@ git add \
   CONSTRUIR_INSTALADOR_MACOS.md \
   scripts/build_macos.sh \
   macos_entry.py \
-  "Mac Instalador/Astro-Nex-2.0-beta-AAAAMMDD-HHMMSS-macos-arm64.dmg"
+  "Mac Instalador/Astro-Nex-v<version>-macOS-arm64.dmg"
 git commit -m "Add macOS Apple Silicon installer"
 git push origin main
 ```

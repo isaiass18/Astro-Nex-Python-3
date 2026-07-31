@@ -10,7 +10,7 @@ architecture=arm64
 # reopen an older DMG with the same name. BUILD_ID permits a release label;
 # otherwise the local build timestamp is used.
 build_id=${BUILD_ID:-$(date +%Y%m%d-%H%M%S)}
-dmg_path="$output_dir/Astro-Nex-$version-$build_id-macos-$architecture.dmg"
+dmg_path="$output_dir/Astro-Nex-v$version-macOS-$architecture.dmg"
 
 if [[ $(uname -s) != Darwin || $(uname -m) != arm64 ]]; then
     echo "This script builds the Apple Silicon (arm64) macOS installer."
@@ -109,7 +109,7 @@ hdiutil create -ov -volname "Astro-Nex $version" -srcfolder "$app_path" \
 # A successful build supersedes every prior Astro-Nex DMG.  Keeping only this
 # artifact prevents a stale installer from being opened or shared by mistake.
 find "$output_dir" -maxdepth 1 -type f \
-    -name "Astro-Nex-*-macos-$architecture.dmg" ! -path "$dmg_path" -delete
+    -name "Astro-Nex-*-macOS-$architecture.dmg" ! -path "$dmg_path" -delete
 
 echo "Created: $dmg_path"
 shasum -a 256 "$dmg_path"
