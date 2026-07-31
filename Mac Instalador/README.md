@@ -31,10 +31,14 @@ abierto: no es necesario instalar Python, GTK, Homebrew ni la fuente en macOS.
 
 ## Primera apertura
 
-El paquete está firmado localmente, pero todavía no está notarizado por Apple.
-macOS puede mostrar una advertencia la primera vez que se abra. En ese caso,
-hacer clic con el botón derecho sobre `Astro-Nex.app`, elegir **Abrir** y
-confirmar la apertura.
+El paquete está firmado de forma "ad-hoc" pero todavía no cuenta con un certificado comercial de desarrollador de Apple. Por este motivo, macOS puede bloquear la aplicación la primera vez que intentes abrirla, mostrando un mensaje que dice *"no se puede verificar el desarrollador"* o que está *"dañada"*. 
+
+Para solucionarlo y permitir que macOS conozca el origen del programa, sigue estos pasos:
+
+1. Ve a **Configuración del Sistema** (o Preferencias del Sistema) > **Privacidad y Seguridad**.
+2. Baja hasta el final de la pantalla.
+3. Verás un mensaje indicando que se bloqueó el uso de Astro-Nex. Haz clic en el botón **"Abrir de todos modos"** o **"Permitir"**.
+4. Te pedirá tu contraseña de Mac; ingrésala y la aplicación se abrirá sin problemas de ahí en adelante.
 
 La guía para reconstruir este instalador está en
 [`CONSTRUIR_INSTALADOR_MACOS.md`](../guias/CONSTRUIR_INSTALADOR_MACOS.md).

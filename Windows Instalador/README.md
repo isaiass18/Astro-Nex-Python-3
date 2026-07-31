@@ -18,7 +18,12 @@ El instalador incluye Python, GTK3, PyGObject, Pycairo, la extensión
 astronómica `_pysw` y los recursos necesarios. No es necesario instalar esos
 componentes por separado.
 
+## Aviso de Seguridad (SmartScreen)
 
+Como esta versión beta aún no cuenta con un certificado digital comercial, al abrir el instalador Windows podría mostrar una pantalla azul diciendo *"Windows protegió su PC"*. 
 
-Windows puede mostrar una advertencia al ejecutar un programa no firmado.
-Usa únicamente una copia descargada de este repositorio oficial.
+Para continuar la instalación de forma segura:
+1. Haz clic en el texto que dice **"Más información"** (debajo de la advertencia).
+2. Aparecerá un nuevo botón en la parte inferior; haz clic en **"Ejecutar de todas formas"**.
+
+Usa únicamente copias descargadas directamente de este repositorio oficial.
