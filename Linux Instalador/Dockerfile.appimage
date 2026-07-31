@@ -59,6 +59,10 @@ RUN cp -r *.py AppDir/usr/share/astronex/ \
 # Install python dependencies via pip into the AppDir
 RUN pip3 install --target AppDir/usr/lib/python3.8/site-packages pytz configobj Pillow ipython
 
+# Copy font to standard fonts directory inside AppImage
+RUN mkdir -p AppDir/usr/share/fonts/truetype/astronex \
+    && cp astronex/resources/Astro-Nex.ttf AppDir/usr/share/fonts/truetype/astronex/ || true
+
 # Copy python standard library and GI dist-packages manually
 RUN rsync -a /usr/lib/python3.8/ AppDir/usr/lib/python3.8/ \
     && cp -r /usr/lib/python3/dist-packages/gi AppDir/usr/lib/python3.8/site-packages/ \
