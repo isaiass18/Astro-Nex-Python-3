@@ -9,42 +9,28 @@ instalación. Es un servicio público de prueba.
 
 ## Ejecutar Astro-Nex
 
-### Linux (Ubuntu/Debian)
+### Linux
 
 ⚠️ **Requisito de Sistema:** Astro-Nex requiere **Python 3.8 o superior**. Esto significa que es compatible con cualquier distribución Linux moderna (ej. Ubuntu 20.04 en adelante). Si usas un sistema antiguo (como Ubuntu 18.04 que usa Python 3.6), la aplicación te informará que tu versión de Python es muy antigua y no arrancará.
 
-La forma principal y más sencilla de instalar Astro-Nex en sistemas basados en Debian y Ubuntu es utilizando el instalador precompilado `.deb`.
+Tienes tres opciones para ejecutar Astro-Nex en Linux, dependiendo de tus preferencias:
 
-1. **[Descarga el instalador Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)** (`Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`).
-2. Dale **doble clic** al archivo para instalarlo visualmente desde tu Centro de Software.
-   *(Alternativamente, puedes instalarlo desde la terminal ejecutando `sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb` en la carpeta de descargas).*
+**Opción 1: Paquete Universal (AppImage)** - *Recomendado para cualquier distribución*
+1. **[Descarga el instalador Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)** (`Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`).
+2. Haz clic derecho en el archivo, ve a "Propiedades" > "Permisos" y marca la casilla **"Permitir ejecutar el archivo como un programa"**.
+3. Dale **doble clic** para abrirlo (no requiere instalación).
 
-#### Método Alternativo (Script de instalación local)
+**Opción 2: Paquete Nativo (.deb)** - *Para Debian, Ubuntu, Mint, Pop!_OS*
+1. Descarga el paquete `Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb` desde GitHub Releases.
+2. Dale doble clic para instalarlo desde tu Centro de Software, o ejecuta en la terminal:
+   `sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`
 
-**NOTA IMPORTANTE:** El script local hace exactamente el mismo proceso y tiene el mismo requisito de **Python 3.8 o superior**. Solo utiliza este script si el archivo `.deb` te da problemas de dependencias en tu distribución particular.
-
-Si prefieres instalar Astro-Nex compilando el código fuente localmente, abre una Terminal dentro de la carpeta del proyecto y ejecuta:
-
+**Opción 3: Compilación Local (Script bash)**
+Si prefieres instalar compilando el código fuente localmente desde la terminal:
 ```bash
 ./scripts/install_linux.sh
 ```
-
-El instalador instala los requisitos de GTK3, crea el entorno Python, compila
-el motor astronómico, instala la tipografía y crea un acceso en el menú de
-aplicaciones.
-
-Si aún no tienes el código, puedes descargar e instalar todo directamente
-desde GitHub con:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/isaiass18/Astro-Nex-Python-3/main/scripts/install_from_github.sh | bash
-```
-
-Para que el instalador ejecute también las pruebas:
-
-```bash
-./scripts/install_linux.sh --test
-```
+*(Si no tienes el código clonado, puedes descargar e instalar usando: `curl -fsSL https://raw.githubusercontent.com/isaiass18/Astro-Nex-Python-3/main/scripts/install_from_github.sh | bash`)*
 
 ### Windows 8, 10 y 11 (64 bits)
 
