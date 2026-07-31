@@ -48,7 +48,7 @@ RUN cp -r dist/Astro-Nex/* /deb_build/usr/bin/
 RUN cp astronex/resources/Astro-Nex.ttf /deb_build/usr/share/fonts/truetype/astronex/
 
 # Copy icon
-RUN cp astronex/resources/iconex-beta-256.png /deb_build/usr/share/pixmaps/astronex.png
+RUN cp astronex/resources/iconex-beta-48.png /deb_build/usr/share/pixmaps/astronex.png
 
 # Create .desktop file
 RUN echo "[Desktop Entry]" > /deb_build/usr/share/applications/astronex.desktop \
