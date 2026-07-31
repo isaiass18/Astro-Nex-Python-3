@@ -46,7 +46,7 @@ Para que el instalador ejecute también las pruebas:
 ./scripts/install_linux.sh --test
 ```
 
-### Windows 8 y Windows 10 (64 bits)
+### Windows 8, 10 y 11 (64 bits)
 
 1. **[Descarga el instalador Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)** (`Astro-Nex-v2.0-beta-Windows-x64.exe`).
 2. Sigue el asistente de instalación y ejecuta Astro-Nex desde el acceso

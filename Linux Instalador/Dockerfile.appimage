@@ -1,0 +1,91 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+# Install base dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    dpkg-dev \
+    python3 \
+    python3-dev \
+    python3-pip \
+    python3-setuptools \
+    python3-gi \
+    python3-gi-cairo \
+    gir1.2-gtk-3.0 \
+    libgtk-3-0 \
+    wget \
+    file \
+    fuse \
+    rsync \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+# Download linuxdeploy and plugins
+RUN wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -O /usr/local/bin/linuxdeploy \
+    && chmod +x /usr/local/bin/linuxdeploy \
+    && wget https://raw.githubusercontent.com/linuxdeploy/linuxdeploy-plugin-gtk/master/linuxdeploy-plugin-gtk.sh -O /usr/local/bin/linuxdeploy-plugin-gtk \
+    && chmod +x /usr/local/bin/linuxdeploy-plugin-gtk
+
+COPY . /workspace/
+
+# Build Swiss Ephemeris C extension
+RUN python3 setup.py build_ext --inplace
+
+# Create AppDir basic structure
+RUN mkdir -p AppDir/usr/bin \
+    && mkdir -p AppDir/usr/share/astronex \
+    && mkdir -p AppDir/usr/share/applications \
+    && mkdir -p AppDir/usr/share/icons/hicolor/48x48/apps \
+    && mkdir -p AppDir/usr/lib/python3.8/site-packages
+
+# Copy AppRun
+COPY ["Linux Instalador/AppRun", "AppDir/AppRun"]
+RUN chmod +x AppDir/AppRun
+
+# Copy source code to AppDir
+RUN cp -r *.py AppDir/usr/share/astronex/ \
+    && cp -r astronex AppDir/usr/share/astronex/ \
+    && cp _pysw*.so AppDir/usr/share/astronex/
+
+# Install python dependencies via pip into the AppDir
+RUN pip3 install --target AppDir/usr/lib/python3.8/site-packages pytz configobj Pillow ipython
+
+# Copy python standard library and GI dist-packages manually
+RUN rsync -a /usr/lib/python3.8/ AppDir/usr/lib/python3.8/ \
+    && cp -r /usr/lib/python3/dist-packages/gi AppDir/usr/lib/python3.8/site-packages/ \
+    && cp -r /usr/lib/python3/dist-packages/cairo AppDir/usr/lib/python3.8/site-packages/ \
+    && cp -r /usr/lib/python3/dist-packages/pygtkcompat AppDir/usr/lib/python3.8/site-packages/ || true
+
+# Clean up unnecessary things from bundled python stdlib (like tests)
+RUN rm -rf AppDir/usr/lib/python3.8/test AppDir/usr/lib/python3.8/idlelib
+
+# Create .desktop file for linuxdeploy
+RUN echo "[Desktop Entry]" > AppDir/usr/share/applications/astronex.desktop \
+    && echo "Name=Astro-Nex" >> AppDir/usr/share/applications/astronex.desktop \
+    && echo "Comment=Astro-Nex Astrology Software" >> AppDir/usr/share/applications/astronex.desktop \
+    && echo "Exec=AppRun" >> AppDir/usr/share/applications/astronex.desktop \
+    && echo "Icon=astronex" >> AppDir/usr/share/applications/astronex.desktop \
+    && echo "Terminal=false" >> AppDir/usr/share/applications/astronex.desktop \
+    && echo "Type=Application" >> AppDir/usr/share/applications/astronex.desktop \
+    && echo "Categories=Utility;" >> AppDir/usr/share/applications/astronex.desktop
+
+# Copy icon for linuxdeploy to pick up
+RUN cp astronex/resources/iconex-beta-48.png AppDir/usr/share/icons/hicolor/48x48/apps/astronex.png
+
+# Run linuxdeploy to bundle python interpreter and GTK libraries
+ENV APPIMAGE_EXTRACT_AND_RUN=1
+ENV OUTPUT="Astro-Nex-x86_64.AppImage"
+ENV LD_LIBRARY_PATH="/workspace/AppDir/usr/lib/python3.8/site-packages/pillow.libs:$LD_LIBRARY_PATH"
+RUN /usr/local/bin/linuxdeploy --appdir AppDir \
+    --executable /usr/bin/python3 \
+    --desktop-file AppDir/usr/share/applications/astronex.desktop \
+    --icon-file AppDir/usr/share/icons/hicolor/48x48/apps/astronex.png \
+    --plugin gtk \
+    --output appimage
+
+# The entrypoint will be overridden to copy the AppImage out
+CMD ["/bin/bash"]

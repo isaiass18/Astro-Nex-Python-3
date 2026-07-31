@@ -1,6 +1,6 @@
 # Instalador de Astro-Nex para Windows
 
-Esta carpeta es el espacio de trabajo para el instalador de Astro-Nex para Windows 8 y Windows 10
+Esta carpeta es el espacio de trabajo para el instalador de Astro-Nex para Windows 8, Windows 10 y Windows 11
 de 64 bits.
 
 👉 **[Descargar instalador para Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)**
