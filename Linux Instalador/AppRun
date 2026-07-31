@@ -14,5 +14,12 @@ export XDG_DATA_DIRS="${HERE}/usr/share:${XDG_DATA_DIRS}"
 export PYTHONHOME="${HERE}/usr"
 export PYTHONPATH="${HERE}/usr/share/astronex:${HERE}/usr/lib/python3.8:${HERE}/usr/lib/python3.8/site-packages:${PYTHONPATH}"
 
+# Source linuxdeploy hooks (e.g. GTK plugin)
+if [ -d "${HERE}/apprun-hooks" ]; then
+    for hook in "${HERE}/apprun-hooks"/*; do
+        source "$hook"
+    done
+fi
+
 # Run the application using the bundled Python
 exec "${HERE}/usr/bin/python3" "${HERE}/usr/share/astronex/nex.py" "$@"
