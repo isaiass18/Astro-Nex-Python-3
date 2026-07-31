@@ -336,30 +336,30 @@ class DrawAux(gtk.DrawingArea):
             if curr.curr_op in ['bio_nat','bio_nod','bio_soul']:
                 dt = curr.date.dt
                 dt = datetime.combine(dt.date(),dt.time())
-                boss.da.hsel.child.set_house_from_date(dt)
+                boss.da.hsel.get_child().set_house_from_date(dt)
             return True
 
     def on_menuitem_activate(self,menuitem): 
-        if menuitem.child.get_text() == _('Descongelar'):
+        if menuitem.get_child().get_text() == _('Descongelar'):
             self.frozen = False
-            menuitem.child.set_text(_('Congelar'))
-        elif menuitem.child.get_text() == _('Congelar'):
+            menuitem.get_child().set_text(_('Congelar'))
+        elif menuitem.get_child().get_text() == _('Congelar'):
             self.frozen = True
-            menuitem.child.set_text(_('Descongelar')) 
-        elif menuitem.child.get_text() == _('Permutar'):
+            menuitem.get_child().set_text(_('Descongelar')) 
+        elif menuitem.get_child().get_text() == _('Permutar'):
             self.cache[0],self.cache[1] = self.cache[1],self.cache[0]
             self.permuted = not self.permuted
-        elif menuitem.child.get_text() == 'Clics':
+        elif menuitem.get_child().get_text() == 'Clics':
             self.opaux = self.opclicks
-        elif menuitem.child.get_text() == _('DDiagramas'):
+        elif menuitem.get_child().get_text() == _('DDiagramas'):
             self.opaux = self.opdia
-        elif menuitem.child.get_text() == _('Cartas'):
+        elif menuitem.get_child().get_text() == _('Cartas'):
             self.opaux = self.opcharts
-        elif menuitem.child.get_text() == _('Transitos'):
+        elif menuitem.get_child().get_text() == _('Transitos'):
             self.opaux = self.optrans
-        elif menuitem.child.get_text() == _('Parejas'):
+        elif menuitem.get_child().get_text() == _('Parejas'):
             self.opaux = self.opcoup
-        elif menuitem.child.get_text() == _('Biografias'):
+        elif menuitem.get_child().get_text() == _('Biografias'):
             self.opaux = self.opbio
         self.redraw()
         return True

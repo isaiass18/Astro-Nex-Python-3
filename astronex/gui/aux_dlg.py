@@ -40,9 +40,9 @@ class AuxWindow(gtk.Window):
     def house_change(self,acgroup,actable,keyval,mod):
         #if self.boss.da.hselvisible:
         if  keyval == gtk.keysyms.plus:
-            self.boss.da.hsel.child.house_updown(1)
+            self.boss.da.hsel.get_child().house_updown(1)
         else:
-            self.boss.da.hsel.child.house_updown(-1)
+            self.boss.da.hsel.get_child().house_updown(-1)
 
     def popup_menu(self,acgroup,actable,keyval,mod):
         self.sda.popup_menu()

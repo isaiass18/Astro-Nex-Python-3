@@ -70,7 +70,7 @@ class LocWidget(gtk.VBox):
         
         compl.set_text_column(0)
         compl.set_model(self.country_combo.get_model())
-        self.country_combo.child.set_completion(compl)#entry
+        self.country_combo.get_child().set_completion(compl)#entry
         compl.connect('match_selected', self.on_count_match)
 
         self.country_combo.set_wrap_width(4)

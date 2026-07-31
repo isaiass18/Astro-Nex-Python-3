@@ -214,7 +214,7 @@ class Slot(gtk.VBox):
     def on_eye_menu_activate(self,menuitem,menu):
         active = Slot.storage
         ix = 0
-        name = menuitem.child.get_text()
+        name = menuitem.get_child().get_text()
         for i,ch in enumerate(list(curr.pool)):
             if " ".join([ch.first,ch.last]) == name:
                 ix = i
@@ -281,7 +281,7 @@ class Slot(gtk.VBox):
         return True
 
     def on_menuitem_activate(self,menuitem):
-        if menuitem.child.get_text() == _('Exportar carta'):
+        if menuitem.get_child().get_text() == _('Exportar carta'):
             widget = MainPanel.pool[self.wname]
             MainPanel.slot_activate(widget)
             chart = curr.charts[self.chart_id] 

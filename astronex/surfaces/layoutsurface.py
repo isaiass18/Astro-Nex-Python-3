@@ -279,7 +279,7 @@ class DrawMaster(gtk.Layout):
                 #    self.drawer.set_op_AP(curr.curr_op,event.state )
                 #    dt = curr.date.dt
                 #    dt = datetime.combine(dt.date(),dt.time())
-                #    self.hsel.child.set_house_from_date(dt)
+                #    self.hsel.get_child().set_house_from_date(dt)
                 #    self.redraw()
                 #    self.redraw_auxwins()
                 #    return
@@ -295,7 +295,7 @@ class DrawMaster(gtk.Layout):
                 self.redraw()
                 dt = curr.date.dt
                 dt = datetime.combine(dt.date(),dt.time())
-                self.hsel.child.set_house_from_date(dt)
+                self.hsel.get_child().set_house_from_date(dt)
                 self.redraw_auxwins()
                 info['button'] = -1
             else:
@@ -335,7 +335,7 @@ class DrawMaster(gtk.Layout):
                     self.drawer.set_op_AP(curr.curr_op,event.state )
                     dt = curr.date.dt
                     dt = datetime.combine(dt.date(),dt.time())
-                    self.hsel.child.set_house_from_date(dt)
+                    self.hsel.get_child().set_house_from_date(dt)
                     self.redraw()
                     self.redraw_auxwins()
         elif event.type == gtk.gdk.BUTTON_RELEASE:
@@ -361,7 +361,7 @@ class DrawMaster(gtk.Layout):
                         self.drawer.set_AP(deg,for_op,for_ch)
                         dt = curr.date.dt
                         dt = datetime.combine(dt.date(),dt.time())
-                        self.hsel.child.set_house_from_date(dt)
+                        self.hsel.get_child().set_house_from_date(dt)
                     self.redraw()
                     boss.redraw(both=False)
                     self.redraw_auxwins()
@@ -454,72 +454,74 @@ class DrawMaster(gtk.Layout):
         return True
 
     def on_menuitem_activate(self,menuitem): 
-        if menuitem.child.get_text() == _('Acercar'):
+        if menuitem.get_child().get_text() == _('Acercar'):
             scrw, scrh = self.get_size_request()
-            #self.set_size_request(720*2,720*2)
-            self.set_size_request(scrw*2,scrh*2)
+            if scrw <= 0: scrw = 720
+            if scrh <= 0: scrh = 720
+            self.set_size_request(int(scrw*2), int(scrh*2))
             self.zoom_in = True
             self.panning = True
-            menuitem.child.set_text(_('Alejar'))
-        elif menuitem.child.get_text() == _('Alejar'):
+            menuitem.get_child().set_text(_('Alejar'))
+        elif menuitem.get_child().get_text() == _('Alejar'):
             scrw, scrh = self.get_size_request()
-            #self.set_size_request(720,720)
-            self.set_size_request(scrw/2,scrh/2)
+            if scrw <= 0: scrw = 720
+            if scrh <= 0: scrh = 720
+            self.set_size_request(int(scrw/2), int(scrh/2))
             self.zoom_in = False
             self.panning = False
-            menuitem.child.set_text(_('Acercar'))
-        elif menuitem.child.get_text() == _('Ayuda'):
+            menuitem.get_child().set_text(_('Acercar'))
+        elif menuitem.get_child().get_text() == _('Ayuda'):
             boss.mainwin.show_help()
-        elif menuitem.child.get_text() == _('Ver zonas PE'):
+        elif menuitem.get_child().get_text() == _('Ver zonas PE'):
             self.drawer.pe_zones = True
             self.redraw_auxwins(True)
-            menuitem.child.set_text(_('Ocultar zonas PE'))
-        elif menuitem.child.get_text() == _('Ocultar zonas PE'):
+            menuitem.get_child().set_text(_('Ocultar zonas PE'))
+        elif menuitem.get_child().get_text() == _('Ocultar zonas PE'):
             self.drawer.pe_zones = False
             self.redraw_auxwins(True)
-            menuitem.child.set_text(_('Ver zonas PE')) 
-        elif menuitem.child.get_text() == _('Ver zonas de casa'):
+            menuitem.get_child().set_text(_('Ver zonas PE')) 
+        elif menuitem.get_child().get_text() == _('Ver zonas de casa'):
             self.drawer.hzones = True
-            menuitem.child.set_text(_('Ocultar zonas de casa'))
-        elif menuitem.child.get_text() == _('Ocultar zonas de casa'):
+            menuitem.get_child().set_text(_('Ocultar zonas de casa'))
+        elif menuitem.get_child().get_text() == _('Ocultar zonas de casa'):
             self.drawer.hzones = False
-            menuitem.child.set_text(_('Ver zonas de casa'))
-        elif menuitem.child.get_text() == _('Solo EA'):
+            menuitem.get_child().set_text(_('Ver zonas de casa'))
+        elif menuitem.get_child().get_text() == _('Solo EA'):
             DrawMixin.set_onlyEA(True)
-            menuitem.child.set_text(_('Mostrar todo')) 
-        elif menuitem.child.get_text() == _('Mostrar todo'):
+            menuitem.get_child().set_text(_('Mostrar todo')) 
+        elif menuitem.get_child().get_text() == _('Mostrar todo'):
             DrawMixin.set_onlyEA(False)
-            menuitem.child.set_text(_('Solo EA'))
-        elif menuitem.child.get_text() == _('Activar goodwill'):
+            menuitem.get_child().set_text(_('Solo EA'))
+        elif menuitem.get_child().get_text() == _('Activar goodwill'):
             self.drawer.goodwill = True
-            menuitem.child.set_text(_('Desactivar goodwill'))
-        elif menuitem.child.get_text() == _('Desactivar goodwill'):
+            menuitem.get_child().set_text(_('Desactivar goodwill'))
+        elif menuitem.get_child().get_text() == _('Desactivar goodwill'):
             self.drawer.goodwill = False
-            menuitem.child.set_text(_('Activar goodwill'))
-        elif menuitem.child.get_text() == _('Ocultar unilaterales'):
+            menuitem.get_child().set_text(_('Activar goodwill'))
+        elif menuitem.get_child().get_text() == _('Ocultar unilaterales'):
             self.drawer.uniaspect = False
-            menuitem.child.set_text(_('Mostrar unilaterales'))
-        elif menuitem.child.get_text() == _('Mostrar unilaterales'):
+            menuitem.get_child().set_text(_('Mostrar unilaterales'))
+        elif menuitem.get_child().get_text() == _('Mostrar unilaterales'):
             self.drawer.uniaspect = True
-            menuitem.child.set_text(_('Ocultar unilaterales'))
-        elif menuitem.child.get_text() == _('Ver EA'):
+            menuitem.get_child().set_text(_('Ocultar unilaterales'))
+        elif menuitem.get_child().get_text() == _('Ver EA'):
             DrawMixin.set_showEA(True)
-            menuitem.child.set_text(_('Ocultar EA'))
-        elif menuitem.child.get_text() == _('Ocultar EA'):
+            menuitem.get_child().set_text(_('Ocultar EA'))
+        elif menuitem.get_child().get_text() == _('Ocultar EA'):
             DrawMixin.set_showEA(False)
-            menuitem.child.set_text(_('Ver EA'))
-        elif menuitem.child.get_text() == _('Ver todos los aspectos'):
+            menuitem.get_child().set_text(_('Ver EA'))
+        elif menuitem.get_child().get_text() == _('Ver todos los aspectos'):
             self.drawer.allclick = True
-            menuitem.child.set_text(_('Ver solo clics'))
-        elif menuitem.child.get_text() == _('Ver solo clics'):
+            menuitem.get_child().set_text(_('Ver solo clics'))
+        elif menuitem.get_child().get_text() == _('Ver solo clics'):
             self.drawer.allclick = False
-            menuitem.child.set_text(_('Ver todos los aspectos'))
-        elif menuitem.child.get_text() == _('Ego-clics'):
+            menuitem.get_child().set_text(_('Ver todos los aspectos'))
+        elif menuitem.get_child().get_text() == _('Ego-clics'):
             self.drawer.egoclick = True
-            menuitem.child.set_text(_('Clics sin ego'))
-        elif menuitem.child.get_text() == _('Clics sin ego'):
+            menuitem.get_child().set_text(_('Clics sin ego'))
+        elif menuitem.get_child().get_text() == _('Clics sin ego'):
             self.drawer.egoclick = False
-            menuitem.child.set_text(_('Ego-clics'))
+            menuitem.get_child().set_text(_('Ego-clics'))
 
         self.redraw()
 
@@ -546,11 +548,11 @@ class DrawMaster(gtk.Layout):
         #    h = self.allocation.height
         #    self.bin_window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
         if self.diadavisible:
-            w = self.diada.child.allocation.width
-            h = self.diada.child.allocation.height
-            self.diada.child.window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
+            w = self.diada.get_child().allocation.width
+            h = self.diada.get_child().allocation.height
+            self.diada.get_child().window.invalidate_rect(gtk.gdk.Rectangle(0,0,w,h),False)
         if boss.da.hselvisible:
-            boss.da.hsel.child.queue_draw()
+            boss.da.hsel.get_child().queue_draw()
 
     def redraw_auxwins(self,onlybridge=False):
         if self.bridge:
@@ -1027,7 +1029,7 @@ class ChangeDatePanel(gtk.VBox):
             cycles = curr.curr_chart.get_cycles(date)
             parent.cycleselector.adj.set_value(cycles+1) 
         if self.internal_signal:
-            boss.da.hsel.child.set_house_from_date(date) 
+            boss.da.hsel.get_child().set_house_from_date(date) 
         if self.needsredrawing:
             parent.redraw()
             boss.da.redraw_auxwins()

@@ -179,7 +179,7 @@ class CouplesPanel(gtk.HBox):
         compl = gtk.EntryCompletion()
         compl.set_text_column(0)
         compl.set_model(personae.get_model())
-        personae.child.set_completion(compl)
+        personae.get_child().set_completion(compl)
         compl.connect('match_selected', self.on_person_match,personae)
         
         return vbox

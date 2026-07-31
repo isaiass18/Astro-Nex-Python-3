@@ -45,7 +45,7 @@ class PlanSelector(gtk.Dialog):
                 self._button_style, Gtk.STYLE_PROVIDER_PRIORITY_USER
             )
             but.set_size_request(80,24)
-            but.child.modify_font(font)
+            but.get_child().modify_font(font)
             but.set_mode(True)
             but.connect("toggled",self.on_but_toggled)
             vbuttonbox.pack_start(but,False,False)

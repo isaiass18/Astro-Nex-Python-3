@@ -96,7 +96,7 @@ class CustomLocDlg(gtk.Dialog):
         table = model.get_value(iter,3) 
         count  = model.get_value(iter,4) 
         self.loc_widget.locentry.set_text(city)
-        self.loc_widget.country_combo.child.set_text(count)
+        self.loc_widget.country_combo.get_child().set_text(count)
         int,lat = geo.split(' ')
         d,L,m = int.partition('E')
         if L == '':

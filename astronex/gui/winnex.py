@@ -503,9 +503,9 @@ class WinNex(gtk.Window):
     def house_change(self,acgroup,actable,keyval,mod):
         if self.da.hselvisible:
             if  keyval == gtk.keysyms.plus:
-                self.da.hsel.child.house_updown(1)
+                self.da.hsel.get_child().house_updown(1)
             else:
-                self.da.hsel.child.house_updown(-1)
+                self.da.hsel.get_child().house_updown(-1)
 
     def view_change(self,acgroup,actable,keyval,mod):
         nb = self.boss.mpanel.chooser.notebook

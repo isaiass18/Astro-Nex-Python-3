@@ -200,7 +200,7 @@ class EntryDlg(gtk.Dialog):
             if r[0] == state:
                 loc.country_combo.set_active_iter(r.iter)
                 break 
-        loc.reg_combo.child.set_text(reg)
+        loc.reg_combo.get_child().set_text(reg)
         
         model = loc.locview.get_model()
         iter = model.get_iter("0"); i = 0
