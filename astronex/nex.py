@@ -19,6 +19,7 @@ version = "2.0-beta"
 
 def die(message):
     """Die in a command line way."""
+    print(message, file=sys.stderr)
     sys.exit(1)
 
 try:
@@ -27,8 +28,8 @@ try:
 except ImportError:
     die('Astro-Nex requires the GTK 3 Python bindings. They were not found.')
 
-if sys.version_info < (3, 9):
-    die('Astro-Nex requires Python 3.9 or later. Only %s.%s was found.' %
+if sys.version_info < (3, 8):
+    die('Astro-Nex requires Python 3.8 or later. Only %s.%s was found.' %
             sys.version_info[:2])
 
 

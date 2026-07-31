@@ -11,8 +11,20 @@ instalación. Es un servicio público de prueba.
 
 ### Linux (Ubuntu/Debian)
 
-Si ya descargaste o clonaste este repositorio, abre una Terminal dentro de su
-carpeta y ejecuta:
+⚠️ **Requisito de Sistema:** Astro-Nex requiere **Python 3.8 o superior**. Esto significa que es compatible con cualquier distribución Linux moderna (ej. Ubuntu 20.04 en adelante). Si usas un sistema antiguo (como Ubuntu 18.04 que usa Python 3.6), la aplicación te informará que tu versión de Python es muy antigua y no arrancará.
+
+La forma principal y más sencilla de instalar Astro-Nex en sistemas basados en Debian y Ubuntu es utilizando el instalador precompilado `.deb`.
+
+1. Descarga el repositorio como ZIP desde **Code → Download ZIP** y descomprímelo.
+2. Entra a la carpeta `Linux Instalador`.
+3. Dale **doble clic** al archivo `astronex_2.0_amd64.deb` para instalarlo visualmente desde tu Centro de Software.
+   *(Alternativamente, puedes instalarlo desde la terminal ejecutando `sudo apt install ./astronex_2.0_amd64.deb` en esa carpeta).*
+
+#### Método Alternativo (Script de instalación local)
+
+**NOTA IMPORTANTE:** El script local hace exactamente el mismo proceso y tiene el mismo requisito de **Python 3.8 o superior**. Solo utiliza este script si el archivo `.deb` te da problemas de dependencias en tu distribución particular.
+
+Si prefieres instalar Astro-Nex compilando el código fuente localmente, abre una Terminal dentro de la carpeta del proyecto y ejecuta:
 
 ```bash
 ./scripts/install_linux.sh
