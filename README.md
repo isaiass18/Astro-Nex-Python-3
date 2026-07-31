@@ -73,9 +73,9 @@ primera vez que se abre.
 
 ## Más información
 
-- [Guía completa de la migración e instalación](MIGRACION_PYTHON3.md)
+- [Guía completa de la migración e instalación](guias/MIGRACION_PYTHON3.md)
 - [Detalles del instalador Windows](Windows%20Instalador/README.md)
-- [Cómo construir el instalador macOS](CONSTRUIR_INSTALADOR_MACOS.md)
+- [Cómo construir el instalador macOS](guias/CONSTRUIR_INSTALADOR_MACOS.md)
 - [Instrucciones técnicas de instalación](INSTALL)
 
 Astro-Nex fue migrado de Python 2/PyGTK a Python 3/GTK3. Linux, Windows y

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Custom AppRun for Astro-Nex AppImage
+
+HERE="$(dirname "$(readlink -f "${0}")")"
+
+# Configure GTK and GI Typelib paths
+export GI_TYPELIB_PATH="${HERE}/usr/lib/girepository-1.0:${GI_TYPELIB_PATH}"
+export GSETTINGS_SCHEMA_DIR="${HERE}/usr/share/glib-2.0/schemas:${GSETTINGS_SCHEMA_DIR}"
+export GTK_DATA_PREFIX="${HERE}/usr"
+export XDG_DATA_DIRS="${HERE}/usr/share:${XDG_DATA_DIRS}"
+
+# Configure Python
+export PYTHONHOME="${HERE}/usr"
+export PYTHONPATH="${HERE}/usr/share/astronex:${HERE}/usr/lib/python3.8:${HERE}/usr/lib/python3.8/site-packages:${PYTHONPATH}"
+
+# Run the application using the bundled Python
+exec "${HERE}/usr/bin/python3" "${HERE}/usr/share/astronex/nex.py" "$@"

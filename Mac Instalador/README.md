@@ -37,4 +37,4 @@ hacer clic con el botón derecho sobre `Astro-Nex.app`, elegir **Abrir** y
 confirmar la apertura.
 
 La guía para reconstruir este instalador está en
-[`CONSTRUIR_INSTALADOR_MACOS.md`](../CONSTRUIR_INSTALADOR_MACOS.md).
+[`CONSTRUIR_INSTALADOR_MACOS.md`](../guias/CONSTRUIR_INSTALADOR_MACOS.md).
