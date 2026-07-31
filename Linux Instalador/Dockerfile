@@ -23,9 +23,7 @@ RUN pip install --upgrade pip wheel
 WORKDIR /workspace
 
 # Install app dependencies
-COPY requirements.txt /workspace/
-RUN pip install -r requirements.txt
-RUN pip install pyinstaller
+RUN pip install pytz configobj Pillow ipython pyinstaller
 
 # Copy the rest of the application
 COPY . /workspace/
