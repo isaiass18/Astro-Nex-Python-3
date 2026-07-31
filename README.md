@@ -19,6 +19,7 @@ Tienes tres opciones para ejecutar Astro-Nex en Linux, dependiendo de tus prefer
 1. **[Descarga el instalador Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)** (`Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`).
 2. Haz clic derecho en el archivo, ve a "Propiedades" > "Permisos" y marca la casilla **"Permitir ejecutar el archivo como un programa"**.
 3. Dale **doble clic** para abrirlo (no requiere instalación).
+> ⚠️ **Nota de Seguridad:** Linux por defecto bloquea la ejecución de archivos descargados de internet. Es obligatorio realizar el paso 2 (dar permisos de ejecución) o el sistema te arrojará un error diciendo que "no se puede abrir" o "no hay aplicación instalada para este archivo".
 
 **Opción 2: Paquete Nativo (.deb)** - *Para Debian, Ubuntu, Mint, Pop!_OS*
 1. Descarga el paquete `Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb` desde GitHub Releases.
@@ -35,15 +36,11 @@ Si prefieres instalar compilando el código fuente localmente desde la terminal:
 ### Windows 8, 10 y 11 (64 bits)
 
 1. **[Descarga el instalador Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)** (`Astro-Nex-v2.0-beta-Windows-x64.exe`).
-2. Sigue el asistente de instalación y ejecuta Astro-Nex desde el acceso
-   creado por el instalador.
+2. Sigue el asistente de instalación y ejecuta Astro-Nex desde el acceso creado.
 
-No hay que instalar Python, GTK ni dependencias adicionales.
-
-
-
-Windows puede mostrar una advertencia porque el ejecutable todavía no está
-firmado. Ejecuta únicamente una copia descargada de este repositorio oficial.
+> ⚠️ **Aviso de Seguridad (SmartScreen):** Como esta versión beta aún no cuenta con un certificado digital comercial, al abrir el instalador Windows mostrará una pantalla azul diciendo *"Windows protegió su PC"*. Para continuar la instalación de forma segura:
+> 1. Haz clic en el texto que dice **"Más información"**.
+> 2. Aparecerá un nuevo botón en la parte inferior; haz clic en **"Ejecutar de todas formas"**.
 
 ### macOS (Apple Silicon: M1, M2, M3 y M4)
 
@@ -51,11 +48,11 @@ firmado. Ejecuta únicamente una copia descargada de este repositorio oficial.
 2. Ábrelo con doble clic.
 3. Copia `Astro-Nex.app` a la carpeta **Aplicaciones** y ábrelo desde allí.
 
-Este instalador es para Macs con procesador Apple Silicon y macOS 26 o
-posterior. Incluye Python, GTK3, el motor astronómico y la tipografía de
-Astro-Nex; no hace falta instalar dependencias adicionales. La aplicación se
-firma de forma ad-hoc, por lo que macOS puede solicitar una confirmación la
-primera vez que se abre.
+> ⚠️ **Aviso de Seguridad (Gatekeeper):** Como la aplicación está firmada de forma "ad-hoc" (sin certificado comercial de Apple), macOS bloqueará la aplicación la primera vez que intentes abrirla, diciendo que *"no se puede verificar el desarrollador"* o que está *"dañada"*. Para solucionarlo:
+> 1. Ve a **Configuración del Sistema** (o Preferencias del Sistema) > **Privacidad y Seguridad**.
+> 2. Baja hasta el final de la pantalla.
+> 3. Verás un mensaje indicando que se bloqueó el uso de Astro-Nex. Haz clic en el botón **"Abrir de todos modos"** o **"Permitir"**.
+> 4. Te pedirá tu contraseña de Mac; ingrésala y la aplicación se abrirá sin problemas de ahí en adelante.
 
 ## Más información
 
