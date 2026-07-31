@@ -266,8 +266,8 @@ class DrawMaster(gtk.Layout):
                             gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.BUTTON_RELEASE_MASK |
                             gtk.gdk.POINTER_MOTION_HINT_MASK,
                             None,fleur,event.time)
-                    info['click_x'] = event.x
-                    info['click_y'] = event.y
+                    info['click_x'] = event.x_root
+                    info['click_y'] = event.y_root
             elif info['button'] == 100:
                 info['button'] = -1
             if showAP is None:
@@ -378,27 +378,30 @@ class DrawMaster(gtk.Layout):
                 return False
             w = da.allocation.width/2; h = da.allocation.height/2
             if self.panning:
-                x = info['click_x'] - x
-                y = info['click_y'] - y
+                x_delta = info['click_x'] - event.x_root
+                y_delta = info['click_y'] - event.y_root
+                info['click_x'] = event.x_root
+                info['click_y'] = event.y_root
+                
                 req_w, req_h = self.get_size_request()
                 w = max(req_w, self.allocation.width)
                 h = max(req_h, self.allocation.height)
                 wrange = w - self.ha.get_page_size()
                 hrange = h - self.va.get_page_size()
                 
-                if x + self.ha.get_value() < 0:
+                if x_delta + self.ha.get_value() < 0:
                     self.ha.set_value(0)
-                elif x + self.ha.get_value() > wrange: 
+                elif x_delta + self.ha.get_value() > wrange: 
                     self.ha.set_value(wrange)
                 else:
-                    self.ha.set_value(self.ha.get_value() + x)
+                    self.ha.set_value(self.ha.get_value() + x_delta)
                     
-                if y + self.va.get_value() < 0:
+                if y_delta + self.va.get_value() < 0:
                     self.va.set_value(0)
-                elif y + self.va.get_value() > hrange: 
+                elif y_delta + self.va.get_value() > hrange: 
                     self.va.set_value(hrange)
                 else:
-                    self.va.set_value(self.va.get_value() + y)
+                    self.va.set_value(self.va.get_value() + y_delta)
             else:
                 self.drawer.ruline = (x-w,y-h)
                 self.queue_draw()
