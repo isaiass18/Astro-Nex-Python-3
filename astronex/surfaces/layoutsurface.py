@@ -402,6 +402,8 @@ class DrawMaster(gtk.Layout):
                     self.va.set_value(hrange)
                 else:
                     self.va.set_value(self.va.get_value() + y_delta)
+                    
+                self.queue_draw()
             else:
                 self.drawer.ruline = (x-w,y-h)
                 self.queue_draw()
@@ -419,6 +421,9 @@ class DrawMaster(gtk.Layout):
         self.queue_draw()
 
     def on_scroll(self,da,event):
+        if getattr(self, 'zoom_in', False):
+            return False
+            
         x, y = event.x,event.y 
         w, h = da.allocation.width, da.allocation.height
         side = None
