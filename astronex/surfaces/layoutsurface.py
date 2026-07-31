@@ -260,12 +260,15 @@ class DrawMaster(gtk.Layout):
             if event.button != 1: return False
             if info['button'] < 0:
                 info['button'] = event.button
-                if self.panning:
-                    fleur = gtk.gdk.Cursor(gtk.gdk.FLEUR)
-                    gtk.gdk.pointer_grab(self.bin_window, True,
-                            gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.BUTTON_RELEASE_MASK |
-                            gtk.gdk.POINTER_MOTION_HINT_MASK,
-                            None,fleur,event.time)
+                if getattr(self, 'panning', False):
+                    # Use set_cursor instead of pointer_grab, as implicit grab works natively in GTK3
+                    # and pointer_grab breaks absolute coordinates on macOS.
+                    try:
+                        fleur = gtk.gdk.Cursor.new_for_display(gtk.gdk.Display.get_default(), gtk.gdk.CursorType.FLEUR)
+                        if self.get_window():
+                            self.get_window().set_cursor(fleur)
+                    except Exception:
+                        pass
                     info['click_x'] = event.x_root
                     info['click_y'] = event.y_root
             elif info['button'] == 100:
@@ -347,10 +350,14 @@ class DrawMaster(gtk.Layout):
             if info['button'] < 0 or info['button'] == 100:
                 return True
             if info['button'] == event.button:
-                info['button'] = -1; 
-                if self.panning:
-                    gtk.gdk.pointer_ungrab(event.time)
-                else: 
+                info['button'] = -1
+                if getattr(self, 'panning', False):
+                    try:
+                        if self.get_window():
+                            self.get_window().set_cursor(None)
+                    except Exception:
+                        pass
+                if not getattr(self, 'panning', False):
                     self.drawer.ruline = None
                     self.rulinepending = None
                     if showAP:
