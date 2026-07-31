@@ -4,6 +4,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
+# Fix apt sources since Buster is EOL and moved to archive
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+    && sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list \
+    && sed -i '/buster-updates/d' /etc/apt/sources.list
+
 # Install dependencies (Python 3.9 is already included in this image)
 RUN apt-get update && apt-get install -y \
     build-essential \
