@@ -21,6 +21,8 @@ RUN apt-get update && apt-get install -y \
     fuse \
     rsync \
     pkg-config \
+    libglib2.0-dev \
+    libglib2.0-bin \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
@@ -66,7 +68,7 @@ RUN rm -rf AppDir/usr/lib/python3.8/test AppDir/usr/lib/python3.8/idlelib
 
 # Create .desktop file for linuxdeploy
 RUN echo "[Desktop Entry]" > AppDir/usr/share/applications/astronex.desktop \
-    && echo "Name=Astro-Nex" >> AppDir/usr/share/applications/astronex.desktop \
+    && echo "Name=Astro-Nex v2" >> AppDir/usr/share/applications/astronex.desktop \
     && echo "Comment=Astro-Nex Astrology Software" >> AppDir/usr/share/applications/astronex.desktop \
     && echo "Exec=AppRun" >> AppDir/usr/share/applications/astronex.desktop \
     && echo "Icon=astronex" >> AppDir/usr/share/applications/astronex.desktop \

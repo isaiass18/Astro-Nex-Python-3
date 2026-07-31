@@ -28,6 +28,12 @@ sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
 ```
 *(Usar `apt` en lugar de `dpkg` asegura que cualquier pequeña dependencia faltante del sistema operativo, como librerías base, se instale automáticamente).*
 
+### Opción C: Paquete Universal (AppImage)
+Si prefieres no instalar nada en el sistema o usas una distribución diferente (como Fedora, Arch, etc.):
+1. Descarga el archivo `Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`.
+2. Haz clic derecho, ve a **Propiedades** > **Permisos** y marca **"Permitir ejecutar el archivo como un programa"**.
+3. Dale doble clic para ejecutar.
+
 ### ⚠️ Requisitos de Sistema (Importante)
 Astro-Nex requiere **Python 3.8 o superior**. Esto significa que es compatible con cualquier distribución Linux moderna (ej. Ubuntu 20.04 en adelante). 
 

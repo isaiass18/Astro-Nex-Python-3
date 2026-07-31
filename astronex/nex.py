@@ -33,7 +33,7 @@ if sys.version_info < (3, 8):
             sys.version_info[:2])
 
 
-home_dir = '.astronex'
+home_dir = '.astronex-v2'
 config_file = 'cfg.ini'
 default_db = 'charts.db'
 ephe_path = 'ephe'
@@ -42,7 +42,16 @@ ephe_flag = 4
 def check_home_dir(appath):
     """Set home dir, copying needed files"""
     global home_dir, ephe_flag
+    
+    import shutil
+    old_home = path.joinpath(path.expanduser(path('~')), '.astronex')
     default_home = path.joinpath(path.expanduser(path('~')), home_dir)
+    
+    if not path.exists(default_home) and path.exists(old_home):
+        try:
+            shutil.copytree(str(old_home), str(default_home))
+        except Exception as e:
+            print(f"Error migrating from Astro-Nex v1: {e}")
     
     if not path.exists(default_home):
         path.mkdir(default_home)
