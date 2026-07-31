@@ -80,6 +80,7 @@ RUN cp astronex/resources/iconex-beta-48.png AppDir/usr/share/icons/hicolor/48x4
 # Run linuxdeploy to bundle python interpreter and GTK libraries
 ENV APPIMAGE_EXTRACT_AND_RUN=1
 ENV OUTPUT="Astro-Nex-x86_64.AppImage"
+ENV DEPLOY_GTK_VERSION=3
 ENV LD_LIBRARY_PATH="/workspace/AppDir/usr/lib/python3.8/site-packages/pillow.libs:$LD_LIBRARY_PATH"
 RUN /usr/local/bin/linuxdeploy --appdir AppDir \
     --executable /usr/bin/python3 \
