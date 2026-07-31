@@ -7,14 +7,16 @@ Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
 Astro-Nex-v2.0-beta-Linux-x86_64.AppImage
 ```
 
-👉 **[Descargar instaladores para Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)**
+👉 **Descargar instaladores para Linux desde GitHub Releases (Última versión estable):**
+- **[AppImage (Paquete Universal recomendado)](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Linux-x86_64.AppImage)**
+- **[Paquete Nativo (.deb) para Ubuntu 24.04](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb)**
 
 ## 🛠️ Cómo instalar en Linux
 
 Si vas a instalar Astro-Nex en un equipo con Ubuntu, Linux Mint, Debian u otra distribución derivada, estas son las instrucciones que debes seguir:
 
 ### Opción A: Instalación Gráfica (Fácil)
-1. Descarga el archivo `Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb` desde GitHub.
+1. **[Descarga el paquete Ubuntu 24.04 desde GitHub](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb)** (`Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`).
 2. Dale **doble clic** al archivo.
 3. Se abrirá el Centro de Software (o el Instalador de Paquetes GDebi).
 4. Haz clic en **Instalar** y pon tu contraseña de administrador.
