@@ -1,6 +1,11 @@
-# Astro-Nex - Instalador de Linux (.deb)
+# Astro-Nex 2.0 beta para Linux
 
-Este directorio es el entorno de compilación del instalador oficial de Astro-Nex para distribuciones Linux.
+Este directorio es el entorno de compilación para los instaladores:
+
+```text
+Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
+Astro-Nex-v2.0-beta-Linux-x86_64.AppImage
+```
 
 👉 **[Descargar instaladores para Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)**
 
