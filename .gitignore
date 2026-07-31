@@ -61,10 +61,9 @@ mobile-hybrid/web/DerivedData/
 mobile-hybrid/web/build/
 mobile-hybrid/web/ios/App/.bundle/
 mobile-hybrid/web/ios/App/vendor/bundle/
- 
- #   B u i l d   s c r i p t s   L i n u x  
- L i n u x   I n s t a l a d o r / D o c k e r f i l e  
- L i n u x   I n s t a l a d o r / c o n s t r u i r _ d e b . b a t  
+# Build scripts Linux
+Linux Instalador/Dockerfile.appimage
+Linux Instalador/construir_deb.bat
 
 # Ignorar binarios de instaladores para no inflar el repositorio (usar GitHub Releases)
 Windows Instalador/Astro-Nex/
