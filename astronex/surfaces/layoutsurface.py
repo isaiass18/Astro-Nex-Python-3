@@ -380,24 +380,25 @@ class DrawMaster(gtk.Layout):
             if self.panning:
                 x = info['click_x'] - x
                 y = info['click_y'] - y
-                w = self.allocation.width
-                h = self.allocation.height
-                wrange = w - self.ha.page_size
-                hrange = h - self.va.page_size
-                #dx = float(x) / w * wrange
-                #dy = float(y) / h * hrange
-                if x + self.ha.value < 0:
-                    self.ha.value = 0
-                elif x + self.ha.value > wrange: 
-                    self.ha.value = wrange
+                req_w, req_h = self.get_size_request()
+                w = max(req_w, self.allocation.width)
+                h = max(req_h, self.allocation.height)
+                wrange = w - self.ha.get_page_size()
+                hrange = h - self.va.get_page_size()
+                
+                if x + self.ha.get_value() < 0:
+                    self.ha.set_value(0)
+                elif x + self.ha.get_value() > wrange: 
+                    self.ha.set_value(wrange)
                 else:
-                    self.ha.value += x
-                if y + self.va.value < 0:
-                    self.va.value = 0
-                elif y + self.va.value > hrange: 
-                    self.va.value = hrange
+                    self.ha.set_value(self.ha.get_value() + x)
+                    
+                if y + self.va.get_value() < 0:
+                    self.va.set_value(0)
+                elif y + self.va.get_value() > hrange: 
+                    self.va.set_value(hrange)
                 else:
-                    self.va.value += y
+                    self.va.set_value(self.va.get_value() + y)
             else:
                 self.drawer.ruline = (x-w,y-h)
                 self.queue_draw()
@@ -459,6 +460,7 @@ class DrawMaster(gtk.Layout):
             if scrw <= 0: scrw = 720
             if scrh <= 0: scrh = 720
             self.set_size_request(int(scrw*2), int(scrh*2))
+            self.set_size(int(scrw*2), int(scrh*2))
             self.zoom_in = True
             self.panning = True
             menuitem.get_child().set_text(_('Alejar'))
@@ -467,6 +469,7 @@ class DrawMaster(gtk.Layout):
             if scrw <= 0: scrw = 720
             if scrh <= 0: scrh = 720
             self.set_size_request(int(scrw/2), int(scrh/2))
+            self.set_size(int(scrw/2), int(scrh/2))
             self.zoom_in = False
             self.panning = False
             menuitem.get_child().set_text(_('Acercar'))
@@ -696,8 +699,8 @@ class DrawMaster(gtk.Layout):
                 self.where_hsel = where
         
         req_w, req_h = self.get_size_request()
-        w = req_w if req_w > 0 else self.allocation.width
-        h = req_h if req_h > 0 else self.allocation.height
+        w = max(req_w, self.allocation.width)
+        h = max(req_h, self.allocation.height)
         cr.rectangle(0,0,w,h)
         cr.clip()
         cr.set_source_rgb(1.0,1.0,1.0)
