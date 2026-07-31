@@ -695,8 +695,9 @@ class DrawMaster(gtk.Layout):
                 self.move(self.hsel,10,where)
                 self.where_hsel = where
         
-        w = self.allocation.width
-        h = self.allocation.height
+        req_w, req_h = self.get_size_request()
+        w = req_w if req_w > 0 else self.allocation.width
+        h = req_h if req_h > 0 else self.allocation.height
         cr.rectangle(0,0,w,h)
         cr.clip()
         cr.set_source_rgb(1.0,1.0,1.0)
