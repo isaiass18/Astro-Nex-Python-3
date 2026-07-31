@@ -19,6 +19,8 @@ Si vas a instalar Astro-Nex en un equipo con Ubuntu, Linux Mint, Debian u otra d
 4. Haz clic en **Instalar** y pon tu contraseña de administrador.
 5. ¡Listo! Busca Astro-Nex en el menú de aplicaciones de tu sistema.
 
+> 💡 **Solución de problemas:** Si al presionar "Instalar" la ventana no hace nada o se cancela silenciosamente (un fallo común de permisos en algunas versiones de Linux), abre una terminal en esa misma carpeta y ejecuta: `sudo apt install ./Astro-Nex*.deb`
+
 ### Opción B: Paquete Universal (AppImage)
 Si prefieres no instalar nada en el sistema o usas una distribución diferente (como Fedora, Arch, etc.):
 1. **[Descarga el AppImage (Paquete Universal) desde GitHub](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Linux-x86_64.AppImage)** (`Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`).
