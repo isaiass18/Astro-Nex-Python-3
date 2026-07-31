@@ -44,6 +44,12 @@ RUN mkdir -p /deb_build/usr/bin \
 # Copy binary
 RUN cp -r dist/Astro-Nex/* /deb_build/usr/bin/
 
+# Copy missing data folders (resources, db, locale) that PyInstaller missed
+RUN mkdir -p /deb_build/usr/bin/astronex \
+    && cp -r astronex/resources /deb_build/usr/bin/astronex/ \
+    && cp -r astronex/db /deb_build/usr/bin/astronex/ \
+    && cp -r astronex/locale /deb_build/usr/bin/astronex/
+
 # Copy font
 RUN cp astronex/resources/Astro-Nex.ttf /deb_build/usr/share/fonts/truetype/astronex/
 
