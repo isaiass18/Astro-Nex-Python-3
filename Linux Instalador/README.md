@@ -7,9 +7,6 @@ Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
 Astro-Nex-v2.0-beta-Linux-x86_64.AppImage
 ```
 
-👉 **Descargar instaladores para Linux desde GitHub Releases (Última versión estable):**
-- **[AppImage (Paquete Universal recomendado)](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Linux-x86_64.AppImage)**
-- **[Paquete Nativo (.deb) para Ubuntu 24.04](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb)**
 
 ## 🛠️ Cómo instalar en Linux
 
@@ -32,7 +29,7 @@ sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
 
 ### Opción C: Paquete Universal (AppImage)
 Si prefieres no instalar nada en el sistema o usas una distribución diferente (como Fedora, Arch, etc.):
-1. Descarga el archivo `Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`.
+1. **[Descarga el AppImage (Paquete Universal recomendado) desde GitHub](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Linux-x86_64.AppImage)** (`Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`).
 2. Haz clic derecho, ve a **Propiedades** > **Permisos** y marca **"Permitir ejecutar el archivo como un programa"**.
 3. Dale doble clic para ejecutar.
 
