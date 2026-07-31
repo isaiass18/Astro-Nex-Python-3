@@ -1,11 +1,13 @@
 # Instalador de Astro-Nex para Windows
 
-Esta carpeta contiene el instalador de Astro-Nex para Windows 8 y Windows 10
+Esta carpeta es el espacio de trabajo para el instalador de Astro-Nex para Windows 8 y Windows 10
 de 64 bits.
+
+👉 **[Descargar instalador para Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)**
 
 ## Instalación recomendada
 
-1. Ejecuta `Astro-Nex-Setup.exe`.
+1. Ejecuta `Astro-Nex-v2.0-beta-Windows-x64.exe` (descargado desde GitHub).
 2. Sigue los pasos del asistente de instalación.
 3. Abre Astro-Nex desde el acceso que el instalador crea en Windows.
 

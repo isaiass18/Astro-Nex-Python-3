@@ -1,10 +1,12 @@
 # Astro-Nex 2.0 beta para macOS
 
-Este directorio contiene el instalador:
+Este directorio es el entorno de compilación para el instalador:
 
 ```text
-Astro-Nex-2.0-beta-macos-arm64.dmg
+Astro-Nex-v2.0-beta-macOS-arm64.dmg
 ```
+
+👉 **[Descargar instalador para macOS desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)**
 
 ## Compatibilidad
 

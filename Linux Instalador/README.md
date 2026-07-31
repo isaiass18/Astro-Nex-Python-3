@@ -1,13 +1,15 @@
 # Astro-Nex - Instalador de Linux (.deb)
 
-Este directorio contiene el instalador oficial de Astro-Nex empaquetado para distribuciones Linux basadas en Debian y Ubuntu.
+Este directorio es el entorno de compilación del instalador oficial de Astro-Nex para distribuciones Linux.
+
+👉 **[Descargar instaladores para Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest)**
 
 ## 🛠️ Cómo instalar en Linux
 
 Si vas a instalar Astro-Nex en un equipo con Ubuntu, Linux Mint, Debian u otra distribución derivada, estas son las instrucciones que debes seguir:
 
 ### Opción A: Instalación Gráfica (Fácil)
-1. Descarga el archivo `astronex_2.0_amd64.deb`.
+1. Descarga el archivo `Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb` desde GitHub.
 2. Dale **doble clic** al archivo.
 3. Se abrirá el Centro de Software (o el Instalador de Paquetes GDebi).
 4. Haz clic en **Instalar** y pon tu contraseña de administrador.
@@ -17,7 +19,7 @@ Si vas a instalar Astro-Nex en un equipo con Ubuntu, Linux Mint, Debian u otra d
 Abre la terminal en la carpeta donde descargaste el archivo y ejecuta:
 
 ```bash
-sudo apt install ./astronex_2.0_amd64.deb
+sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
 ```
 *(Usar `apt` en lugar de `dpkg` asegura que cualquier pequeña dependencia faltante del sistema operativo, como librerías base, se instale automáticamente).*
 
