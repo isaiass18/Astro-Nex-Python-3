@@ -23,6 +23,8 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libglib2.0-dev \
     libglib2.0-bin \
+    libgdk-pixbuf2.0-dev \
+    librsvg2-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
