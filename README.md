@@ -54,10 +54,7 @@ Para que el instalador ejecute también las pruebas:
 
 No hay que instalar Python, GTK ni dependencias adicionales.
 
-Al usar la variante portable, instala también la fuente
-`Astro-Nex.ttf` que está dentro de su carpeta: haz doble clic sobre el archivo
-y selecciona **Instalar** en Windows. Así se mostrarán correctamente los
-símbolos astrológicos.
+
 
 Windows puede mostrar una advertencia porque el ejecutable todavía no está
 firmado. Ejecuta únicamente una copia descargada de este repositorio oficial.
