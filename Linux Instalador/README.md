@@ -34,6 +34,8 @@ Si prefieres no instalar nada en el sistema o usas una distribución diferente (
 2. Haz clic derecho, ve a **Propiedades** > **Permisos** y marca **"Permitir ejecutar el archivo como un programa"**.
 3. Dale doble clic para ejecutar.
 
+> ⚠️ **Aviso de Seguridad:** Linux por defecto bloquea la ejecución de archivos descargados de internet. Es obligatorio realizar el paso 2 (dar permisos de ejecución) o el sistema te arrojará un error diciendo que *"no se puede abrir"* o *"no hay aplicación instalada para este archivo"*.
+
 ### ⚠️ Requisitos de Sistema (Importante)
 Astro-Nex requiere **Python 3.8 o superior**. Esto significa que es compatible con cualquier distribución Linux moderna (ej. Ubuntu 20.04 en adelante). 
 
