@@ -1,4 +1,4 @@
-#define MyAppName "Astro-Nex"
+#define MyAppName "Astro-Nex v2"
 #define MyAppVersion "2.0-beta"
 #define MyAppPublisher "Astro-Nex"
 #define MyAppExeName "Astro-Nex.exe"
@@ -8,7 +8,7 @@ AppId={{6DA052DC-2C6E-4E5D-84A7-52B2A6220F22}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-DefaultDirName={autopf}\Astro-Nex
+DefaultDirName={autopf}\Astro-Nex v2
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=Windows Instalador
@@ -66,8 +66,8 @@ begin
   begin
     DataPage := CreateOutputMsgMemoPage(wpWelcome,
       'Bases de datos detectadas',
-      'El instalador ha detectado datos de una instalación anterior.',
-      'Astro-Nex utilizará automáticamente las siguientes bases de datos encontradas en su sistema. Su información y cartas astrales se conservarán de manera segura:',
+      'El instalador ha detectado datos de una instalación de la versión anterior.',
+      'Astro-Nex v2 copiará automáticamente de forma segura las siguientes bases de datos para no afectar su versión original:',
       FileList);
   end;
 end;
