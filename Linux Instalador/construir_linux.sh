@@ -36,26 +36,26 @@ fi
 
 echo ""
 echo "[*] Conectando a AWS y preparando entorno Docker..."
-ssh -i "$PEM_FILE" -o IdentitiesOnly=yes -o StrictHostKeyChecking=no "$AWS_USER@$AWS_IP" "sudo apt-get update && sudo apt-get install -y docker.io"
+ssh -i "$PEM_FILE" -o IdentitiesOnly=yes -o ServerAliveInterval=60 -o StrictHostKeyChecking=no "$AWS_USER@$AWS_IP" "sudo apt-get update && sudo apt-get install -y docker.io"
 
 echo ""
 echo "[*] Descargando código fresco y compilando (esto tomará varios minutos)..."
-ssh -i "$PEM_FILE" -o IdentitiesOnly=yes "$AWS_USER@$AWS_IP" "sudo docker system prune -f && rm -rf astronex-build-tmp && mkdir astronex-build-tmp && cd astronex-build-tmp && git clone https://github.com/isaiass18/Astro-Nex-Python-3.git ."
+ssh -i "$PEM_FILE" -o IdentitiesOnly=yes -o ServerAliveInterval=60 "$AWS_USER@$AWS_IP" "sudo docker system prune -f && rm -rf astronex-build-tmp && mkdir astronex-build-tmp && cd astronex-build-tmp && git clone https://github.com/isaiass18/Astro-Nex-Python-3.git ."
 scp -i "$PEM_FILE" -r -o IdentitiesOnly=yes -o StrictHostKeyChecking=no "../Linux Instalador" "$AWS_USER@$AWS_IP:~/astronex-build-tmp/"
-ssh -i "$PEM_FILE" -o IdentitiesOnly=yes "$AWS_USER@$AWS_IP" "cd astronex-build-tmp && $BUILD_CMD && $EXTRACT_CMD"
+ssh -i "$PEM_FILE" -o IdentitiesOnly=yes -o ServerAliveInterval=60 "$AWS_USER@$AWS_IP" "cd astronex-build-tmp && $BUILD_CMD && $EXTRACT_CMD"
 
 echo ""
 echo "[*] Descargando los instaladores al equipo local..."
 if [ "$OPCION" = "1" ]; then
-    scp -i "$PEM_FILE" -o IdentitiesOnly=yes "$AWS_USER@$AWS_IP:/home/$AWS_USER/astronex-build-tmp/$TARGET_FILE" "./$TARGET_FILE"
-    scp -i "$PEM_FILE" -o IdentitiesOnly=yes "$AWS_USER@$AWS_IP:/home/$AWS_USER/astronex-build-tmp/$APPIMAGE_FILE" "./$APPIMAGE_FILE"
+    scp -i "$PEM_FILE" -o IdentitiesOnly=yes -o ServerAliveInterval=60 "$AWS_USER@$AWS_IP:/home/$AWS_USER/astronex-build-tmp/$TARGET_FILE" "./$TARGET_FILE"
+    scp -i "$PEM_FILE" -o IdentitiesOnly=yes -o ServerAliveInterval=60 "$AWS_USER@$AWS_IP:/home/$AWS_USER/astronex-build-tmp/$APPIMAGE_FILE" "./$APPIMAGE_FILE"
 else
-    scp -i "$PEM_FILE" -o IdentitiesOnly=yes "$AWS_USER@$AWS_IP:/home/$AWS_USER/astronex-build-tmp/$TARGET_FILE" "./$TARGET_FILE"
+    scp -i "$PEM_FILE" -o IdentitiesOnly=yes -o ServerAliveInterval=60 "$AWS_USER@$AWS_IP:/home/$AWS_USER/astronex-build-tmp/$TARGET_FILE" "./$TARGET_FILE"
 fi
 
 echo ""
 echo "[*] Limpiando el servidor AWS..."
-ssh -i "$PEM_FILE" -o IdentitiesOnly=yes "$AWS_USER@$AWS_IP" "rm -rf astronex-build-tmp"
+ssh -i "$PEM_FILE" -o IdentitiesOnly=yes -o ServerAliveInterval=60 "$AWS_USER@$AWS_IP" "rm -rf astronex-build-tmp"
 
 echo ""
 echo "=============================================================="
