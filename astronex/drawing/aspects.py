@@ -24,7 +24,7 @@ class ConjunctioAspect(object):
 
             
         cr.save()
-        for asp in aspects:
+        for asp in sorted(aspects, key=lambda x: (x.p1, getattr(x, 'p2', 0))):
             asp.p1 %= 360.0
             asp.p2 %= 360.0
             x1 = r * math.cos(asp.p1 * RAD)
@@ -83,7 +83,7 @@ class UnilateralAspect(object):
     def draw(self,cr,r,aspects):
         cr.save()
         cr.set_line_width(0.6*float(self.lw))
-        for asp in aspects:
+        for asp in sorted(aspects, key=lambda x: (x.p1, getattr(x, 'p2', 0))):
             x1 = r * math.cos(asp.p1 * RAD)
             y1 = r * math.sin(asp.p1 * RAD)
             x2 = r * math.cos(asp.p2 * RAD)
@@ -114,7 +114,7 @@ class GoodwillAspect(object):
         cr.save()
         cr.set_dash([12,6],2)
         cr.set_line_width(0.7*float(self.lw))
-        for asp in aspects:
+        for asp in sorted(aspects, key=lambda x: (x.p1, getattr(x, 'p2', 0))):
             x1 = r * math.cos(asp.p1 * RAD)
             y1 = r * math.sin(asp.p1 * RAD)
             x2 = r * math.cos(asp.p2 * RAD)
@@ -129,7 +129,7 @@ class AgePointAspect(object):
     def draw(self,cr,r,aspects,pe):
         cr.save()
         cr.set_dash([3,3],2)
-        for asp in aspects:
+        for asp in sorted(aspects, key=lambda x: (x.p1, getattr(x, 'p2', 0))):
             x1 = r * math.cos(asp.p1 * RAD)
             y1 = r * math.sin(asp.p1 * RAD)
             x2 = r * math.cos(pe * RAD)
@@ -148,7 +148,7 @@ class FususAspect(object):
     def draw(self,cr,r,aspects):
         cr.save()
         scl = r * 0.00065
-        for asp in aspects:
+        for asp in sorted(aspects, key=lambda x: (x.p1, getattr(x, 'p2', 0))):
             f = 3*((5-5*asp.f1)+(5-5*asp.f2)) * scl #/10 
             x1 = r * math.cos(asp.p1 * RAD)
             y1 = r * math.sin(asp.p1 * RAD)
