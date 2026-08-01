@@ -384,9 +384,9 @@ class DrawMaster(gtk.Layout):
                 info['button'] = -1
                 return False
             w = da.allocation.width/2; h = da.allocation.height/2
-            if self.panning:
-                x_delta = info['click_x'] - event.x_root
-                y_delta = info['click_y'] - event.y_root
+            if getattr(self, 'panning', False):
+                x_delta = info.get('click_x', event.x_root) - event.x_root
+                y_delta = info.get('click_y', event.y_root) - event.y_root
                 info['click_x'] = event.x_root
                 info['click_y'] = event.y_root
                 
