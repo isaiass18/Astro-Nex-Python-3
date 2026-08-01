@@ -101,7 +101,8 @@ class DrawMaster(gtk.Layout):
         self.set_events(gtk.gdk.BUTTON_PRESS_MASK | 
                 gtk.gdk.BUTTON_RELEASE_MASK | 
                 gtk.gdk.POINTER_MOTION_MASK | 
-                gtk.gdk.POINTER_MOTION_HINT_MASK)
+                gtk.gdk.POINTER_MOTION_HINT_MASK |
+                gtk.gdk.SCROLL_MASK)
         self.connect("draw", self.dispatch)
         self.connect("button_press_event", self.on_da_clicked)
         self.connect("button_release_event", self.on_da_clicked)
@@ -428,6 +429,7 @@ class DrawMaster(gtk.Layout):
         self.queue_draw()
 
     def on_scroll(self,da,event):
+        print("SCROLL EVENT RECEIVED!", "zoom_in:", getattr(self, 'zoom_in', False))
         if getattr(self, 'zoom_in', False):
             return False
             
