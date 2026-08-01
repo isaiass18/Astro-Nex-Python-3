@@ -390,7 +390,7 @@ class DrawMaster(gtk.Layout):
                 info['click_x'] = event.x_root
                 info['click_y'] = event.y_root
                 
-                req_w, req_h = self.get_size_request()
+                req_w, req_h = self.get_size()
                 w = max(req_w, self.allocation.width)
                 h = max(req_h, self.allocation.height)
                 wrange = w - self.ha.get_page_size()
@@ -471,19 +471,19 @@ class DrawMaster(gtk.Layout):
 
     def on_menuitem_activate(self,menuitem): 
         if menuitem.get_child().get_text() == _('Acercar'):
-            scrw, scrh = self.get_size_request()
+            scrw, scrh = self.get_size()
             if scrw <= 0: scrw = 720
             if scrh <= 0: scrh = 720
-            self.set_size_request(int(scrw*2), int(scrh*2))
+            self.set_size(int(scrw*2), int(scrh*2)); self.queue_draw()
             self.set_size(int(scrw*2), int(scrh*2))
             self.zoom_in = True
             self.panning = True
             menuitem.get_child().set_text(_('Alejar'))
         elif menuitem.get_child().get_text() == _('Alejar'):
-            scrw, scrh = self.get_size_request()
+            scrw, scrh = self.get_size()
             if scrw <= 0: scrw = 720
             if scrh <= 0: scrh = 720
-            self.set_size_request(int(scrw/2), int(scrh/2))
+            self.set_size(int(scrw/2), int(scrh/2)); self.queue_draw()
             self.set_size(int(scrw/2), int(scrh/2))
             self.zoom_in = False
             self.panning = False
@@ -668,7 +668,7 @@ class DrawMaster(gtk.Layout):
         op = curr.curr_op
         if self.fullscreen:
             DrawMixin.extended_canvas = False
-            #self.set_size_request(720,720)
+            #self.set_size(720,720)
         elif op in extended and curr.opmode == 'simple' :
             if not DrawMixin.extended_canvas:
                 DrawMixin.extended_canvas = True
@@ -678,7 +678,7 @@ class DrawMaster(gtk.Layout):
                         pad = self.allocation.width * 0.4
                     else:
                         pad = self.allocation.width * 0.55
-                self.set_size_request(720,int(720+pad))
+                self.set_size(720,int(720+pad))
             if op != self._last_extended_op:
                 self._reset_viewport_to_origin()
                 self._schedule_overlay_reanchor()
@@ -691,7 +691,7 @@ class DrawMaster(gtk.Layout):
             self._last_extended_op = None
             if DrawMixin.extended_canvas:
                 DrawMixin.extended_canvas = False
-                self.set_size_request(720,720)
+                self.set_size(720,720)
 
         if op == 'compo_two' and self._overlay_reanchor_pending:
             self._reset_viewport_to_origin()
@@ -713,7 +713,7 @@ class DrawMaster(gtk.Layout):
                 self.move(self.hsel,10,where)
                 self.where_hsel = where
         
-        req_w, req_h = self.get_size_request()
+        req_w, req_h = self.get_size()
         w = max(req_w, self.allocation.width)
         h = max(req_h, self.allocation.height)
         cr.rectangle(0,0,w,h)
