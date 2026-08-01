@@ -472,19 +472,19 @@ class DrawMaster(gtk.Layout):
     def on_menuitem_activate(self,menuitem): 
         if menuitem.get_child().get_text() == _('Acercar'):
             scrw, scrh = self.get_size()
-            if scrw <= 0: scrw = 720
-            if scrh <= 0: scrh = 720
-            self.set_size(int(scrw*2), int(scrh*2)); self.queue_draw()
+            if scrw <= 100: scrw = 720
+            if scrh <= 100: scrh = 720
             self.set_size(int(scrw*2), int(scrh*2))
+            self.queue_draw()
             self.zoom_in = True
             self.panning = True
             menuitem.get_child().set_text(_('Alejar'))
         elif menuitem.get_child().get_text() == _('Alejar'):
             scrw, scrh = self.get_size()
-            if scrw <= 0: scrw = 720
-            if scrh <= 0: scrh = 720
-            self.set_size(int(scrw/2), int(scrh/2)); self.queue_draw()
+            if scrw <= 100: scrw = 720
+            if scrh <= 100: scrh = 720
             self.set_size(int(scrw/2), int(scrh/2))
+            self.queue_draw()
             self.zoom_in = False
             self.panning = False
             menuitem.get_child().set_text(_('Acercar'))
