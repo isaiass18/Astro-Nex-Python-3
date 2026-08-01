@@ -658,6 +658,9 @@ class DrawMaster(gtk.Layout):
     def dispatch(self, da, cr):
         cr = CairoContext(cr)
         cr.save()
+        # GTK3 layout rendering intercepts the draw signal at the widget level,
+        # so we must manually offset by the scroll adjustments to visually pan.
+        cr.translate(-self.ha.get_value(), -self.va.get_value())
         self._sync_overlay_visibility_from_toolbar()
         if self.diadavisible:
             where = self.allocation.width - self.diada.allocation.width
