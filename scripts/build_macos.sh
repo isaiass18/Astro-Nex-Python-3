@@ -31,6 +31,7 @@ if hdiutil info | grep -Fq "$output_dir/Astro-Nex-"; then
 fi
 
 harfbuzz_prefix=$(brew --prefix harfbuzz)
+freetype_prefix=$(brew --prefix freetype)
 python_bin=${PYTHON_BIN:-python3}
 venv_dir="$project_dir/.venv-macos-build"
 build_dir=$(mktemp -d /tmp/astronex-macos.XXXXXX)
@@ -94,12 +95,23 @@ harfbuzz_bundle="$app_path/Contents/Frameworks/PIL/.dylibs/libharfbuzz.0.dylib"
 # Frameworks directory, so the resulting app does not depend on Homebrew.
 cp "$harfbuzz_prefix/lib/libharfbuzz.0.dylib" "$harfbuzz_bundle"
 install_name_tool -id @rpath/libharfbuzz.0.dylib "$harfbuzz_bundle"
-install_name_tool -change "$harfbuzz_prefix/lib/libfreetype.6.dylib" \
-    @rpath/libfreetype.6.dylib "$harfbuzz_bundle"
+# Homebrew's HarfBuzz records FreeType through its opt path.  The matching
+# library is already bundled by Pillow beside HarfBuzz, so use a loader-relative
+# reference instead of requiring Homebrew on the user's Mac.
+install_name_tool -change "$freetype_prefix/lib/libfreetype.6.dylib" \
+    @loader_path/libfreetype.6.dylib "$harfbuzz_bundle"
 install_name_tool -change "$(brew --prefix glib)/lib/libglib-2.0.0.dylib" \
     @rpath/libglib-2.0.0.dylib "$harfbuzz_bundle"
 install_name_tool -change "$(brew --prefix graphite2)/lib/libgraphite2.3.dylib" \
     @rpath/libgraphite2.3.dylib "$harfbuzz_bundle"
+
+# A distributable app cannot depend on the Homebrew installation that built it.
+if find "$app_path/Contents" -type f \( -perm -111 -o -name '*.dylib' \) \
+    -exec otool -L {} \; 2>/dev/null | grep -qE '/opt/homebrew|/usr/local/Cellar'; then
+    echo "The app still contains a Homebrew library reference; refusing to package it."
+    exit 1
+fi
+
 codesign --force --deep --sign - "$app_path"
 codesign --verify --deep --strict "$app_path"
 
