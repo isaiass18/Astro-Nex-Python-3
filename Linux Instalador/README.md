@@ -37,7 +37,11 @@ sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
 ```
 *(Usar `apt` en lugar de `dpkg` asegura que cualquier pequeña dependencia faltante del sistema operativo, como librerías base, se instale automáticamente).*
 
-### ⚠️ Requisitos de Sistema (Importante)
-Astro-Nex requiere **Python 3.8 o superior**. Esto significa que es compatible con cualquier distribución Linux moderna (ej. Ubuntu 20.04 en adelante). 
+### Requisitos de Sistema
+El AppImage contiene Python 3.8, GTK y sus dependencias nativas, incluida
+`libffi.so.7`; el `.deb` instala ese mismo AppImage en `/opt/astro-nex/`.
+Por ello ninguno requiere Python ni `libffi` preinstalados. Se necesita una
+distribución Linux de 64 bits, permisos de ejecución y un entorno gráfico GTK.
 
-**¿Por qué?** El código fuente de Astro-Nex ha sido actualizado para utilizar herramientas de programación modernas de Python (como el manejo avanzado de rutas de archivos). Si intentas instalar esto en una versión de Linux muy antigua (como Ubuntu 18.04 que trae Python 3.6), el instalador funcionará, pero al abrir el programa recibirás un mensaje indicando que tu versión de Python es demasiado antigua.
+El requisito de Python 3.8 o superior aplica sólo si se instala directamente
+desde el código fuente con `scripts/install_linux.sh`.

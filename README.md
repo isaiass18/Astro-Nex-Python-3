@@ -11,11 +11,14 @@ instalación. Es un servicio público de prueba.
 
 ### Linux
 
-⚠️ **Requisito de Sistema:** Astro-Nex requiere **Python 3.8 o superior**. Esto significa que es compatible con cualquier distribución Linux moderna (ej. Ubuntu 20.04 en adelante). Si usas un sistema antiguo (como Ubuntu 18.04 que usa Python 3.6), la aplicación te informará que tu versión de Python es muy antigua y no arrancará.
+Los instaladores AppImage y `.deb` incluyen su propio Python y bibliotecas
+nativas, por lo que no requieren instalar Python ni `libffi` en el sistema. El
+requisito de Python 3.8 o superior aplica solamente a la instalación desde el
+código fuente.
 
 Tienes tres opciones para ejecutar Astro-Nex en Linux, dependiendo de tus preferencias:
 
-**Opción 1: Paquete Nativo (.deb)** - *Recomendado para Ubuntu, Mint, Debian, Pop!_OS*
+**Opción 1: Paquete `.deb` (integración Debian del AppImage)** - *Recomendado para Ubuntu, Mint, Debian, Pop!_OS*
 1. **[Descarga el paquete Ubuntu 24.04 desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb)** (`Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`).
 2. Dale doble clic para instalarlo desde tu Centro de Software, o ejecuta en la terminal:
    `sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`

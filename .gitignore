@@ -71,3 +71,4 @@ Windows Instalador/Astro-Nex/
 *.dmg
 *.deb
 *.AppImage
+!Linux Instalador/Dockerfile.deb

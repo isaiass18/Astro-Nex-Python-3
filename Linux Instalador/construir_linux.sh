@@ -8,7 +8,7 @@ PEM_FILE="../astronext.pem"
 echo "========================================="
 echo "   Constructor de Astro-Nex para Linux   "
 echo "========================================="
-echo "1. Construir .deb Universal (basado en AppImage)"
+echo "1. Construir AppImage autocontenido y .deb integrador"
 echo "2. Construir AppImage Universal"
 echo "========================================="
 read -p "Elige una opción (1-2): " OPCION

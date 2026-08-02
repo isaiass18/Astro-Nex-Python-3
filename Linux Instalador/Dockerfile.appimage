@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-bin \
     libgdk-pixbuf2.0-dev \
     librsvg2-dev \
+    patchelf \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
@@ -69,8 +70,10 @@ RUN rsync -a /usr/lib/python3.8/ AppDir/usr/lib/python3.8/ \
     && cp -r /usr/lib/python3/dist-packages/cairo AppDir/usr/lib/python3.8/site-packages/ \
     && cp -r /usr/lib/python3/dist-packages/pygtkcompat AppDir/usr/lib/python3.8/site-packages/ || true
 
-# Clean up unnecessary things from bundled python stdlib (like tests)
-RUN rm -rf AppDir/usr/lib/python3.8/test AppDir/usr/lib/python3.8/idlelib
+# Clean up unnecessary build-only files from the bundled Python stdlib.
+# python.o is a static object, not a runtime library; linuxdeploy cannot patch it.
+RUN rm -rf AppDir/usr/lib/python3.8/test AppDir/usr/lib/python3.8/idlelib \
+    && find AppDir/usr/lib/python3.8 -type f -name python.o -delete
 
 # Create .desktop file for linuxdeploy
 RUN echo "[Desktop Entry]" > AppDir/usr/share/applications/astronex.desktop \
@@ -85,7 +88,7 @@ RUN echo "[Desktop Entry]" > AppDir/usr/share/applications/astronex.desktop \
 # Copy icon for linuxdeploy to pick up
 RUN cp astronex/resources/iconex-beta-48.png AppDir/usr/share/icons/hicolor/48x48/apps/astronex.png
 
-# Run linuxdeploy to bundle python interpreter and GTK libraries
+# Deploy GTK first, then close the Python native-library dependency graph.
 ENV APPIMAGE_EXTRACT_AND_RUN=1
 ENV OUTPUT="/Astro-Nex-v2.0-beta-Linux-x86_64.AppImage"
 ENV DEPLOY_GTK_VERSION=3
@@ -94,8 +97,18 @@ RUN /usr/local/bin/linuxdeploy --appdir AppDir \
     --executable /usr/bin/python3 \
     --desktop-file AppDir/usr/share/applications/astronex.desktop \
     --icon-file AppDir/usr/share/icons/hicolor/48x48/apps/astronex.png \
-    --plugin gtk \
-    --output appimage
+    --plugin gtk
+
+# Python 3.8 from Ubuntu 20.04 needs libffi.so.7. Bundle it and every other
+# non-glibc dependency so newer distributions do not need obsolete ABI files.
+COPY ["Linux Instalador/bundle_runtime_libs.sh", "/usr/local/bin/bundle_runtime_libs.sh"]
+RUN chmod +x /usr/local/bin/bundle_runtime_libs.sh \
+    && /usr/local/bin/bundle_runtime_libs.sh /workspace/AppDir \
+    && PYTHONHOME=/workspace/AppDir/usr \
+       PYTHONPATH=/workspace/AppDir/usr/share/astronex:/workspace/AppDir/usr/lib/python3.8/site-packages \
+       LD_LIBRARY_PATH=/workspace/AppDir/usr/lib \
+       /workspace/AppDir/usr/bin/python3 -c 'import _ctypes, ctypes, cairo, gi; print("Python runtime dependencies OK")' \
+    && /usr/local/bin/linuxdeploy --appdir AppDir --output appimage
 
 # The entrypoint will be overridden to copy the AppImage out
 CMD ["/bin/bash"]
