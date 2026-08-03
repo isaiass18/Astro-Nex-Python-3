@@ -125,8 +125,10 @@ class NeXDate(object):
                 s = 86400 - s
             else: 
                 sign = '+'
-            m = s / 60
-            h = sign + str(m / 60).rjust(2,'0')
+            # Python 2 performed integer division here. Keeping that behavior
+            # prevents invalid offsets such as ``+5.5:30.0`` on Python 3.
+            m = s // 60
+            h = sign + str(m // 60).rjust(2,'0')
             if m % 60 != 0:
                 h += ':'+str(m%60).rjust(2,'0')
             else:

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+import re
 from datetime import datetime, timedelta, date, time
 from pytz import timezone
 import pysw
@@ -94,27 +95,13 @@ def sec_prog(boss):
 #curr.setchart()
 
 def strdate_to_date(strdate):
-    date,_,time = strdate.partition('T')
-    try:
-        y,mo,d = [ int(x) for x in date.split('-')]
-    except ValueError:
-        print(date)
-    zone, time  = time[8:], time[:5]
-    try:
-        zone.index(':')
-        delta, zone = zone[:6], zone[6:]
-        d1, d2 = delta[1:3], delta[4:6]
-        tot = int(d1)+int(d2)/60.0
-    except ValueError:
-        delta, zone = zone[:5], zone[5:]
-        d1, d2 = delta[1:3], delta[3:5]
-        tot = int(d1)+int(d2)
-    sign = {'+': 1, '-': -1}[delta[0]]
-    delta = tot*sign
-    h,m = [int(x) for x in time.split(':')]
-    #h = (h + m/60.0) - delta
-    #m = int((h - int(h))*60)
-    return datetime(y,mo,d,int(h),m,0,tzinfo=timezone('UTC'))
+    # Progressions use the stored local date/time, not the trailing offset.
+    # Older Python 3 builds wrote decimal offsets such as ``+5.5:30.0``.
+    match = re.match(r"^(\d{1,4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::\d{2})?", strdate)
+    if not match:
+        raise ValueError("Invalid Astro-Nex chart date: %r" % strdate)
+    y, mo, d, h, m = [int(value) for value in match.groups()]
+    return datetime(y, mo, d, h, m, 0, tzinfo=timezone('UTC'))
 
 def combine_date(dt):
     newdate = date(dt.year,dt.month,dt.day)
