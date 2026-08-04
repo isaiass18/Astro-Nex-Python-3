@@ -45,3 +45,27 @@ distribución Linux de 64 bits, permisos de ejecución y un entorno gráfico GTK
 
 El requisito de Python 3.8 o superior aplica sólo si se instala directamente
 desde el código fuente con `scripts/install_linux.sh`.
+
+## 📦 Migración manual de datos (desde otro equipo)
+
+Si tienes datos guardados en otro equipo, copia estos archivos y transfiérelos a tu nuevo PC mediante una memoria USB, carpeta compartida o servicio de la nube:
+
+- `charts.db`: las personas y cartas creadas.
+- `customloc.db`: las ubicaciones personalizadas.
+- `cfg.ini`: la configuración, colores y preferencias.
+
+Las ubicaciones habituales de origen en el equipo anterior son:
+
+- **Linux:** `~/.astronex/`
+- **Windows:** `C:\Users\<Usuario>\.astronex\` (o `.astronex-v2\` si ya usabas la nueva versión).
+- **Wine:** `drive_c/users/<Usuario>/.astronex/` dentro del prefijo de Wine.
+
+Para colocarlos en tu PC Linux actual:
+
+1. Abre Astro-Nex una vez y ciérralo. Así se crea la nueva carpeta de datos.
+2. Abre tu explorador de archivos (Nautilus, Dolphin, etc.) y asegúrate de tener habilitada la opción de **Mostrar archivos ocultos** (usualmente `Ctrl + H`).
+3. En tu carpeta personal (Home), entra a la carpeta `.astronex-v2` (o `.astronex` si es la ruta por defecto).
+4. Pega los archivos `charts.db`, `customloc.db` y `cfg.ini` transferidos desde el equipo anterior. Si el sistema te pregunta, selecciona reemplazar los archivos en el destino (conservando primero una copia de seguridad si lo consideras necesario).
+
+*(Nota: Si estás actualizando desde la versión clásica de Astro-Nex en este mismo PC, el programa copiará tus bases de datos automáticamente en su primer inicio; no necesitas hacer este proceso manual).*
+
