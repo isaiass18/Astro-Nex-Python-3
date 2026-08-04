@@ -70,3 +70,8 @@ Si prefieres instalar compilando el código fuente localmente desde la terminal:
 Astro-Nex fue migrado de Python 2/PyGTK a Python 3/GTK3. Linux, Windows y
 macOS usan la misma fuente; los binarios nativos se construyen específicamente
 para cada plataforma.
+
+## 🕰️ Histórico (Versión Python 2)
+
+Si buscas la versión clásica original (Astro-Nex 1.2.3 programada en Python 2 y PyGTK), puedes encontrar su código fuente y descargas históricas en el repositorio original:
+- [Repositorio de Astro-Nex Clásico (Python 2)](https://github.com/isaiass18/Astro-Nex)
