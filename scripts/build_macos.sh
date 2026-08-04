@@ -77,8 +77,6 @@ iconutil -c icns "$iconset_dir" -o "$icon_path"
     --hidden-import _pysw \
     --hidden-import PIL.Image \
     --hidden-import PIL.ImageOps \
-    --exclude-module IPython \
-    --exclude-module prompt_toolkit \
     --collect-all gi \
     --collect-all cairo \
     --add-data "$project_dir/astronex/resources:astronex/resources" \

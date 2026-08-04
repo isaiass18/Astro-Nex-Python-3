@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import importlib
-
 import gtk
+from .. extensions.ipython_view import IPythonView
 import pango
 
 import platform
@@ -18,20 +17,10 @@ class ShellDialog(gtk.Window):
         self.set_resizable(True)
         S = gtk.ScrolledWindow()
         S.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        try:
-            IPythonView = importlib.import_module(
-                "astronex.extensions.ipython_view"
-            ).IPythonView
-            V = IPythonView()
-            V.modify_font(pango.FontDescription(FONT))
-            V.set_wrap_mode(gtk.WRAP_CHAR)
-            V.updateNamespace({'boss': manager})
-        except Exception as exc:
-            V = gtk.Label(
-                "La consola interactiva no está disponible en esta compilación.\n\n%s"
-                % exc
-            )
-            V.set_line_wrap(True)
+        V = IPythonView()
+        V.modify_font(pango.FontDescription(FONT))
+        V.set_wrap_mode(gtk.WRAP_CHAR)
+        V.updateNamespace({'boss': manager})
         V.show()
         S.add(V)
         S.show()

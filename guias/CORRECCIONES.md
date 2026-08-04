@@ -16,8 +16,8 @@ de Python 2.
 El empaquetador macOS incluye ahora `libexpat.1.dylib` dentro de
 `Astro-Nex.app/Contents/Frameworks` y reescribe la dependencia de `pyexpat`
 para cargar esa copia interna. También valida el enlace antes de firmar. La
-consola IPython se importa sólo cuando se abre; si no está disponible, informa
-el problema sin impedir que Astro-Nex inicie.
+consola IPython y sus dependencias permanecen incluidas en el DMG, sin retirar
+ninguna función existente.
 
 ### Verificación
 
