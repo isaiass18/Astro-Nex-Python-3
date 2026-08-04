@@ -73,5 +73,5 @@ para cada plataforma.
 
 ## 🕰️ Histórico (Versión Python 2)
 
-Si buscas la versión clásica original (Astro-Nex 1.2.3 programada en Python 2 y PyGTK), puedes encontrar su código fuente y descargas históricas en el repositorio original:
-- [Repositorio de Astro-Nex Clásico (Python 2)](https://github.com/isaiass18/Astro-Nex)
+Si buscas la versión clásica original (Astro-Nex 1.2.3 programada en Python 2 y PyGTK), puedes encontrar su código fuente histórico en la siguiente carpeta de este mismo repositorio:
+- [Código Histórico de Astro-Nex (Python 2)](https://github.com/isaiass18/Astro-Nex-Python-3/tree/main/Codigo%20Python%202)
