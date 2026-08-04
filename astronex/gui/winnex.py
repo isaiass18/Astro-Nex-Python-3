@@ -337,7 +337,7 @@ class WinNex(gtk.Window):
         with open(file, encoding='utf-8') as license_file:
             about.set_license(license_file.read())
         about.set_copyright("Copyright © 2006")
-        about.set_website("http://astro-nex.com")
+        about.set_website("https://astro-nex.net/")
         about.set_authors(["Jose Antonio Rodríguez <jar@eideia.net>"])
         about.set_documenters(["Isaias Silva Amaya (isaiass18@gmail.com)"])
         self._connect_migration_credit(about)
