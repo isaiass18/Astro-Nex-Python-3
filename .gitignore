@@ -72,3 +72,7 @@ Windows Instalador/Astro-Nex/
 *.deb
 *.AppImage
 !Linux Instalador/Dockerfile.deb
+
+# Complete historical Python 2 tree, including its original binaries.
+!Codigo Python 2/
+!Codigo Python 2/**

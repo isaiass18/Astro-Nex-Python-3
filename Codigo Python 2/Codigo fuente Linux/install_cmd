@@ -1,0 +1,4 @@
+#!/bin/bash
+sed -i s=/mnt/share/pynex=`pwd`= bin/nex
+chmod 755 bin/nex
+cp bin/nex ~/bin/nex

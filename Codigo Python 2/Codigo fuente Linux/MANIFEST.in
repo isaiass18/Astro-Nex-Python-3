@@ -1,0 +1,12 @@
+include README
+include INSTALL
+include install_cmd
+include nex.py
+include astronex/resources/*
+include astronex/db/*
+recursive-include astronex/locale *
+include ext/ext64/pysw.py
+include ext/ext64/_pysw.so
+include ext/ext32/pysw.py
+include ext/ext32/_pysw.so
+include bin/nex
