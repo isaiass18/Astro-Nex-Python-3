@@ -315,7 +315,9 @@ class OpPanel(gtk.VBox):
                     right.get_selection().select_path((0,))
                 else:
                     m,i = right.get_selection().get_selected()
-                    if i is None or m.get_path(i) != (2,): #nodal
+                    # GTK 3 returns a Gtk.TreePath, not a tuple. Comparing
+                    # them invokes GI's strict TreePath comparison and fails.
+                    if i is None or m.get_path(i)[0] != 2: #nodal
                         right.get_selection().select_path((1,))
                 right.get_selection().emit('changed')
                 curr.set_list(button.get_data('name'))

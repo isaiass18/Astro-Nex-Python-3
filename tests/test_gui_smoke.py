@@ -737,3 +737,14 @@ class GtkSmokeTest(unittest.TestCase):
                 FontsPage().style_set_cb(type("Combo", (), {
                     "get_active": lambda self: ["huber", "classic"].index(original_style)
                 })())
+
+    def test_double_catalog_uses_tree_path_index(self):
+        """Selecting a double catalog must not compare Gtk.TreePath to tuples."""
+        panel = self.window.mpanel.chooser
+        button = next(
+            child for child in panel.groups_table.get_children()
+            if child.get_data("name") == "double1"
+        )
+        button.set_active(True)
+        self._flush_events()
+        self.assertEqual(panel.notebook.get_current_page(), button.get_data("page"))
