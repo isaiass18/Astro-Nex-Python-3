@@ -94,10 +94,22 @@ def enable_startup_log():
 
 enable_startup_log()
 
-if getattr(sys, "frozen", False):
-    app_root = Path(sys._MEIPASS)
-else:
-    app_root = Path(__file__).resolve().parent
+
+def _application_root():
+    """Return the directory containing Astro-Nex bundled resources."""
+    if not getattr(sys, "frozen", False):
+        return Path(__file__).resolve().parent
+
+    meipass = Path(sys._MEIPASS)
+    # macOS bundles --add-data payloads in Resources, while _MEIPASS points
+    # to Frameworks. Otherwise SQLite creates an empty local.db at startup.
+    resources = meipass.parent / "Resources"
+    if (resources / "astronex" / "db" / "local.db").is_file():
+        return resources
+    return meipass
+
+
+app_root = _application_root()
 
 # Register the bundled symbol font before importing GTK/Pango through nex.
 # This is process-local and avoids asking the user to install a font manually.

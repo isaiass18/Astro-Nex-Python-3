@@ -4,6 +4,18 @@ Este archivo resume las correcciones funcionales más recientes de la versión
 Python 3/GTK3. Para el detalle técnico completo, causa raíz y verificación,
 véase también [REVISION_REPARACIONES.md](REVISION_REPARACIONES.md).
 
+## 3 de agosto de 2026 - arranque macOS con base de ciudades
+
+PyInstaller guarda los datos de `--add-data` de un bundle macOS en
+`Astro-Nex.app/Contents/Resources`, pero `sys._MEIPASS` apunta a
+`Contents/Frameworks`. El lanzador usaba esa segunda ruta directamente;
+SQLite no encontraba `astronex/db/local.db`, creaba una base vacia y el inicio
+fallaba con `sqlite3.OperationalError: no such table: SP`.
+
+El lanzador ahora selecciona `Contents/Resources` cuando contiene la base de
+ciudades empaquetada y mantiene `_MEIPASS` como alternativa. No modifica las
+bases de cartas del usuario.
+
 ## 30 de julio de 2026 — overlays de calendario y diagrama en Pareja II
 
 ### Incidencia observada
