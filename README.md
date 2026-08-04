@@ -1,11 +1,5 @@
 # Astro-Nex para Python 3
 
-## Probar Astro-Nex ahora, desde el navegador
-
-**[Abrir Astro-Nex online](http://3.19.232.60:6080/vnc.html?autoconnect=1&resize=scale)**
-
-Esta demostración abre la versión Linux en el navegador; no requiere
-instalación. Es un servicio público de prueba.
 
 ## Ejecutar Astro-Nex
 

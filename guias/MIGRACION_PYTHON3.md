@@ -1,12 +1,5 @@
 # Migración de Astro-Nex de Python 2 a Python 3
 
-## Demostración online
-
-La versión Linux puede probarse desde un navegador, sin instalar nada:
-
-**[Abrir Astro-Nex online](http://3.19.232.60:6080/vnc.html?autoconnect=1&resize=scale)**
-
-Es un servicio público de demostración.
 
 Este repositorio conserva Astro-Nex 1.2.3 y documenta su port a Python 3 con
 GTK 3. El objetivo del trabajo es mantener el comportamiento funcional del
