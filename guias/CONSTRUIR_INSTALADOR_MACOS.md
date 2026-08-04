@@ -37,7 +37,7 @@ Mac Instalador/Astro-Nex-v2.0-beta-macOS-arm64.dmg
 3. Homebrew y las bibliotecas de GTK:
 
    ```bash
-   brew install python gtk+3 pygobject3 harfbuzz graphite2 glib pkg-config
+   brew install python gtk+3 pygobject3 harfbuzz graphite2 glib pkg-config expat
    ```
 
 4. Una copia actualizada del repositorio:

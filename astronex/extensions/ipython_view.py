@@ -24,7 +24,7 @@ from functools import reduce
 try:
         import IPython
 except Exception as e:
-        raise "Error importing IPython (%s)" % str(e)
+        raise ImportError("Error importing IPython (%s)" % e) from e
 
 ansi_colors =  {'0;30': 'Black',
                 '0;31': 'Red',

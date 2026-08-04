@@ -4,6 +4,29 @@ Este archivo resume las correcciones funcionales más recientes de la versión
 Python 3/GTK3. Para el detalle técnico completo, causa raíz y verificación,
 véase también [REVISION_REPARACIONES.md](REVISION_REPARACIONES.md).
 
+## 4 de agosto de 2026 — arranque macOS con Python 3.14 y Expat
+
+El DMG para Apple Silicon podía cerrarse al arrancar al cargar `pyexpat`: la
+extensión de Python 3.14 buscaba el símbolo
+`_XML_SetAllocTrackerActivationThreshold` en la Expat del sistema, que no lo
+incluye en las versiones de macOS afectadas. El error del visor IPython
+histórico además se convertía en un `TypeError` porque conservaba un `raise`
+de Python 2.
+
+El empaquetador macOS incluye ahora `libexpat.1.dylib` dentro de
+`Astro-Nex.app/Contents/Frameworks` y reescribe la dependencia de `pyexpat`
+para cargar esa copia interna. También valida el enlace antes de firmar. La
+consola IPython se importa sólo cuando se abre; si no está disponible, informa
+el problema sin impedir que Astro-Nex inicie.
+
+### Verificación
+
+- `codesign --verify --deep --strict` sobre `Astro-Nex.app`.
+- `hdiutil verify` sobre el DMG generado.
+- `otool -L` confirma que `pyexpat` usa
+  `@loader_path/../../libexpat.1.dylib`.
+- La Expat incluida exporta `_XML_SetAllocTrackerActivationThreshold`.
+
 ## 3 de agosto de 2026 - arranque macOS con base de ciudades
 
 PyInstaller guarda los datos de `--add-data` de un bundle macOS en

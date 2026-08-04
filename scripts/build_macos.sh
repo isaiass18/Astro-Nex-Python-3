@@ -45,7 +45,7 @@ mkdir -p "$output_dir"
 python="$venv_dir/bin/python"
 
 "$python" -m pip install --upgrade \
-    pip setuptools wheel pyinstaller pytz configobj Pillow ipython
+    pip setuptools wheel pyinstaller pytz configobj Pillow
 "$python" -m pip install -e "$project_dir"
 
 # Finder and the Dock require an ICNS icon. Derive it from the same Astro-Nex
@@ -77,6 +77,8 @@ iconutil -c icns "$iconset_dir" -o "$icon_path"
     --hidden-import _pysw \
     --hidden-import PIL.Image \
     --hidden-import PIL.ImageOps \
+    --exclude-module IPython \
+    --exclude-module prompt_toolkit \
     --collect-all gi \
     --collect-all cairo \
     --add-data "$project_dir/astronex/resources:astronex/resources" \
@@ -88,7 +90,27 @@ iconutil -c icns "$iconset_dir" -o "$icon_path"
     "$project_dir/macos_entry.py"
 
 app_path="$build_dir/dist/Astro-Nex.app"
-harfbuzz_bundle="$app_path/Contents/Frameworks/PIL/.dylibs/libharfbuzz.0.dylib"
+frameworks_dir="$app_path/Contents/Frameworks"
+harfbuzz_bundle="$frameworks_dir/PIL/.dylibs/libharfbuzz.0.dylib"
+
+# Python 3.14's pyexpat expects a newer Expat API than the system library on
+# supported macOS releases. Bundle Homebrew's matching Expat and point the
+# extension to it, so the app does not resolve /usr/lib/libexpat.1.dylib.
+pyexpat_modules=("$frameworks_dir"/python*/lib-dynload/pyexpat*.so)
+if [[ ${#pyexpat_modules[@]} -eq 0 || ! -f "${pyexpat_modules[0]}" ]]; then
+    echo "Expected a bundled pyexpat extension."
+    exit 1
+fi
+pyexpat_module="${pyexpat_modules[0]}"
+expat_bundle="$frameworks_dir/libexpat.1.dylib"
+cp "$(brew --prefix expat)/lib/libexpat.1.dylib" "$expat_bundle"
+install_name_tool -id @rpath/libexpat.1.dylib "$expat_bundle"
+install_name_tool -change /usr/lib/libexpat.1.dylib \
+    @loader_path/../../libexpat.1.dylib "$pyexpat_module"
+if ! otool -L "$pyexpat_module" | grep -Fq '@loader_path/../../libexpat.1.dylib'; then
+    echo "The bundled pyexpat extension is not linked to the bundled Expat."
+    exit 1
+fi
 
 # Pillow bundles a HarfBuzz library incompatible with GTK from Homebrew.
 # Replace it with Homebrew's library and bind its dependencies to the app's
