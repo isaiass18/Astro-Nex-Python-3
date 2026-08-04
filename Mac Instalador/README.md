@@ -29,32 +29,33 @@ La aplicación ya incluye Python, GTK3, el motor astronómico y la fuente de
 símbolos `Astro-Nex.ttf`. La fuente se registra sólo mientras Astro-Nex está
 abierto: no es necesario instalar Python, GTK, Homebrew ni la fuente en macOS.
 
-## Migrar datos de una instalación anterior
+## Migrar datos desde Linux, Windows o Wine
 
-Astro-Nex 2 guarda sus datos en `~/.astronex-v2/`. Si ya usabas Astro-Nex,
-puedes copiar tus datos anteriores a esa carpeta:
+Esta es la primera versión para macOS. Al abrirla por primera vez, Astro-Nex
+crea su nueva carpeta de datos en `~/.astronex-v2/`.
 
-1. Cierra Astro-Nex si está abierto.
-2. Abre **Finder** y selecciona **Ir > Ir a la carpeta...** (`Mayusculas + Cmd + G`).
-3. Escribe `~/.astronex/` y pulsa **Ir**. Esta es la carpeta de Astro-Nex 1.
-4. Copia `charts.db`, `customloc.db` y `cfg.ini`.
-5. En Finder, vuelve a usar **Ir > Ir a la carpeta...** y escribe
-   `~/.astronex-v2/`.
-6. Pega los archivos. Si macOS pregunta si deseas reemplazarlos, conserva una
-   copia de los existentes antes de confirmar.
-
-La carpeta `~/.astronex-v2/` se crea al abrir Astro-Nex 2 por primera vez. Si
-no existe todavía, abre y cierra la aplicación una vez y repite los pasos 5 y
-6.
-
-Ahí se encuentran los archivos principales:
+En el equipo anterior, copia estos archivos y transfiérelos al Mac mediante
+una memoria USB, carpeta compartida o servicio de archivos:
 
 - `charts.db`: las personas y cartas creadas.
 - `customloc.db`: las ubicaciones personalizadas.
 - `cfg.ini`: la configuración, colores y preferencias.
 
-Si usabas Astro-Nex 1, su carpeta anterior se llama `~/.astronex/`, sin el
-sufijo `-v2`.
+Las ubicaciones habituales de origen son:
+
+- Linux: `~/.astronex/`.
+- Windows: `C:\Users\<Usuario>\.astronex\`.
+- Wine: `drive_c/users/<Usuario>/.astronex/` dentro del prefijo de Wine; en
+  muchas instalaciones corresponde a `~/.wine/drive_c/users/<Usuario>/.astronex/`.
+
+Para colocarlos en el Mac:
+
+1. Abre Astro-Nex una vez y ciérralo. Así se crea `~/.astronex-v2/`.
+2. Abre **Finder** y selecciona **Ir > Ir a la carpeta...** (`Mayusculas + Cmd + G`).
+3. Escribe `~/.astronex-v2/` y pulsa **Ir**.
+4. Pega `charts.db`, `customloc.db` y `cfg.ini` transferidos desde el equipo
+   anterior. Si macOS pregunta si deseas reemplazarlos, conserva primero una
+   copia de los archivos existentes.
 
 ## Primera apertura
 
