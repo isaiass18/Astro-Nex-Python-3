@@ -4,6 +4,30 @@ Este archivo resume las correcciones funcionales más recientes de la versión
 Python 3/GTK3. Para el detalle técnico completo, causa raíz y verificación,
 véase también [REVISION_REPARACIONES.md](REVISION_REPARACIONES.md).
 
+## 8 de agosto de 2026 — nueva entrada limpia tras guardar en macOS
+
+Al crear y guardar una persona, `Data entry` quedaba oculto en vez de
+cerrarse. Al pulsar de nuevo `Ctrl+E`, Astro-Nex reutilizaba la misma instancia
+GTK y mostraba el nombre, fecha y localidad de la entrada anterior. El fallo
+no era exclusivo de macOS: correspondía al flujo GTK3 compartido.
+
+Ahora Guardar, Cancelar, Escape y el cierre nativo destruyen el diálogo y
+liberan su referencia en la ventana principal. Cada `Ctrl+E` crea así una
+entrada nueva y restablece explícitamente nombre y apellidos. `Ctrl+Shift+E`
+conserva su comportamiento intencional: carga la carta actual para editarla.
+
+### Verificación
+
+- Compilación de `astronex/gui/entry_dlg.py` con el entorno macOS.
+- `git diff --check` sin errores.
+- DMG Apple Silicon reconstruido, con firma ad-hoc verificada y `hdiutil verify`
+  correcto.
+- Recursos, base local y traducciones comparados byte a byte entre la fuente y
+  el DMG; no faltan archivos.
+
+DMG publicado: `Astro-Nex-v2.0-beta-macOS-arm64.dmg`
+(SHA-256 `78488fcd6cf0b8efbeba7ba11117b27b195f5dc808c790e93e644e2c645ea7e3`).
+
 ## 4 de agosto de 2026 — arranque macOS con Python 3.14 y Expat
 
 El DMG para Apple Silicon podía cerrarse al arrancar al cargar `pyexpat`: la
