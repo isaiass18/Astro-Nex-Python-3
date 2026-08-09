@@ -595,18 +595,28 @@ def delete_chart_from_name(tbl, fi, la):
     chart_conn.commit()
 
 def load_chart(tbl, id, chart):
+    tbl = _chart_table_name(tbl)
+    if tbl is None:
+        return False
     cursor = chart_conn.cursor()
     sql = "select * from %s where rowid='%s'" % (tbl, id)
     ch = next(cursor.execute(sql))
     setchart(chart, ch)
+    return True
 
 def retrieve_chart(tbl, id, chart):
+    tbl = _chart_table_name(tbl)
+    if tbl is None:
+        return None
     cursor = chart_conn.cursor()
     sql = "select * from %s where rowid='%s'" % (tbl, id)
     ch = next(cursor.execute(sql))
     return ch
 
 def retrieve_all_charts(tbl,chart):
+    tbl = _chart_table_name(tbl)
+    if tbl is None:
+        return []
     cursor = chart_conn.cursor()
     sql = "select rowid from %s" % (tbl)
     charts = []
@@ -645,7 +655,15 @@ def get_databases():
         tables.append(tbl[0])
     return tables
 
+def _chart_table_name(table):
+    if isinstance(table, str) and table in get_databases():
+        return table
+    return None
+
 def get_chartlist(tbl):
+    tbl = _chart_table_name(tbl)
+    if tbl is None:
+        return []
     cursor = chart_conn.cursor()
     #sql = "select rowid, first, last, category from %s" % tbl
     sql = "select rowid, first, last from %s order by last, first collate westcoll" % tbl

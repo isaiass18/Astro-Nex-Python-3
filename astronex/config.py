@@ -65,7 +65,7 @@ cfgcols = {}
 def read_config(homedir):
     global cfgcols
     cfgfile = path.joinpath(homedir,'cfg.ini')
-    conf = ConfigObj(cfgfile)
+    conf = ConfigObj(cfgfile, encoding='utf-8')
     popts = {}
     for k in list(conf.keys()):
         popts.update(conf[k])

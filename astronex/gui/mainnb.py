@@ -385,7 +385,7 @@ class ChartBrowser(gtk.VBox):
         self.chartview = SearchView(self.chartmodel)
         selection = self.chartview.get_selection()
         selection.set_mode(gtk.SELECTION_SINGLE)
-        chartlist = curr.datab.get_chartlist(self.tables.get_active_text())
+        chartlist = curr.datab.get_chartlist(curr.database)
 
         for c in chartlist:
             glue = ", "
@@ -474,7 +474,10 @@ class ChartBrowser(gtk.VBox):
     def on_menuitem_activate(self,menuitem,item): 
         model,iter = self.chartview.get_selection().get_selected()
         id = model.get_value(iter,1)
-        table = self.tables.get_active_text()
+        if model.get_n_columns() > 2:
+            table = model.get_value(iter,2)
+        else:
+            table = self.tables.get_active_text()
         if item == _('Copiar') or item == _('Cortar'): 
             chart = curr.newchart()
             curr.datab.load_chart(table,id,chart)
@@ -561,6 +564,11 @@ class ChartBrowser(gtk.VBox):
     def new_chart(self,chart):
         from sqlite3 import DatabaseError
         table = self.tables.get_active_text()
+        tables = curr.datab.get_databases()
+        if table not in tables:
+            table = curr.database if curr.database in tables else None
+        if table is None:
+            return None,None
         try:
             lastrow = curr.datab.store_chart(table, chart) 
         except DatabaseError:

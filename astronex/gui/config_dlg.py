@@ -85,7 +85,7 @@ class ConfigDlg(gtk.Dialog):
 
     def dlg_response(self,dialog,rid):
         if rid == gtk.RESPONSE_OK:
-            conf = ConfigObj(self.config_file)
+            conf = ConfigObj(self.config_file, encoding='utf-8')
             boss.opts.opts_to_config(conf)
             conf.write()
         dialog.destroy()

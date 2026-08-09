@@ -13,6 +13,7 @@ class SearchView(gtk.TreeView):
         self.searchbox_on = False
         self.search_win = None
         self.start_time = 0
+        self.timeout_handle = None
 
     def on_search_start(self,view):
         if not self.searchbox_on:
@@ -77,13 +78,20 @@ class SearchView(gtk.TreeView):
             self.destroy_searchwin()
 
     def destroy_searchwin(self):
+        if not self.searchbox_on:
+            return
         # Release the X11 keyboard grab taken when the search window opened.
         try:
             gtk.gdk.keyboard_ungrab(gtk.gdk.CURRENT_TIME)
         except Exception:
             pass
+        if self.timeout_handle is not None:
+            gobject.source_remove(self.timeout_handle)
+            self.timeout_handle = None
         self.set_search_entry(None)
-        self.search_win.destroy()
+        if self.search_win is not None:
+            self.search_win.destroy()
+            self.search_win = None
         self.searchbox_on = False
         self.grab_focus()
 
@@ -139,9 +147,8 @@ class SearchView(gtk.TreeView):
 
     def check_idle(self):
         elapsed_time = time.time() - self.start_time
-        if (elapsed_time > 3):
-            gobject.source_remove(self.timeout_handle)
+        if elapsed_time > 3:
+            self.timeout_handle = None
             self.destroy_searchwin()
             return False
-        else:
-            return True
+        return True

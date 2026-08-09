@@ -4,6 +4,33 @@ Este archivo resume las correcciones funcionales más recientes de la versión
 Python 3/GTK3. Para el detalle técnico completo, causa raíz y verificación,
 véase también [REVISION_REPARACIONES.md](REVISION_REPARACIONES.md).
 
+## 8 de agosto de 2026 — diagnósticos macOS: configuración, búsqueda y tablas
+
+Se corrigieron tres fallos identificados en los diagnósticos remotos de macOS:
+
+- `ConfigObj` abre y guarda `cfg.ini` explícitamente como UTF-8, por lo que
+  localidades y países con acentos no producen `UnicodeEncodeError`.
+- El buscador cancela su temporizador de forma segura y no intenta eliminar dos
+  veces el mismo `Source ID` de GLib.
+- Las operaciones de cartas validan el nombre de tabla antes de crear SQL.
+  `Buscar` y `None` ya no pueden convertirse en consultas SQLite; al guardar
+  desde la búsqueda se usa la tabla configurada válida, y Copiar/Cortar toma la
+  tabla de origen de cada resultado global.
+
+La advertencia interna GTK `g_value_get_int` no se modificó: los registros no
+aportan una traza que permita atribuirla a una llamada concreta con seguridad.
+
+### Verificación
+
+- Compilación sintáctica de los cinco módulos modificados y `git diff --check`.
+- Prueba UTF-8 de lectura y escritura con `España` y `Las Rozas de Madrid`.
+- Prueba SQLite que confirma que `Buscar` y `None` se rechazan sin
+  `OperationalError`.
+- DMG Apple Silicon reconstruido y verificado con `hdiutil verify`.
+
+DMG: `Astro-Nex-v2.0-beta-macOS-arm64.dmg`
+(SHA-256 `94eb0a4a467ba43cd9f98007b2b8fed567c3e771dbb8a597a58e6e8e74d2bb20`).
+
 ## 8 de agosto de 2026 — nueva entrada limpia tras guardar en macOS
 
 Al crear y guardar una persona, `Data entry` quedaba oculto en vez de
