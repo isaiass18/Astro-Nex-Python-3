@@ -27,7 +27,7 @@ extension = Extension(
 setup(
     name="Astro-Nex",
     # PEP 440 representation of the user-facing 2.0-beta release.
-    version="2.0b0",
+    version="2.0b1",
     description="GPL API Software",
     long_description="Program to calculate and draw astrological charts in API method style.",
     author="Jose Antonio Rodríguez",

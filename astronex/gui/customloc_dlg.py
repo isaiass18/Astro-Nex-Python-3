@@ -170,7 +170,11 @@ class CustomLocWidget(gtk.VBox):
 
         self.sortlist = sorted(self.countries.keys())
         revlist = dict((reversed(list(i)) for i in list(self.countries.items())))
-        default = self.sortlist.index(revlist[self.countrycode])
+        country_name = revlist.get(self.countrycode)
+        if country_name is None:
+            country_name = revlist.get('SP', self.sortlist[0])
+            self.countrycode = self.countries[country_name]
+        default = self.sortlist.index(country_name)
         
         # country label and check btns 
         hbox = gtk.HBox()

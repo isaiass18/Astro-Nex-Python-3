@@ -29,7 +29,7 @@ extended = ['prog_nat','prog_nod','prog_soul','prog_local','compo_one','compo_tw
 
 _COMPACT_PANEL_STYLE = Gtk.CssProvider()
 _COMPACT_PANEL_STYLE.load_from_data(b"""
-.astronex-compact-calendar { font-size: 8.5pt; min-width: 198px; padding: 0px; }
+.astronex-compact-calendar { font-size: 8.5pt; min-width: 230px; padding: 0px; }
 .astronex-compact-date-control { min-width: 0px; min-height: 0px; padding: 0px; font-size: 7.5pt; }
 entry.astronex-compact-date-control { min-width: 0px; min-height: 0px; padding: 0px 1px; border-radius: 0px; box-shadow: none; }
 combobox.astronex-compact-date-control box { padding: 0px; }
@@ -54,7 +54,7 @@ class CompactCalendar(gtk.Calendar):
     """Keep the in-canvas date selector within its historical width."""
 
     def do_get_preferred_width(self):
-        return 205, 205
+        return 230, 230
 
 
 class DrawMaster(gtk.Layout):
@@ -588,11 +588,13 @@ class DrawMaster(gtk.Layout):
             self._schedule_overlay_reanchor()
         self.panelvisible = True
         self._sync_overlay_positions()
+        self.redraw()
         #boss.mpanel.stop_timeout()
 
     def hide_panel(self,menuitem=None):
         self.panelvisible = False
         self._sync_overlay_positions()
+        self.redraw()
         if curr.curr_chart == curr.now:
             self.panel.nowbut.emit('clicked')
             #boss.mpanel.start_timeout()
@@ -738,13 +740,14 @@ class DrawMaster(gtk.Layout):
         
         cr.restore()
         cr.save()
+        header_w = self._header_width(w)
         if self.pepending[0]:
-            self.draw_pelabel(cr,w,h)
+            self.draw_pelabel(cr,header_w,h)
             self.pepending = [False,None,None]
         elif curr.curr_chart == curr.now or curr.curr_op in ['draw_transits','solar_rev']:
-            self.d_now_date(cr,w,h)
+            self.d_now_date(cr,header_w,h)
         if self.rulinepending:
-            self.d_ruldegree(cr,w,h)
+            self.d_ruldegree(cr,header_w,h)
         self.draw_label(cr,w,h) 
         if self.check_local_label():
             self.d_loclbl(cr,w,h)
@@ -759,6 +762,12 @@ class DrawMaster(gtk.Layout):
             cr.mask(radial)
 
         cr.restore()
+
+    def _header_width(self, chart_width):
+        toplevel = self.get_toplevel()
+        if isinstance(toplevel, gtk.Window):
+            return max(chart_width, toplevel.get_allocated_width())
+        return chart_width
 
     def check_local_label(self):
         if curr.opmode == 'simple' and curr.curr_op == 'draw_local': 
@@ -976,7 +985,7 @@ class ChangeDatePanel(gtk.VBox):
         self.spin.set_width_chars(2)
         self.spin.set_max_length(2)
         self.spin.set_text('1')
-        self.spin.set_size_request(24,20)
+        self.spin.set_size_request(52,24)
         stepbox.pack_start(self.spin, False, False)
 
         spinner = gtk.VBox(False, 0)
@@ -1034,7 +1043,7 @@ class ChangeDatePanel(gtk.VBox):
         but.connect('clicked',self.on_now_clicked)
         self.nowbut = but
         self.pack_start(butbox,False,False) 
-        self.set_size_request(205,142)
+        self.set_size_request(230,160)
     
     def on_calendar_day_selected(self,cal,parent):
         y,m,d = cal.get_date()

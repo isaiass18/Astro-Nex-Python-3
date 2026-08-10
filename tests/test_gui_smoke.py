@@ -118,17 +118,22 @@ class GtkSmokeTest(unittest.TestCase):
 
     def test_migration_credit_title_is_not_locale_dependent(self):
         """The Spanish GTK Credits button updates the documenter heading."""
-        credit_row = self._gtk.HBox()
-        credits_button = self._gtk.Button("Créditos")
-        heading = self._gtk.Label("Documentado por")
-        credit_row.add(credits_button)
-        credit_row.add(heading)
+        original_language = self.window.boss.opts.lang
+        try:
+            self.window.boss.opts.lang = 'es'
+            credit_row = self._gtk.HBox()
+            credits_button = self._gtk.Button("Créditos")
+            heading = self._gtk.Label("Documentado por")
+            credit_row.add(credits_button)
+            credit_row.add(heading)
 
-        self.window._connect_migration_credit(credit_row)
-        credits_button.emit("clicked")
-        self._flush_events()
+            self.window._connect_migration_credit(credit_row)
+            credits_button.emit("clicked")
+            self._flush_events()
 
-        self.assertEqual(heading.get_text(), "Migración a Python 3")
+            self.assertEqual(heading.get_text(), "Migración a Python 3")
+        finally:
+            self.window.boss.opts.lang = original_language
 
     def test_migration_credit_title_follows_the_active_language(self):
         titles = {
@@ -309,14 +314,12 @@ class GtkSmokeTest(unittest.TestCase):
             self.window.boss.da.panel.spin.get_size_request(), (52, 24)
         )
         self.assertEqual(
-            self.window.boss.da.child_get_property(self.window.boss.da.panel, "y"), 0
+            self.window.boss.da.panel.get_allocation().y, 0
         )
         calendar_button.set_active(False)
         self._flush_events()
         self.assertFalse(self.window.boss.da.panelvisible)
-        self.assertEqual(
-            self.window.boss.da.child_get_property(self.window.boss.da.panel, "y"), -200
-        )
+        self.assertFalse(self.window.boss.da.panel.get_visible())
 
     def test_calendar_toggle_invalidates_the_chart_immediately(self):
         """Opening the panel must request a canvas repaint in the same turn."""

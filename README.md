@@ -44,7 +44,7 @@ Si prefieres instalar compilando el código fuente localmente desde la terminal:
 
 ### macOS (Apple Silicon: M1, M2, M3 y M4)
 
-1. **[Descarga el instalador macOS desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/download/v2.0b0/Astro-Nex-v2.0-beta-macOS-arm64.dmg)** (`Astro-Nex-v2.0-beta-macOS-arm64.dmg`).
+1. **[Descarga el instalador macOS desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/download/v2.0b1/Astro-Nex-v2.0-beta-macOS-arm64.dmg)** (`Astro-Nex-v2.0-beta-macOS-arm64.dmg`).
 2. Ábrelo con doble clic.
 3. Copia `Astro-Nex.app` a la carpeta **Aplicaciones** y ábrelo desde allí.
 

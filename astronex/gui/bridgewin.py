@@ -43,7 +43,7 @@ class BridgePEWindow(gtk.Window):
         frame.add(bridge)
         self.add(frame)
         self.sda = bridge
-        self.set_decorated(False) 
+        self.set_decorated(True)
         width = gtk.gdk.screen_width()
         height = gtk.gdk.screen_height()
         self.move(width-450,height-450)
@@ -53,7 +53,8 @@ class BridgePEWindow(gtk.Window):
         self.destroy()
     
     def escape(self,a,b,c,d):
-        self.destroy() 
+        self.destroy()
+        return True
 
     def cb_exit(self,e,parent):
         parent.boss.mpanel.toolbar.get_nth_item(6).set_active(False) 

@@ -108,21 +108,23 @@ class SearchView(gtk.TreeView):
         self.search_win.move(x,y)
 
     def on_keypress(self,view,event):
+        keyval = getattr(event, 'keyval', None)
+        char = getattr(event, 'string', '') or ''
         if self.searchbox_on:
-            if (event.keyval > 255 or event.keyval < 32) and event.keyval not in (gtk.keysyms.BackSpace, gtk.keysyms.Return, gtk.keysyms.Escape):
+            if keyval is not None and (keyval > 255 or keyval < 32) and keyval not in (gtk.keysyms.BackSpace, gtk.keysyms.Return, gtk.keysyms.Escape):
                 return False
             search_entry = view.get_search_entry()
-            if event.keyval == gtk.keysyms.BackSpace:
+            if keyval == gtk.keysyms.BackSpace:
                 text = search_entry.get_text()
                 if len(text) > 0:
                     search_entry.set_text(text[:-1])
                     search_entry.set_position(-1)
                 return True
-            elif event.keyval == gtk.keysyms.Return or event.keyval == gtk.keysyms.Escape:
+            elif keyval == gtk.keysyms.Return or keyval == gtk.keysyms.Escape:
                 self.destroy_searchwin()
                 return True
-            # Use event.string so accented letters and non-ASCII keyboards work
-            char = event.string if event.string else (chr(event.keyval) if event.keyval < 256 else '')
+            if not char and keyval is not None and keyval < 256:
+                char = chr(keyval)
             if char and re.match(r'[^\x00-\x1f]', char):
                 search_entry.set_text(search_entry.get_text() + char)
                 search_entry.set_position(-1)
@@ -130,13 +132,12 @@ class SearchView(gtk.TreeView):
             return False
 
         # No search box open — let arrow keys and other navigation pass through
-        if (event.keyval > 255 or event.keyval < 32):
+        if keyval is not None and (keyval > 255 or keyval < 32):
             return False
-        if (event.state & gtk.gdk.CONTROL_MASK):
+        if getattr(event, 'state', 0) & gtk.gdk.CONTROL_MASK:
             return False
         # Use event.string (GTK3 composed character) instead of chr(keyval)
         # so that accented letters and non-ASCII keyboards work correctly.
-        char = event.string if event.string else ''
         if char and re.match(r'[^\x00-\x1f]', char):
             self.interactive_search(view, char)
             return True
