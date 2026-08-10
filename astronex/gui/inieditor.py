@@ -35,7 +35,7 @@ class IniEditor(gtk.Dialog):
         self.vbox.pack_start(sw)
 
         cfgfile = path.joinpath(boss.opts.home_dir,'cfg.ini')
-        infile = open(cfgfile, "r")
+        infile = open(cfgfile, "r", encoding='utf-8')
 
         if infile:
             self.cfgfile = cfgfile
@@ -55,7 +55,7 @@ class IniEditor(gtk.Dialog):
             text = self.textbuffer.get_text(start,end)
             infile = StringIO(text)
             try:
-                conf = ConfigObj(infile)
+                conf = ConfigObj(infile, encoding='utf-8', default_encoding='utf-8')
                 conf.filename =  self.cfgfile
                 conf.write()
                 reload_config(conf,boss)
