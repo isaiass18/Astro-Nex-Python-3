@@ -120,6 +120,7 @@ Source: "Windows Instalador\Astro-Nex\_internal\astronex\resources\Astro-Nex.ttf
 Compilar con Inno Setup desde PowerShell:
 
 ```powershell
+Remove-Item "Windows Instalador\*.exe" -ErrorAction SilentlyContinue
 & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' .\installer.iss
 ```
 

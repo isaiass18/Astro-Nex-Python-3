@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set AWS_IP=3.16.216.254
+set AWS_IP=3.16.166.241
 set AWS_USER=ubuntu
 set PEM_FILE=..\astronext.pem
 

@@ -1,4 +1,4 @@
-#define MyAppName "Astro-Nex v2"
+#define MyAppName "Astro-Nex 2.0"
 #define MyAppVersion "2.0"
 #define MyAppPublisher "Astro-Nex"
 #define MyAppExeName "Astro-Nex.exe"
