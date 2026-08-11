@@ -301,9 +301,6 @@ class DateEntry(gtk.HBox):
         spin.set_wrap(True)
         spin.set_alignment(0.5)
         spin.set_width_chars(3)
-        css = gtk.CssProvider()
-        css.load_from_data(b"spinbutton, entry { text-align: center; }")
-        spin.get_style_context().add_provider(css, gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self.spin = spin
         vbox.pack_start(spin,False,False)
 
