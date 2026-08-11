@@ -12,7 +12,7 @@ para instalaciones nuevas.
   caches y binarios compilados de la copia original.
 - [`Instalador Windows/Astro-Nex-1.2.3p.exe`](Instalador%20Windows/Astro-Nex-1.2.3p.exe):
   instalador ejecutable historico para Windows.
-- [Descarga directa — Instalador Windows v1 (Python 2, x86)](https://github.com/isaiass18/Astro-Nex-Python-3/releases/download/v2.0b0/Astro-Nex-v1-Python2-Windows-x86.exe):
+- [Descarga directa — Instalador Windows v1 (Python 2, x86)](https://github.com/isaiass18/Astro-Nex-Python-3/releases/download/v2.0/Astro-Nex-v1-Python2-Windows-x86.exe):
   copia descargable sin clonar el repositorio.
 
 La fuente requiere un entorno heredado de Python 2, PyGTK, PyGObject, PyCairo,
