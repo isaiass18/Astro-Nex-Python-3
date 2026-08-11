@@ -87,7 +87,7 @@ Type=Application
 Name=Astro-Nex v2
 Comment=Astrological charts
 Exec=$venv_dir/bin/python $project_dir/nex.py
-Icon=$project_dir/astronex/resources/iconex-beta-48.png
+Icon=$project_dir/astronex/resources/iconex-48.png
 Terminal=false
 Categories=Education;Science;
 EOF

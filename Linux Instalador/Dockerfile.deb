@@ -12,7 +12,7 @@ RUN mkdir -p /deb_build/opt/astro-nex \
 
 # The DEB intentionally ships the self-contained AppImage produced by the
 # previous build stage. Both delivery formats therefore run the same runtime.
-COPY --from=astronex-builder /Astro-Nex-v2.0-beta-Linux-x86_64.AppImage /deb_build/opt/astro-nex/Astro-Nex.AppImage
+COPY --from=astronex-builder /Astro-Nex-v2.0-Linux-x86_64.AppImage /deb_build/opt/astro-nex/Astro-Nex.AppImage
 COPY --from=astronex-builder /workspace/AppDir/usr/share/icons/hicolor/48x48/apps/astronex.png /deb_build/usr/share/icons/hicolor/48x48/apps/astro-nex.png
 COPY --from=astronex-builder /workspace/AppDir/usr/share/applications/astronex.desktop /deb_build/usr/share/applications/astro-nex.desktop
 COPY --from=astronex-builder /workspace/AppDir/usr/share/fonts/truetype/astronex/Astro-Nex.ttf /deb_build/usr/share/fonts/truetype/astronex/
@@ -25,12 +25,12 @@ RUN printf '%s\n' '#!/bin/sh' 'exec /opt/astro-nex/Astro-Nex.AppImage --appimage
 
 RUN printf '%s\n' \
     'Package: astronex' \
-    'Version: 2.0~beta1' \
+    'Version: 2.0' \
     'Architecture: amd64' \
     'Maintainer: Isaias <isaias@example.com>' \
     'Description: Astro-Nex 2.0 Astrology Software' \
     > /deb_build/DEBIAN/control \
-    && dpkg-deb --build /deb_build /Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb \
-    && dpkg-deb --info /Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
+    && dpkg-deb --build /deb_build /Astro-Nex-v2.0-Ubuntu24.04-amd64.deb \
+    && dpkg-deb --info /Astro-Nex-v2.0-Ubuntu24.04-amd64.deb
 
 CMD ["/bin/bash"]

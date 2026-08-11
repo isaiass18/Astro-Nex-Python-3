@@ -234,9 +234,7 @@ class WinNex(gtk.Window):
         self.da.va = scrolled.get_vadjustment()
         self.da.attach_overlay_host(overlay)
 
-        # Beta uses the same Astro-Nex mark in a slightly darker tone so its
-        # window identity matches the macOS and Windows launcher icon.
-        imgfile = path.joinpath(appath,"resources/iconex-beta-22.png")
+        imgfile = path.joinpath(appath,"resources/iconex-22.png")
         try:
             self.set_icon_from_file(str(imgfile))
         except Exception:

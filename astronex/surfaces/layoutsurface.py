@@ -981,8 +981,11 @@ class ChangeDatePanel(gtk.VBox):
         
         stepbox = gtk.HBox(False, 0)
         self.spin = compact(gtk.Entry())
-        self.spin.set_alignment(1.0)
+        self.spin.set_alignment(0.5)
         self.spin.set_width_chars(2)
+        css = gtk.CssProvider()
+        css.load_from_data(b"entry { font-size: 1.1em; }")
+        self.spin.get_style_context().add_provider(css, gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self.spin.set_max_length(2)
         self.spin.set_text('1')
         self.spin.set_size_request(52,24)

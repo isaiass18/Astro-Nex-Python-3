@@ -4,7 +4,7 @@ set -euo pipefail
 
 project_dir=$(cd "$(dirname "$0")/.." && pwd)
 output_dir="$project_dir/Mac Instalador"
-version=2.0-beta
+version=2.0
 architecture=arm64
 # Every build has a distinct filename, so a browser or Finder cannot silently
 # reopen an older DMG with the same name. BUILD_ID permits a release label;
@@ -36,7 +36,7 @@ python_bin=${PYTHON_BIN:-python3}
 venv_dir="$project_dir/.venv-macos-build"
 build_dir=$(mktemp -d /tmp/astronex-macos.XXXXXX)
 # Keep the Finder/Dock icon visually distinct from the stable 1.2 release.
-icon_source="$project_dir/astronex/resources/nex-beta.ico"
+icon_source="$project_dir/astronex/resources/nex.ico"
 iconset_dir="$build_dir/Astro-Nex.iconset"
 icon_path="$build_dir/Astro-Nex.icns"
 

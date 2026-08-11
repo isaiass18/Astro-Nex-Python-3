@@ -57,8 +57,8 @@ No necesitas instalar Docker en tu entorno local. Sólo requieres:
 - Limpian los restos en el servidor.
 
 El archivo resultante tendrá la nueva nomenclatura estándar:
-- `Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`
-- `Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`
+- `Astro-Nex-v2.0-Ubuntu24.04-amd64.deb`
+- `Astro-Nex-v2.0-Linux-x86_64.AppImage`
 
 ## 4. Arquitectura y Mantenimiento
 

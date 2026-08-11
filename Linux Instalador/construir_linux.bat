@@ -20,12 +20,12 @@ if not exist "%PEM_FILE%" (
 )
 
 if "%OPCION%"=="1" (
-    set TARGET_FILE=Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb
-    set APPIMAGE_FILE=Astro-Nex-v2.0-beta-Linux-x86_64.AppImage
+    set TARGET_FILE=Astro-Nex-v2.0-Ubuntu24.04-amd64.deb
+    set APPIMAGE_FILE=Astro-Nex-v2.0-Linux-x86_64.AppImage
     set BUILD_CMD=sudo docker build -t astronex-builder -f "Linux Instalador/Dockerfile.appimage" . ^&^& sudo docker build -t astronex-deb-builder -f "Linux Instalador/Dockerfile.deb" .
     set EXTRACT_CMD=sudo docker create --name temp-container-deb astronex-deb-builder ^&^& sudo docker cp temp-container-deb:/!TARGET_FILE! . ^&^& sudo docker rm temp-container-deb ^&^& sudo docker create --name temp-container-appimage astronex-builder ^&^& sudo docker cp temp-container-appimage:/!APPIMAGE_FILE! . ^&^& sudo docker rm temp-container-appimage
 ) else if "%OPCION%"=="2" (
-    set TARGET_FILE=Astro-Nex-v2.0-beta-Linux-x86_64.AppImage
+    set TARGET_FILE=Astro-Nex-v2.0-Linux-x86_64.AppImage
     set BUILD_CMD=sudo docker build -t astronex-builder -f "Linux Instalador/Dockerfile.appimage" .
     set EXTRACT_CMD=sudo docker create --name temp-container astronex-builder ^&^& sudo docker cp temp-container:/!TARGET_FILE! . ^&^& sudo docker rm temp-container
 ) else (

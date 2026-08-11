@@ -1,5 +1,5 @@
 #define MyAppName "Astro-Nex v2"
-#define MyAppVersion "2.0-beta"
+#define MyAppVersion "2.0"
 #define MyAppPublisher "Astro-Nex"
 #define MyAppExeName "Astro-Nex.exe"
 
@@ -8,18 +8,27 @@ AppId={{6DA052DC-2C6E-4E5D-84A7-52B2A6220F22}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-DefaultDirName={autopf}\Astro-Nex v2
+DefaultDirName={autopf}\Astro-Nex-2.0
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=Windows Instalador
 OutputBaseFilename=Astro-Nex-v{#MyAppVersion}-Windows-x64
-; The Beta installer and its Start-menu shortcut use the darker Beta artwork.
-SetupIconFile=astronex\resources\nex-beta.ico
+; The 2.0 installer uses the classic artwork.
+SetupIconFile=astronex\resources\nex.ico
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
+
+[InstallDelete]
+Type: filesandordirs; Name: "{autopf}\Astro-Nex v2"
+Type: files; Name: "{autodesktop}\Astro-Nex.lnk"
+Type: files; Name: "{autodesktop}\Astro-Nex v2.lnk"
+Type: files; Name: "{commondesktop}\Astro-Nex.lnk"
+Type: files; Name: "{commondesktop}\Astro-Nex v2.lnk"
+Type: files; Name: "{userdesktop}\Astro-Nex.lnk"
+Type: files; Name: "{userdesktop}\Astro-Nex v2.lnk"
 
 [Files]
 Source: "Windows Instalador\Astro-Nex\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

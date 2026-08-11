@@ -6,13 +6,13 @@ M3 o M4). El usuario final no necesita instalar Python, GTK ni Homebrew.
 Cada ejecución produce un DMG nuevo, por ejemplo:
 
 ```text
-Mac Instalador/Astro-Nex-v2.0-beta-macOS-arm64.dmg
+Mac Instalador/Astro-Nex-v2.0-macOS-arm64.dmg
 ```
 
 ## Alcance
 
 - Arquitectura: `arm64` / Apple Silicon.
-- Versión de Astro-Nex: 2.0 beta.
+- Versión de Astro-Nex: 2.0.
 - Compatibilidad del DMG actual: macOS 26.0 o posterior.
 - El paquete contiene la aplicación `Astro-Nex.app`, Python, GTK3, el motor
   astronómico compilado y todos los recursos, incluida `Astro-Nex.ttf`.
@@ -51,9 +51,9 @@ Mac Instalador/Astro-Nex-v2.0-beta-macOS-arm64.dmg
 
 El script crea un entorno de compilación local, compila `_pysw`, genera la
 aplicación con PyInstaller, incluye GTK3 y crea el DMG. También transforma
-automáticamente `astronex/resources/nex-beta.ico` en el icono `.icns` de
+automáticamente `astronex/resources/nex.ico` en el icono `.icns` de
 macOS; por tanto Finder, Aplicaciones y el Dock muestran la variante oscura
-que identifica la versión Beta, igual que el instalador de Windows.
+que identifica la versión definitiva, igual que el instalador de Windows.
 
 ```bash
 chmod +x scripts/build_macos.sh
@@ -71,10 +71,10 @@ Para usar un identificador de publicación legible, se puede indicar
 explícitamente:
 
 ```bash
-BUILD_ID=beta.1 ./scripts/build_macos.sh
+./scripts/build_macos.sh
 ```
 
-El archivo resultante será `Astro-Nex-v2.0-beta-macOS-arm64.dmg`.
+El archivo resultante será `Astro-Nex-v2.0-macOS-arm64.dmg`.
 Los directorios temporales de compilación no son instaladores ni se usan para
 las pruebas manuales.
 
@@ -83,7 +83,7 @@ las pruebas manuales.
 Después de crear correctamente un DMG nuevo, se deben eliminar todos los DMG
 anteriores de Astro-Nex en `Mac Instalador`. Es una regla obligatoria: así no
 se acumulan instaladores ni se comparte por accidente una versión antigua con
-el mismo número beta.
+el mismo número de versión estable.
 
 El script lo hace automáticamente **sólo después** de terminar con éxito la
 creación del nuevo DMG. Si la compilación falla, los instaladores anteriores
@@ -115,7 +115,7 @@ sin depender del Homebrew instalado en el Mac del usuario final.
    anterior de `Astro-Nex.app` en `Aplicaciones`.
 5. Copiar `Astro-Nex.app` a `Aplicaciones` y expulsar el DMG.
 6. Abrir la aplicación desde `Aplicaciones` y comprobar que aparece la ventana principal y la
-   portada 2.0 beta.
+   portada 2.0.
 7. Probar F1, la entrada de datos, clic derecho en la carta, exportación,
    calendario y rueda/trackpad en el planetograma.
 8. Comprobar la firma local:

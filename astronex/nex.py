@@ -15,7 +15,7 @@ lang_de = gettext.translation('astronex', str(LOCALE_DIR), languages=['de'])
 langs = { 'en': lang_en, 'es': lang_es, 'ca': lang_ca, 'de': lang_de }
 
 from .extensions.path import path
-version = "2.0-beta"
+version = "2.0"
 
 def die(message):
     """Die in a command line way."""
@@ -33,7 +33,7 @@ if sys.version_info < (3, 8):
             sys.version_info[:2])
 
 
-home_dir = '.astronex-v2'
+home_dir = '.astronex'
 config_file = 'cfg.ini'
 default_db = 'charts.db'
 ephe_path = 'ephe'
@@ -43,15 +43,10 @@ def check_home_dir(appath):
     """Set home dir, copying needed files"""
     global home_dir, ephe_flag
     
-    import shutil
-    old_home = path.joinpath(path.expanduser(path('~')), '.astronex')
-    default_home = path.joinpath(path.expanduser(path('~')), home_dir)
+    from .migration import migrate_v2_data
+    migrate_v2_data()
     
-    if not path.exists(default_home) and path.exists(old_home):
-        try:
-            shutil.copytree(str(old_home), str(default_home))
-        except Exception as e:
-            print(f"Error migrating from Astro-Nex v1: {e}")
+    default_home = path.joinpath(path.expanduser(path('~')), home_dir)
     
     if not path.exists(default_home):
         path.mkdir(default_home)

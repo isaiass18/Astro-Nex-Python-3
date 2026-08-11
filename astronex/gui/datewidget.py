@@ -38,6 +38,9 @@ class _DateEntryPopup(gtk.Window):
         self.calendar = gtk.Calendar()
         self.calendar.connect('day-selected-double-click',
                                self._on_calendar__day_selected_double_click)
+        css = gtk.CssProvider()
+        css.load_from_data(b"calendar { font-size: 1.1em; }")
+        self.calendar.get_style_context().add_provider(css, gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         vbox.pack_start(self.calendar, False, False)
         self.calendar.show()
 
@@ -296,7 +299,11 @@ class DateEntry(gtk.HBox):
         adj = gtk.Adjustment(1,1,15,1,5)
         spin = gtk.SpinButton(adj)
         spin.set_wrap(True)
-        spin.set_alignment(1.0)
+        spin.set_alignment(0.5)
+        spin.set_width_chars(3)
+        css = gtk.CssProvider()
+        css.load_from_data(b"spinbutton, entry { text-align: center; }")
+        spin.get_style_context().add_provider(css, gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         self.spin = spin
         vbox.pack_start(spin,False,False)
 

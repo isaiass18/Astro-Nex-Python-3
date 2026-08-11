@@ -1,16 +1,16 @@
-# Astro-Nex 2.0 beta para Windows
+# Astro-Nex 2.0 2.0 para Windows
 
 Este directorio es el entorno de compilación para el instalador:
 
 ```text
-Astro-Nex-v2.0-beta-Windows-x64.exe
+Astro-Nex-v2.0-Windows-x64.exe
 ```
 
-👉 **[Descargar instalador para Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/download/v2.0b0/Astro-Nex-v2.0-beta-Windows-x64.exe)**
+👉 **[Descargar instalador para Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-Windows-x64.exe)**
 
 ## Instalación recomendada
 
-1. Ejecuta `Astro-Nex-v2.0-beta-Windows-x64.exe` (descargado desde GitHub).
+1. Ejecuta `Astro-Nex-v2.0-Windows-x64.exe` (descargado desde GitHub).
 2. Sigue los pasos del asistente de instalación.
 3. Abre Astro-Nex desde el acceso que el instalador crea en Windows.
 
@@ -20,7 +20,7 @@ componentes por separado.
 
 ## Aviso de Seguridad (SmartScreen)
 
-Como esta versión beta aún no cuenta con un certificado digital comercial, al abrir el instalador Windows podría mostrar una pantalla azul diciendo *"Windows protegió su PC"*. 
+Como esta versión 2.0 aún no cuenta con un certificado digital comercial, al abrir el instalador Windows podría mostrar una pantalla azul diciendo *"Windows protegió su PC"*. 
 
 Para continuar la instalación de forma segura:
 1. Haz clic en el texto que dice **"Más información"** (debajo de la advertencia).

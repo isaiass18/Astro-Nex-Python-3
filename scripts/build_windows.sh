@@ -16,7 +16,7 @@ python -m pip install --force-reinstall --no-deps .
 echo "=> Generando ejecutable con PyInstaller..."
 python -m PyInstaller --noconfirm --clean --windowed \
   --name Astro-Nex \
-  --icon astronex/resources/nex-beta.ico \
+  --icon astronex/resources/nex.ico \
   --paths . \
   --hidden-import pysw \
   --hidden-import _pysw \

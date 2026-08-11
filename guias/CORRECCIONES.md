@@ -4,6 +4,15 @@ Este archivo resume las correcciones funcionales más recientes de la versión
 Python 3/GTK3. Para el detalle técnico completo, causa raíz y verificación,
 véase también [REVISION_REPARACIONES.md](REVISION_REPARACIONES.md).
 
+## 11 de agosto de 2026 — Preparación Definitiva Astro-Nex 2.0
+
+Se realizaron los ajustes finales para la versión 2.0 estable:
+- **Identidad Visual Definitiva**: Se actualizó el *splash screen* usando la nueva imagen generada por Codex (Astro-Nex 2.0 sin la palabra "beta" y con los tonos dorados clásicos) y se aseguró de que el icono de ventana (`iconex-22.png`) corresponda a la versión histórica 1.2.
+- **Limpieza de metadatos y créditos**: Se retiró el sufijo "beta" (o los comentarios que hacían referencia a él) del versionado interno en `nex.py` y `setup.py`. Todas las ventanas emergentes, incluyendo la ventana de "Acerca de" / Créditos, muestran ahora "2.0" limpio.
+- **Limpieza de instalación (Windows)**: El instalador ahora utiliza la nueva carpeta `Astro-Nex-2.0` de forma independiente a la instalación histórica (ap2). Además, busca proactivamente y **elimina la antigua carpeta de la beta** (`Astro-Nex v2`) y remueve los accesos directos viejos para evitar confusión al usuario, dejando un único icono renovado en el escritorio.
+- **Migración y Directorio de Datos**: Se construyó el módulo `astronex/migration.py` que fuerza el uso de `.astronex` como directorio único y definitivo, resolviendo los duplicados (mediante sufijo `(v2)`) e integrando de forma segura las bases generadas durante la fase beta en `.astronex-v2`.
+- **Ajustes en UI (Calendario en lienzo)**: Se corrigió la alineación forzada a la derecha del controlador de días del panel flotante de calendario (`ChangeDatePanel` en `layoutsurface.py`), centrándolo correctamente e incrementando su tamaño de fuente para mejorar la legibilidad del número de incrementos.
+
 ## 8 de agosto de 2026 — diagnósticos macOS: configuración, búsqueda y tablas
 
 Se corrigieron tres fallos identificados en los diagnósticos remotos de macOS:
@@ -28,7 +37,7 @@ aportan una traza que permita atribuirla a una llamada concreta con seguridad.
   `OperationalError`.
 - DMG Apple Silicon reconstruido y verificado con `hdiutil verify`.
 
-DMG: `Astro-Nex-v2.0-beta-macOS-arm64.dmg`
+DMG: `Astro-Nex-v2.0-macOS-arm64.dmg`
 (SHA-256 `94eb0a4a467ba43cd9f98007b2b8fed567c3e771dbb8a597a58e6e8e74d2bb20`).
 
 ## 8 de agosto de 2026 — nueva entrada limpia tras guardar en macOS
@@ -52,7 +61,7 @@ conserva su comportamiento intencional: carga la carta actual para editarla.
 - Recursos, base local y traducciones comparados byte a byte entre la fuente y
   el DMG; no faltan archivos.
 
-DMG publicado: `Astro-Nex-v2.0-beta-macOS-arm64.dmg`
+DMG publicado: `Astro-Nex-v2.0-macOS-arm64.dmg`
 (SHA-256 `78488fcd6cf0b8efbeba7ba11117b27b195f5dc808c790e93e644e2c645ea7e3`).
 
 ## 4 de agosto de 2026 — arranque macOS con Python 3.14 y Expat
@@ -127,7 +136,7 @@ ASTRONEX_GUI_SMOKE=1 ./.venv-macos-build/bin/python -m unittest \
 
 También se reconstruyó y probó visualmente el instalador macOS:
 
-- `Mac Instalador/Astro-Nex-2.0-beta-20260730-131509-macos-arm64.dmg`
+- `Mac Instalador/Astro-Nex-2.0-20260730-131509-macos-arm64.dmg`
 
 ## 30 de julio de 2026 — calendario compacto y tono Beta más oscuro
 
@@ -153,9 +162,9 @@ referencia Python 2:
 En paralelo, se oscurecieron de forma uniforme los recursos gráficos de la
 identidad Beta, sin añadir texto ni cambiar el dibujo:
 
-- `astronex/resources/iconex-beta-22.png`
-- `astronex/resources/iconex-beta-48.png`
-- `astronex/resources/nex-beta.ico`
+- `astronex/resources/iconex-22.png`
+- `astronex/resources/iconex-48.png`
+- `astronex/resources/nex.ico`
 - `astronex/resources/splash.png`
 
 ### Verificación
@@ -171,4 +180,4 @@ ASTRONEX_GUI_SMOKE=1 ./.venv-macos-build/bin/python -m unittest \
 
 También se reconstruyó el instalador macOS listo para revisión visual:
 
-- `Mac Instalador/Astro-Nex-2.0-beta-20260730-141028-macos-arm64.dmg`
+- `Mac Instalador/Astro-Nex-2.0-20260730-141028-macos-arm64.dmg`

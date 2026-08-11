@@ -13,15 +13,15 @@ código fuente.
 Tienes tres opciones para ejecutar Astro-Nex en Linux, dependiendo de tus preferencias:
 
 **Opción 1: Paquete `.deb` (integración Debian del AppImage)** - *Recomendado para Ubuntu, Mint, Debian, Pop!_OS*
-1. **[Descarga el paquete Ubuntu 24.04 desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb)** (`Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`).
+1. **[Descarga el paquete Ubuntu 24.04 desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-Ubuntu24.04-amd64.deb)** (`Astro-Nex-v2.0-Ubuntu24.04-amd64.deb`).
 2. Dale doble clic para instalarlo desde tu Centro de Software, o ejecuta en la terminal:
-   `sudo apt install ./Astro-Nex-v2.0-beta-Ubuntu24.04-amd64.deb`
+   `sudo apt install ./Astro-Nex-v2.0-Ubuntu24.04-amd64.deb`
 
 > 💡 **Solución de problemas (GDebi/Centro de Software):** Si al darle doble clic al instalador el botón de "Instalar" no hace nada o se cierra silenciosamente (un fallo común de permisos gráficos en ciertos entornos Linux), puedes instalarlo de forma 100% segura e infalible desde la terminal. Abre una terminal en la carpeta donde descargaste el archivo y ejecuta:
 > `sudo apt install ./Astro-Nex*.deb`
 
 **Opción 2: Paquete Universal (AppImage)** - *Para cualquier otra distribución*
-1. **[Descarga el instalador Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-beta-Linux-x86_64.AppImage)** (`Astro-Nex-v2.0-beta-Linux-x86_64.AppImage`).
+1. **[Descarga el instalador Linux desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-Linux-x86_64.AppImage)** (`Astro-Nex-v2.0-Linux-x86_64.AppImage`).
 2. Haz clic derecho en el archivo, ve a "Propiedades" > "Permisos" y marca la casilla **"Permitir ejecutar el archivo como un programa"**.
 3. Dale **doble clic** para abrirlo (no requiere instalación).
 > ⚠️ **Nota de Seguridad:** Linux por defecto bloquea la ejecución de archivos descargados de internet. Es obligatorio realizar el paso 2 (dar permisos de ejecución) o el sistema te arrojará un error diciendo que "no se puede abrir" o "no hay aplicación instalada para este archivo".
@@ -35,16 +35,16 @@ Si prefieres instalar compilando el código fuente localmente desde la terminal:
 
 ### Windows 8, 10 y 11 (64 bits)
 
-1. **[Descarga el instalador Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/download/v2.0b0/Astro-Nex-v2.0-beta-Windows-x64.exe)** (`Astro-Nex-v2.0-beta-Windows-x64.exe`).
+1. **[Descarga el instalador Windows desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-Windows-x64.exe)** (`Astro-Nex-v2.0-Windows-x64.exe`).
 2. Sigue el asistente de instalación y ejecuta Astro-Nex desde el acceso creado.
 
-> ⚠️ **Aviso de Seguridad (SmartScreen):** Como esta versión beta aún no cuenta con un certificado digital comercial, al abrir el instalador Windows mostrará una pantalla azul diciendo *"Windows protegió su PC"*. Para continuar la instalación de forma segura:
+> ⚠️ **Aviso de Seguridad (SmartScreen):** Como esta versión aún no cuenta con un certificado digital comercial, al abrir el instalador Windows mostrará una pantalla azul diciendo *"Windows protegió su PC"*. Para continuar la instalación de forma segura:
 > 1. Haz clic en el texto que dice **"Más información"**.
 > 2. Aparecerá un nuevo botón en la parte inferior; haz clic en **"Ejecutar de todas formas"**.
 
 ### macOS (Apple Silicon: M1, M2, M3 y M4)
 
-1. **[Descarga el instalador macOS desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/download/v2.0b1/Astro-Nex-v2.0-beta-macOS-arm64.dmg)** (`Astro-Nex-v2.0-beta-macOS-arm64.dmg`).
+1. **[Descarga el instalador macOS desde GitHub Releases](https://github.com/isaiass18/Astro-Nex-Python-3/releases/latest/download/Astro-Nex-v2.0-macOS-arm64.dmg)** (`Astro-Nex-v2.0-macOS-arm64.dmg`).
 2. Ábrelo con doble clic.
 3. Copia `Astro-Nex.app` a la carpeta **Aplicaciones** y ábrelo desde allí.
 
