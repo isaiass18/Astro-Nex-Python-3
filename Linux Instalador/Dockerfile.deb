@@ -28,7 +28,7 @@ RUN printf '%s\n' \
     'Version: 2.0' \
     'Architecture: amd64' \
     'Maintainer: Isaias <isaias@example.com>' \
-    'Description: Astro-Nex 2.0 Astrology Software' \
+    'Description: Astro-Nex 2.0' \
     > /deb_build/DEBIAN/control \
     && dpkg-deb --build /deb_build /Astro-Nex-v2.0-Ubuntu24.04-amd64.deb \
     && dpkg-deb --info /Astro-Nex-v2.0-Ubuntu24.04-amd64.deb
