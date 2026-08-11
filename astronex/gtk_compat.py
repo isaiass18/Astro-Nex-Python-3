@@ -354,7 +354,7 @@ keysyms = _Keysyms()
 for _name in (
     "AboutDialog", "Adjustment", "Arrow",
     "Button", "Calendar", "CellRendererText", "CheckButton",
-    "CheckMenuItem", "Dialog", "DrawingArea",
+    "CheckMenuItem", "CssProvider", "Dialog", "DrawingArea",
     "Entry", "EntryCompletion", "EventBox", "FileChooserDialog", "HSeparator",
     "FileChooserWidget", "FileFilter", "FontButton", "HandleBox",
     "Image", "ImageMenuItem", "Label", "Layout", "ListStore", "Menu",
@@ -402,6 +402,7 @@ _CONSTANTS = {
     "SHADOW_NONE": Gtk.ShadowType.NONE,
     "SIZE_GROUP_HORIZONTAL": Gtk.SizeGroupMode.HORIZONTAL,
     "STATE_NORMAL": Gtk.StateType.NORMAL,
+    "STYLE_PROVIDER_PRIORITY_APPLICATION": Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
     "TARGET_SAME_WIDGET": Gtk.TargetFlags.SAME_WIDGET,
     "TOOLBAR_ICONS": Gtk.ToolbarStyle.ICONS,
     "TREE_VIEW_DROP_BEFORE": Gtk.TreeViewDropPosition.BEFORE,
