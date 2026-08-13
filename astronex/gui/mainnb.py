@@ -618,7 +618,7 @@ class MainPanel(gtk.VBox):
         frame.add(tb) 
         self.toolbar = tb
         hbox.pack_start(frame,False,False) 
-        self.pack_start(hbox,False,False)
+        self.pack_start(hbox,True,True)
         
         self.chooser = OpPanel(boss)
         self.pack_end(self.chooser,True,True)
