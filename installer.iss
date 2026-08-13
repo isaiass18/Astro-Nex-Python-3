@@ -20,8 +20,10 @@ SolidCompression=yes
 WizardStyle=modern
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
+UsePreviousAppDir=no
 
 [InstallDelete]
+Type: filesandordirs; Name: "{autopf}\Astro-Nex"
 Type: filesandordirs; Name: "{autopf}\Astro-Nex v2"
 Type: files; Name: "{autodesktop}\Astro-Nex.lnk"
 Type: files; Name: "{autodesktop}\Astro-Nex v2.lnk"
