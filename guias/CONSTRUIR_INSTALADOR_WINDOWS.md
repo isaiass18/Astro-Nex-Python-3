@@ -129,17 +129,51 @@ La ruta puede variar según la instalación de Inno Setup. El resultado debe ser
 
 ## Verificación final
 
-1. Ejecutar el instalador en una ubicación de prueba o desinstalar la versión
-   anterior e instalar la nueva.
-2. Confirmar que existe `C:\Program Files\Astro-Nex\Astro-Nex.exe`.
-3. Abrir Astro-Nex y comprobar que aparece la ventana principal.
-4. Probar clic derecho en la carta y F1.
-5. Confirmar que `C:\Windows\Fonts\Astro-Nex.ttf` existe.
-6. Comprobar que se generó el acceso directo en el escritorio y que al desinstalar la aplicación se remueva correctamente.
+1. Ejecutar el instalador **en una máquina limpia o después de desinstalar** cualquier versión anterior.
+2. Confirmar que existe `C:\Program Files\Astro-Nex-2.0\Astro-Nex.exe` (la carpeta debe llamarse `Astro-Nex-2.0`, no `Astro-Nex` ni `Astro-Nex v2`).
+3. Confirmar que **no existe** ninguna carpeta residual `C:\Program Files\Astro-Nex` ni `C:\Program Files\Astro-Nex v2`.
+4. Abrir Astro-Nex y comprobar que aparece la ventana principal.
+5. Probar botón de lápiz (Modificar Carta) y diálogo de Entradas (`Ctrl+E`).
+6. Confirmar que `C:\Windows\Fonts\Astro-Nex.ttf` existe.
+7. Comprobar que se generó el acceso directo en el escritorio y que al desinstalar la aplicación se remueva correctamente.
 
 No publicar el instalador hasta completar estas comprobaciones.
 
-## Notas sobre Inno Setup 6 (Acceso directo)
+## Cambios obligatorios en installer.iss (IMPORTANTE)
+
+### 1. Forzar instalación siempre en `Astro-Nex-2.0`
+
+Por defecto Inno Setup detecta una instalación previa (mismo `AppId`) y actualiza
+en la **misma carpeta antigua**, ignorando `DefaultDirName`. Para forzar que
+**siempre** instale en `C:\Program Files\Astro-Nex-2.0` sin importar versiones
+anteriores, agregar esta línea en la sección `[Setup]`:
+
+```ini
+[Setup]
+; ... resto de opciones ...
+UsePreviousAppDir=no
+```
+
+### 2. Limpiar carpetas de versiones beta anteriores
+
+Los usuarios que tuvieron betas anteriores pueden tener las carpetas
+`Astro-Nex` o `Astro-Nex v2` en Archivos de programa. El instalador debe
+borrarlas automáticamente. Asegurarse de que `[InstallDelete]` contenga
+**las tres** entradas:
+
+```ini
+[InstallDelete]
+Type: filesandordirs; Name: "{autopf}\Astro-Nex"
+Type: filesandordirs; Name: "{autopf}\Astro-Nex v2"
+Type: files; Name: "{autodesktop}\Astro-Nex.lnk"
+Type: files; Name: "{autodesktop}\Astro-Nex v2.lnk"
+Type: files; Name: "{commondesktop}\Astro-Nex.lnk"
+Type: files; Name: "{commondesktop}\Astro-Nex v2.lnk"
+Type: files; Name: "{userdesktop}\Astro-Nex.lnk"
+Type: files; Name: "{userdesktop}\Astro-Nex v2.lnk"
+```
+
+### Notas sobre Inno Setup 6 (Acceso directo)
 
 En la configuración de `installer.iss`, se agregó explícitamente una tarea para que Inno Setup controle de forma nativa la creación y eliminación del acceso directo en el escritorio. Esto soluciona problemas de versiones pasadas donde el icono no aparecía, o bien, el desinstalador lo dejaba olvidado en el escritorio al finalizar:
 
