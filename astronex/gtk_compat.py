@@ -122,6 +122,16 @@ class VBox(Gtk.Box):
         return Gtk.Box.pack_end(self, child, expand, fill, padding)
 
 
+class HPaned(Gtk.Paned):
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
+
+
+class VPaned(Gtk.Paned):
+    def __init__(self):
+        super().__init__(orientation=Gtk.Orientation.VERTICAL)
+
+
 class Table(Gtk.Grid):
     def __init__(self, rows=1, columns=1, homogeneous=False):
         super().__init__(row_homogeneous=homogeneous,
