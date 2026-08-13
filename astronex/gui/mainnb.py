@@ -623,6 +623,7 @@ class MainPanel(gtk.VBox):
         paned = gtk.VPaned()
         paned.pack1(hbox, resize=True, shrink=False)
         paned.pack2(self.chooser, resize=True, shrink=False)
+        paned.set_position(330)
         self.pack_start(paned, True, True)
 
     def _add_slot(self, name):
