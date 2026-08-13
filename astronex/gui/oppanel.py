@@ -117,6 +117,7 @@ class OpPanel(gtk.VBox):
         self.notebook.set_show_border(False)
 
         sw = gtk.ScrolledWindow()
+        sw.set_size_request(-1, 150)
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         sw.add_with_viewport(self.notebook) 
         self.pack_start(sw,True,True)

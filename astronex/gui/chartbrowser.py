@@ -184,6 +184,7 @@ class  BrowserPanel(gtk.HBox):
         self.chartview.grab_focus()
         
         sw = gtk.ScrolledWindow()
+        sw.set_size_request(-1, 150)
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         sw.add(self.chartview) 
         vbox.pack_start(sw,True,True)
