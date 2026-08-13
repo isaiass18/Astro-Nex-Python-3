@@ -581,7 +581,7 @@ class MixerPanel(gtk.HBox):
             export.append(chart)
         
         output = open(name, 'wb')
-        pickle.dump(export,output,-1)
+        pickle.dump(export,output,2)
         output.close()
         dialog.destroy()
 

@@ -289,14 +289,14 @@ class Current(object):
             return
         file = path.joinpath(app.home_dir,'mruch.pkl')
         with open(file, 'wb') as output:
-            pickle.dump(self.pool, output, -1)
+            pickle.dump(self.pool, output, 2)
 
     def save_couples(self,app):
         if len(self.couples) == 0:
             return
         file = path.joinpath(app.home_dir,'coups.pkl')
         with open(file, 'wb') as output:
-            pickle.dump(self.couples, output, -1)
+            pickle.dump(self.couples, output, 2)
 
     def get_cycles(self,person2=False):
         chart = [self.curr_chart,self.curr_click][person2]
