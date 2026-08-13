@@ -1,4 +1,4 @@
-# Astro-Nex 2.0 2.0 para Linux
+# Astro-Nex 2.0 para Linux
 
 Este directorio es el entorno de compilación para los instaladores:
 
