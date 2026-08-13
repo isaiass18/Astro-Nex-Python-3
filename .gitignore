@@ -43,6 +43,7 @@ Astro-Nex-1.2.3-inicial python2/
 # Mobile/offline local artifacts
 mobile/
 mobile-hybrid/
+mobile-hybrid-recovery/
 docs/mobile-offline/
 guias/PROCEDIMIENTO_PUSH_GITHUB.md
 guias/REVISION_REPARACIONES.md
