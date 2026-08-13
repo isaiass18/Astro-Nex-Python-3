@@ -1,4 +1,4 @@
-# Astro-Nex 2.0 2.0 para macOS
+# Astro-Nex 2.0 para macOS
 
 Este directorio es el entorno de compilación para el instalador:
 
