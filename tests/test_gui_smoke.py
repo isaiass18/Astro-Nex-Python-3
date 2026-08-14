@@ -528,13 +528,19 @@ class GtkSmokeTest(unittest.TestCase):
             self._flush_events()
 
     def test_chart_browser_height_matches_backend_layout(self):
-        """The left browser keeps VNC proportions without overgrowing on macOS."""
+        """The left browser adapts to small screens without crushing the chooser."""
         browser = self.window.boss.mpanel.browser
         scroller = next(
             child for child in browser.get_children()
             if isinstance(child, self._gtk.ScrolledWindow)
         )
-        expected_height = 260 if sys.platform == 'darwin' else 330
+        screen_height = self._gtk.gdk.screen_height()
+        if screen_height <= 800:
+            expected_height = 220
+        elif sys.platform == 'darwin':
+            expected_height = 260
+        else:
+            expected_height = 330
         self.assertEqual(scroller.get_size_request(), (-1, expected_height))
         if hasattr(scroller, "get_propagate_natural_height"):
             self.assertFalse(scroller.get_propagate_natural_height())

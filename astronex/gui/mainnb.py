@@ -409,12 +409,17 @@ class ChartBrowser(gtk.VBox):
         self.clip = None
 
         sw = gtk.ScrolledWindow()
-        # VNC needs the historical 330 px browser height documented in the
-        # repair notes. On macOS Quartz the same request overexpands this
-        # list, so keep a shorter request there to preserve chart space.
-        browser_height = 330
-        if sys.platform == 'darwin':
+        # GTK3 needs a bounded people-list height, but a single fixed value
+        # does not scale well across desktop sizes. Keep the taller layout on
+        # large screens while leaving enough room for the operation panel on
+        # 1366x768-class displays.
+        screen_height = gtk.gdk.screen_height()
+        if screen_height <= 800:
+            browser_height = 220
+        elif sys.platform == 'darwin':
             browser_height = 260
+        else:
+            browser_height = 330
         sw.set_size_request(-1,browser_height)
         # In GTK3 a size request is only a minimum. Keep the people list from
         # advertising the full natural height of all rows, otherwise it can
