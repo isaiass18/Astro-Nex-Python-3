@@ -416,6 +416,14 @@ class ChartBrowser(gtk.VBox):
         if sys.platform == 'darwin':
             browser_height = 260
         sw.set_size_request(-1,browser_height)
+        # In GTK3 a size request is only a minimum. Keep the people list from
+        # advertising the full natural height of all rows, otherwise it can
+        # steal the space that belongs to the bottom operation selector on
+        # some Windows/Linux desktops.
+        if hasattr(sw, 'set_propagate_natural_height'):
+            sw.set_propagate_natural_height(False)
+        if hasattr(sw, 'set_max_content_height'):
+            sw.set_max_content_height(browser_height)
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         sw.add(self.chartview) 
         self.pack_start(sw,True,True)

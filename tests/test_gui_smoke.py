@@ -536,6 +536,10 @@ class GtkSmokeTest(unittest.TestCase):
         )
         expected_height = 260 if sys.platform == 'darwin' else 330
         self.assertEqual(scroller.get_size_request(), (-1, expected_height))
+        if hasattr(scroller, "get_propagate_natural_height"):
+            self.assertFalse(scroller.get_propagate_natural_height())
+        if hasattr(scroller, "get_max_content_height"):
+            self.assertEqual(scroller.get_max_content_height(), expected_height)
 
     def test_toolbar_state_hides_stale_overlays(self):
         """The canvas must drop stale overlay flags when the toolbar is off."""
