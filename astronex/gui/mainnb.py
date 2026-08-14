@@ -613,17 +613,15 @@ class MainPanel(gtk.VBox):
         #frame = gtk.HandleBox()
         #frame.set_handle_position(gtk.POS_TOP)
         #frame.set_snap_edge(gtk.POS_TOP)
-        #frame.set_size_request(-1,240)
+        frame.set_size_request(-1,240)
         frame = gtk.Frame()
         frame.add(tb) 
         self.toolbar = tb
         hbox.pack_start(frame,False,False) 
-        self.chooser = OpPanel(boss)
+        self.pack_start(hbox,False,False) 
         
-        paned = gtk.VPaned()
-        paned.pack1(hbox, resize=True, shrink=False)
-        paned.pack2(self.chooser, resize=True, shrink=False)
-        self.pack_start(paned, True, True)
+        self.chooser = OpPanel(boss)
+        self.pack_end(self.chooser,True,True)
 
     def _add_slot(self, name):
         """Keep the GTK3 data cards at the historical GTK2 width.
