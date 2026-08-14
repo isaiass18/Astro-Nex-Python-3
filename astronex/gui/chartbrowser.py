@@ -186,6 +186,10 @@ class  BrowserPanel(gtk.HBox):
         sw = gtk.ScrolledWindow()
         sw.set_size_request(-1, 150)
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        if hasattr(sw, 'set_propagate_natural_height'):
+            sw.set_propagate_natural_height(False)
+        if hasattr(sw, 'set_max_content_height'):
+            sw.set_max_content_height(350)
         sw.add(self.chartview) 
         vbox.pack_start(sw,True,True)
         
