@@ -46,6 +46,9 @@ distribución Linux de 64 bits, permisos de ejecución y un entorno gráfico GTK
 El requisito de Python 3.8 o superior aplica sólo si se instala directamente
 desde el código fuente con `scripts/install_linux.sh`.
 
+> 💡 **Copia automática de tus datos:**
+> Si ya tenías instalada una versión previa de Astro-Nex (1.2 o V2 Beta) en este mismo equipo, la instalación detectará tus archivos personales automáticamente. **Tus cartas, localidades y configuración se migrarán solas al abrir la nueva versión.** No necesitas realizar los pasos manuales a continuación a menos que estés pasando tus datos desde una computadora distinta.
+
 ## 📦 Migración manual de datos (desde otro equipo)
 
 Si tienes datos guardados en otro equipo, copia estos archivos y transfiérelos a tu nuevo PC mediante una memoria USB, carpeta compartida o servicio de la nube:

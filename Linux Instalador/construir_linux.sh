@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-AWS_IP="3.16.166.241"
+AWS_IP="18.116.201.31"
 AWS_USER="ubuntu"
 PEM_FILE="../astronext.pem"
 

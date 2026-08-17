@@ -28,6 +28,9 @@ Para continuar la instalación de forma segura:
 
 Usa únicamente copias descargadas directamente de este repositorio oficial.
 
+> 💡 **Copia automática de tus datos:**
+> Si ya tenías instalada una versión previa de Astro-Nex (1.2 o V2 Beta) en este mismo equipo, la instalación detectará tus archivos personales automáticamente. **Tus cartas, localidades y configuración se migrarán solas al abrir la nueva versión.** No necesitas realizar los pasos manuales a continuación a menos que estés pasando tus datos desde una computadora distinta.
+
 ## Migración manual de datos (desde otro equipo)
 
 Si tienes datos guardados en otro equipo, copia estos archivos y transfiérelos a tu nuevo PC mediante una memoria USB, carpeta compartida o servicio de la nube:

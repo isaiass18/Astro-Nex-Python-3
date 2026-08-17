@@ -48,7 +48,7 @@ No necesitas instalar Docker en tu entorno local. Sólo requieres:
 
 **¿Qué hacen estos scripts automatizados?**
 - Leen tu llave `astronext.pem`.
-- Se conectan por SSH con `ServerAliveInterval=60` a `ubuntu@3.16.166.241`.
+- Se conectan por SSH con `ServerAliveInterval=60` a `ubuntu@18.116.201.31`.
 - Limpian el entorno temporal, clonan el código desde GitHub y copian la
   carpeta local `Linux Instalador` para usar los Dockerfiles de la revisión
   local.
