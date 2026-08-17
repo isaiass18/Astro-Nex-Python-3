@@ -191,12 +191,12 @@ class GtkSmokeTest(unittest.TestCase):
         self.assertLessEqual(drawer.zoom, MAX_ZOOM)
 
     def test_chart_header_uses_the_visible_canvas_right_edge(self):
-        """Date/regent labels use the full window right edge in normal mode."""
+        """Date/regent labels use the visible canvas right edge in normal mode."""
         self._flush_events()
         canvas_width = self.window.da.get_allocated_width()
         window_width = self.window.get_allocated_width()
         self.assertEqual(
-            self.window.da._header_width(canvas_width * 0.85), window_width
+            self.window.da._header_width(canvas_width * 0.85), canvas_width
         )
 
     def test_data_cards_keep_legacy_dimensions_and_left_text(self):

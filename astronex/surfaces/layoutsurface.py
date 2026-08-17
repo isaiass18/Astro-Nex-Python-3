@@ -764,10 +764,7 @@ class DrawMaster(gtk.Layout):
         cr.restore()
 
     def _header_width(self, chart_width):
-        toplevel = self.get_toplevel()
-        if isinstance(toplevel, gtk.Window):
-            return max(chart_width, toplevel.get_allocated_width())
-        return chart_width
+        return self.allocation.width
 
     def check_local_label(self):
         if curr.opmode == 'simple' and curr.curr_op == 'draw_local': 
