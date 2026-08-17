@@ -54,6 +54,13 @@ Si prefieres instalar compilando el código fuente localmente desde la terminal:
 > 3. Verás un mensaje indicando que se bloqueó el uso de Astro-Nex. Haz clic en el botón **"Abrir de todos modos"** o **"Permitir"**.
 > 4. Te pedirá tu contraseña de Mac; ingrésala y la aplicación se abrirá sin problemas de ahí en adelante.
 
+## 📦 Gestión de Datos
+
+> 💡 **Copia automática de tus datos:**
+> Si ya tenías instalada una versión previa de Astro-Nex (1.2 o V2 Beta) en este mismo equipo, la instalación detectará tus archivos personales automáticamente. **Tus cartas, localidades y configuración se migrarán solas al abrir la nueva versión.** No necesitas realizar una migración manual a menos que estés pasando tus datos desde una computadora distinta.
+
+Si necesitas trasladar tus datos a un ordenador completamente nuevo, revisa las guías específicas en la carpeta de instalación de cada sistema operativo o en la [Guía completa de la migración](guias/MIGRACION_PYTHON3.md).
+
 ## Más información
 
 - [Guía completa de la migración e instalación](guias/MIGRACION_PYTHON3.md)

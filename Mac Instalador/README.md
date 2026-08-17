@@ -29,10 +29,12 @@ La aplicación ya incluye Python, GTK3, el motor astronómico y la fuente de
 símbolos `Astro-Nex.ttf`. La fuente se registra sólo mientras Astro-Nex está
 abierto: no es necesario instalar Python, GTK, Homebrew ni la fuente en macOS.
 
-## Migrar datos desde Linux, Windows o Wine
+> 💡 **Copia automática de tus datos:**
+> Si ya tenías instalada una versión previa de Astro-Nex en este mismo equipo, la instalación detectará tus archivos personales automáticamente. **Tus cartas, localidades y configuración se migrarán solas al abrir la nueva versión.** No necesitas realizar los pasos manuales a continuación a menos que estés pasando tus datos desde una computadora distinta.
 
-Esta es la primera versión para macOS. Al abrirla por primera vez, Astro-Nex
-crea su nueva carpeta de datos en `~/.astronex-v2/`.
+## Migración manual de datos (desde otro equipo)
+
+Al abrir Astro-Nex por primera vez, el programa crea su carpeta de datos en `~/.astronex/`.
 
 En el equipo anterior, copia estos archivos y transfiérelos al Mac mediante
 una memoria USB, carpeta compartida o servicio de archivos:
@@ -50,9 +52,9 @@ Las ubicaciones habituales de origen son:
 
 Para colocarlos en el Mac:
 
-1. Abre Astro-Nex una vez y ciérralo. Así se crea `~/.astronex-v2/`.
+1. Abre Astro-Nex una vez y ciérralo. Así se crea `~/.astronex/`.
 2. Abre **Finder** y selecciona **Ir > Ir a la carpeta...** (`Mayusculas + Cmd + G`).
-3. Escribe `~/.astronex-v2/` y pulsa **Ir**.
+3. Escribe `~/.astronex/` y pulsa **Ir**.
 4. Pega `charts.db`, `customloc.db` y `cfg.ini` transferidos desde el equipo
    anterior. Si macOS pregunta si deseas reemplazarlos, conserva primero una
    copia de los archivos existentes.
