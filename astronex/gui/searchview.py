@@ -42,10 +42,16 @@ class SearchView(gtk.TreeView):
         search_win.show_all()
         self.set_searchwin_pos(search_entry)
         search_entry.grab_focus()
+        search_entry.set_position(-1)
+        search_entry.select_region(0, 0)
+        search_entry.set_position(-1)
 
         def focus_entry():
             search_win.present()
             search_entry.grab_focus()
+            search_entry.set_position(-1)
+            search_entry.select_region(0, 0)
+            search_entry.set_position(-1)
             # Force X11 keyboard grab so the search box receives key events
             # inside VNC/Xvfb, where undecorated windows are not focused by
             # the window manager automatically.
@@ -56,7 +62,6 @@ class SearchView(gtk.TreeView):
                 except Exception:
                     pass
             search_entry.set_position(-1)
-            search_entry.select_region(-1, -1)
             return False
         gobject.idle_add(focus_entry)
 
