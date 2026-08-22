@@ -361,13 +361,20 @@ gdk = _GdkBridge()
 keysyms = _Keysyms()
 
 # Names that kept their class/function name between PyGTK and GTK 3.
+
+class ListStore(Gtk.ListStore):
+    def __init__(self, *types):
+        from gi.repository import GObject
+        safe_types = [GObject.TYPE_INT64 if t is int else t for t in types]
+        super().__init__(*safe_types)
+
 for _name in (
     "AboutDialog", "Adjustment", "Arrow",
     "Button", "Calendar", "CellRendererText", "CheckButton",
     "CheckMenuItem", "CssProvider", "Dialog", "DrawingArea",
     "Entry", "EntryCompletion", "EventBox", "FileChooserDialog", "HSeparator",
     "FileChooserWidget", "FileFilter", "FontButton", "HandleBox",
-    "Image", "ImageMenuItem", "Label", "Layout", "ListStore", "Menu",
+    "Image", "ImageMenuItem", "Label", "Layout", "Menu",
     "MenuItem", "MessageDialog", "Notebook", "PrintOperation",
     "ScrolledWindow", "SeparatorMenuItem", "SizeGroup",
     "TextView", "ToggleButton", "ToggleToolButton", "ToolButton",
